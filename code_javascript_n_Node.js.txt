@@ -1,0 +1,1244 @@
+
+
+see 
+using the debugger + VC
+----
+see all about Node.js docs
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+
+Javascript
+
+[Node.js]
+
+
+-download Node.js
+				
+				
+
+-Tutorials
+ Microsoft Doc: 
+		https://docs.microsoft.com/en-us/learn/browse/?roles=developer&terms=javascript
+		https://docs.microsoft.com/en-us/learn/paths/build-javascript-applications-nodejs/
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+-see down below
+
+-Creating a Simple Web App with Node.js
+
+	https://ilovecoding.org/courses/nodejs/lessons/creating-a-simple-web-app-with-nodejs
+	https://www.tabnine.com/code/javascript/functions/http/ServerResponse/writeHead
+
+
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+VC - visual code
+
+	ctrl+p ............... quick open, go to file
+	ctrl+Shift+P, F1...... Show Command Palette
+	ctrl+n................ open a new un-named file
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+var customer = ({'"myName":"Zak"'});
+let 
+const order = "Your string";
+			This const means that you can't reassign it to any other value.
+			
+process.stdout.write("Hello world");
+console.log("Hello world");
+
+const customerObject = JSON.parse(jsonString);
+const jsonString = JSON.stringify(customerObject, null, 2); //<== indent by 2 spaces (pretty json)
+
+[.slice()]
+const args = process.argv.slice(2);
+	main(args[0]);
+
+	
+[switch]	
+		var myArgs = process.argv.slice(2);
+		console.log('myArgs: ', myArgs);
+
+		switch (myArgs[0]) {
+		case 'insult':
+			console.log(myArgs[1], 'smells quite badly.');
+			break;
+		case 'compliment':
+			console.log(myArgs[1], 'is really cool.');
+			break;
+		default:
+			console.log('Sorry, that is not something I know how to do.');
+		}			
+
+
+
+jsonString = fs.readFileSync('./customer.json'); // read it synchronously
+			
+// Asynchronous
+fs.readFile('./customer.json', 'utf8',
+        (err, jsonString) => {
+            if (err) {
+                console.log("File read failed: ", err);
+                return;
+            }
+            try {
+                const customer = JSON.parse(jsonString);
+                console.log("Customer address is:", customer.address); // ==> "Customer address is: Infinity Loop Drive"
+            } catch (err) {
+                console.log('Error parsing JSON string:', err);
+            }
+        });
+
+fs.writeFile('./customer.json', JSON.stringify(customer), (err) => {
+    if (err) console.log('Error writing file:', err)
+})
+
+
+
+
+
+
+
+
+			
+=================================================================================
+=================================================================================
+=================================================================================
+
+EX:
+
+// simple Command-Line Interface (CLI)
+// argv: Argument Values
+
+console.log(process.argv);
+
+function  main(count){
+    for (let i=0; i<count; i++){
+        hello();
+    }
+} 
+    
+function hello(){
+    process.stdout.write("Hello world\n");
+}
+
+const args = process.argv.slice(2);
+main(args[0]);
+
+
+// another example:
+/*
+var myArgs = process.argv.slice(2);
+console.log('myArgs: ', myArgs);
+
+switch (myArgs[0]) {
+case 'insult':
+    console.log(myArgs[1], 'smells quite badly.');
+    break;
+case 'compliment':
+    console.log(myArgs[1], 'is really cool.');
+    break;
+default:
+    console.log('Sorry, that is not something I know how to do.');
+}
+*/			
+=================================================================================
+=================================================================================
+=================================================================================
+https://medium.com/@osiolabs/read-write-json-files-with-node-js-92d03cc82824
+
+EX:
+
+Read/Write JSON Files with Node.js
+
+		Read JSON data from disk
+		Learn to use fs module to interact with the filesystem
+		Persist data to a JSON file
+		Use JSON.parse and JSON.stringify to convert data to and from JSON format
+
+
+
+	-read the file once (synchronously):
+		const config = require('./config.json')
+
+
+
+
+	-fs.readFile will read it asynchronously
+	-read the file synchronously using fs.readFileSync
+
+
+
+	-fs.writeFile to asynchronously write data to a newCustomer.json file.
+					If the newCustomer.json file doesn’t already exist, 
+					it will be created; 
+					if it does exist, it will be overwritten!
+					
+					
+					
+
+	-turn the string into an object
+		const customer = JSON.parse(jsonString);
+		const jsonString = JSON.stringify(customer, null, 2); //<== indent by 2 spaces
+		
+		
+		
+
+	-JSON.stringify(customer); This returns a JSON string representation of a JavaScript object
+
+	-EX:
+		function jsonReader() {
+			fs.readFile('./customer.json', 'utf8',
+				(err, jsonString) => {
+					if (err) {
+						console.log("File read failed: ", err);
+						return;
+					}
+					try {
+						const customer = JSON.parse(jsonString);
+						console.log("Customer address is:", customer.address); // ==> "Customer address is: Infinity Loop Drive"
+					} catch (err) {
+						console.log('Error parsing JSON string:', err);
+					}
+				});
+		}
+	
+	OR
+		
+		//
+		// ADVANCED javascript
+		//
+		// jsonReader('./customer.json', (err, customer) => {
+		//     if (err) {
+		//         console.log(err)
+		//         return
+		//     }
+		//     console.log(customer.address) // => "Infinity Loop Drive"
+		// })
+
+		// function jsonReader(filePath, cb) {
+		//     fs.readFile(filePath, (err, fileData) => {
+		//         if (err) {
+		//             return cb && cb(err)
+		//         }
+		//         try {
+		//             const object = JSON.parse(fileData)
+		//             return cb && cb(null, object)
+		//         } catch(err) {
+		//             return cb && cb(err)
+		//         }
+		//     })
+		// }
+
+
+
+	update a file:
+	
+		const fs = require('fs');
+		var jsonString = '';
+		jsonString = fs.readFileSync('./customer.json'); // read it synchronously
+		const customer = JSON.parse(jsonString);
+		// increase customer order count by 1
+		customer.order_count += 19
+		fs.writeFile('./customer.json', JSON.stringify(customer), (err) => {
+			if (err) console.log('Error writing file:', err)
+		})
+
+
+		OR
+		// it did not compile!!!
+
+			/*
+			jsonReader('./customer.json', (err, customer) => {
+				if (err) {
+					console.log('Error reading file:',err)
+					return
+				}
+			// increase customer order count by 1
+				customer.order_count += 1
+			fs.writeFile('./customer.json', JSON.stringify(customer), (err) => {
+					if (err) console.log('Error writing file:', err)
+				})
+			})
+			*/
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+[require()]
+
+		-this is NodeJS specific
+		-this not Javascript
+		-it is on the nodejs server
+		-node_modules
+		
+
+		-var pg = require('pg');
+
+		-Now require() is a special function call defined as part of the CommonJS spec. In node, it resolves libraries and modules in the Node search path, now usually defined as node_modules in the same directory (or the directory of the invoked javascript file) or the system-wide search path.
+
+
+		-this is how to acces it from the browser
+		-requirejs: https://requirejs.org/
+		*** -I noticed that whilst the other answers explained what require is and that it is used to load modules in Node they did not give a full reply on how to load node modules when working in the Browser.
+
+				It is quite simple to do. Install your module using npm as you describe, and the module itself will be located in a folder usually called node_modules.
+
+				Now the simplest way to load it into your app is to reference it from your html with a script tag which points at this directory. i.e if your node_modules directory is in the root of the project at the same level as your index.html you would write this in your index.html:
+
+				<script src="node_modules/ng"></script>
+				That whole script will now be loaded into the page - so you can access its variables and methods directly.
+
+				There are other approaches which are more widely used in larger projects, such as a module loader like require.js. Of the two, I have not used Require myself, but I think it is considered by many people the way to go.
+
+=================================================================================
+=================================================================================
+=================================================================================
+
+[Node.js]
+		-it is like javascript processor 
+		-like java JVM
+
+[npm] 
+
+		-it's like Maven and Git
+		
+		
+		-built-in command-line tool called npm.
+		-find packages
+		-install packages
+		-The Node.js environment also offers an npm registry that you can use to share your own Node.js library.
+		-npm command-line tool and the npm global registry to add libraries to your application code.
+		-npm, Node Package Manager, you can easily install these libraries and use them in your application.
+
+
+
+[package.json]
+
+Initialize a package.json
+	A package.json file isn't something you author by hand. 
+	It's the result of running the init command. There are two main ways to run this command:
+
+***		>npm init. This command starts a wizard that will prompt you for information about a project's name, version, description, entry point, test command, Git repository, keywords, author, and license.
+		
+***		>npm init -y. This command, with the -y flag, is a faster version of npm init. It's faster in the sense that it's not interactive. Instead, it assigns default values for all values you'd be asked to supply if you ran npm init.
+
+
+----
+package.json file contents
+	You can think of all the possible fields in the package.json as belonging to the following groups:
+
+		-Meta-information. This group contains meta-information about the project, like its name, description, author, and keywords.
+		
+		-Dependencies. There are two properties, dependencies and devDependencies, that are used to describe the libraries that are being used. Later in the module, you'll learn how to use these two sections to install, update, and separate dependencies.
+		
+		-Scripts. You can place scripts in this section that do things like start, build, test, and lint a project.
+
+
+----
+
+https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/3-exercise-package-json
+
+start
+Scripts for managing your project
+	You're likely to want to have a way to run, test, and build any project, whether it's using Node.js or not. The Node.js runtime has recognized this need and provides guidance about what scripts that do these things should be called. The idea is to ensure that all Node.js projects use consistent names for these scripts. It's a better developer experience if you can move among Node.js projects and quickly orient yourself because you see a consistent set of actions. Various tools for DevOps and instrumentation can take advantage of this naming consistency.
+
+	You should set up a number of scripts and name them in a specific way. These specific names are expected by the developer community and various tools:
+
+		-Start. A start command invokes node with the entry file as an argument. 
+				It might look like this command: 
+				
+***				>node ./src/index.js. 
+				
+				This command says to invoke node and use the entry file index.js.
+		
+		
+		
+		-Build. This command describes how to build your project. The build process should produce something that you can ship. For example, a build command could run a TypeScript compiler to produce the JavaScript version of the project that you want to ship.
+		
+		-Test. This command should run the tests for your project. If you're using a third-party test library, the command should invoke the library's executable file.
+		
+		 [validate]
+		-Lint. This command should invoke a linter program like ESLint. Linting finds inconsistencies in code. A linter usually offers a way to correct inconsistencies as well. Having consistent code can greatly increase its readability. This readability in turn speeds up the development of features and additions to the code.
+
+
+[start][scripts]
+
+		This example uses the naming that has been described. 
+		First, you have the start action that starts the application. 
+		Second, the test action runs tests by using the testing framework jest.
+		Then you have the build action that uses the TypeScript compiler tsc to compile the code from TypeScript into, 
+			for example, ES6 that the browser can understand. 
+		Finally, you have a linting tool eslint that looks for inconsistencies and possibly errors in the code.
+
+
+		scripts section typically looks like:
+
+			"scripts" : {
+			  "<action>" : "<command>"
+			}
+			
+			A more realistic example would look like this code:
+
+			"scripts" : {
+			  "start" : "node ./dist/index.js",
+			  "test": "jest",
+			  "build": "tsc",
+			  "lint": "eslint"
+			}
+
+
+		You invoke actions by typing 
+***			>npm run <action>. 
+		But there are special actions: start and test. 
+		They're special because you can omit run. 
+		So instead of typing >npm run start, you can instead save a few characters and type 
+
+***			>npm start.
+??? did not working
+
+				No tests found, exiting with code 1
+				Run with `--passWithNoTests` to exit with code 0
+				In C:\zak_dev\code.txt\JavaScript_Examples\javascripts_examples\5-exercise-dependency
+				  3 files checked.
+				  testMatch: **/__tests__/**/*.[jt]s?(x), **/?(*.)+(spec|test).[tj]s?(x) - 0 matches
+				  testPathIgnorePatterns: \\node_modules\\ - 3 matches
+				  testRegex:  - 0 matches
+				Pattern:  - 0 matches
+				npm ERR! code ELIFECYCLE
+				npm ERR! errno 1
+				npm ERR! 5-exercise-dependency@1.0.0 test: `jest`
+				npm ERR! Exit status 1
+
+
+
+
+
+	NOTE: see full working project template:
+		C:\zak_dev\code.txt\JavaScript_Examples\node-essentials\node-dependencies\3-exercise-package-json\package.json
+
+
+
+
+---
+https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/6-dependency-management
+
+Manage dependency updates in your Node.js project
+
+		There are some considerations that you should take into account before you try to update a library:
+
+			-The type of update. What type of update is available? Is it a small bug fix? Is it adding a new feature you need? Will it break your code? You can communicate the type of update by using a system called semantic versioning. The way the version number of the library is expressed communicates to developers the type of update they're dealing with.
+			-Whether the project is configured correctly. You can configure your Node.js project so that you get only the types of updates you want. You'll only perform an update if a specific type of update is available. We recommend this approach because you don't risk running into surprises.
+			-Security problems. Managing your project dependencies over time involves being aware of problems that might occur. Problems arise as vulnerabilities are detected, for example. Ideally, patches will be released that you can download. The npm tool helps you run an audit on your libraries to find out if you have packages that should be updated. It also helps you take the appropriate action to fix a problem.
+
+
+
+		[semantic versioning]
+		
+		Use [semantic versioning]
+		
+			There's an industry standard called semantic versioning. It's a system adopted by many companies and developers. If you intend to publish packages and push them to the npm registry, you should follow semantic versioning. It's expected. Even if you only download packages from the npm registry, you can expect these packages to follow semantic versioning.
+
+			So why is it such a big deal? Changes to a package can introduce risk. Risk that a bug that could harm your business could be introduced. Risk that you might need to rewrite part of your code. Rewriting code takes time and costs money.
+
+			Semantic versioning is how you express the type of change that you or some other developer is introducing to a library. Semantic versioning works by ensuring a package has a version number and that the version number is divided up into these sections:
+
+			Major version. The leftmost number. For example, the 1 in 1.0.0. A change to this number means that you can expect breaking changes in code. You might need to rewrite part of your code.
+			Minor version. The middle number. For example, the 2 in 1.2.0. A change to this number means that features have been added. Your code should still work. It's generally safe to accept the update.
+			Patch version. The rightmost number. For example, the 3 in 1.2.3. A change to this number means that a change has been applied that fixes something in the code that should have worked. It should be safe to accept the update.
+			This table illustrates how the version number changes for each version type:
+
+			TABLE 1
+			Type	What happens
+			Major version	1.0.0 changes to 2.0.0
+			Minor version	1.1.1 changes to 1.2.0
+			Patch version	1.0.1 changes to 1.0.2
+
+			 A typical command to update a package might 
+			 look like this one: 
+			 
+***				npm update <name of package>@<optional argument with version number>
+
+			What happens at this point depends on two things:
+
+			Whether the version argument is specified as part of the command. If the version argument (the last argument) is specified, that particular package version is fetched and installed.
+			The entry in the manifest file. The entry in the manifest file includes the name of the dependency and a value that expresses a rule pattern for how the dependency will be updated. Here's an example: "<name of dependency>": "1.1.x". The npm tool will respect the rule pattern and try to fetch the version of the dependency that matches the rule pattern.
+
+
+	Update approach
+	
+			As a Node.js developer, you can communicate to Node.js the update behavior you want. Think about updating in terms of risk. Here are some approaches:
+
+			-Major version. I'm OK with updating to the latest major version as soon as it's out. I accept the fact that I might need to change code on my end.
+			-Minor version. I'm OK with a new feature being added. I'm not OK with code that breaks.
+			-Patch version. The only updates I'm OK with are bug fixes.
+			
+			If you're managing a new or smaller Node.js project, you can afford to be loose with how you define the update strategy. For example, you could always update to the latest version. For more complex projects, there's a bit more nuance, but we'll save that for a future module.
+
+			In general, the smaller the dependency you're updating, the fewer dependencies it has and the more likely that the update process will be easy.
+
+
+
+	Configure the package.json for update
+	
+			Before you update one or more dependencies, you should configure your manifest file so that you get predictable behavior when you run the npm update <name of dependency> command. You can communicate the approach you want to take for a package. Node.js has a set of symbols that allows you to define how you want your packages to update.
+
+			The process is to add different prefixes to your package entries in the package.json file. There are many things you can configure in addition to major/minor/patch version. You can also express that you want packages within only a certain range, or that you want packages that have a certain tag, like alpha or beta.
+
+			Here are some patterns that you can configure for major/minor/patch version:
+
+			~ or 1.1.x. This instruction will update to the latest patch version. If you want only the patch version to update, specify ~1.0.0. This instruction says "equal to or greater than in the same range."
+			^ or 1.x.1. This instruction will update to only the minor version.
+			* or x.0.0. This instruction will update to the highest major version.
+
+
+	---
+	https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/6-dependency-management
+	
+***	[package-lock.json]
+	
+			In addition to the package.json manifest file, you also have the package-lock.json file. The latter is generated when you do something that modifies the node_modules directory or anything that changes the dependencies in package.json. So it won't be created when you run npm init, but it will be created when you install a package, for example.
+
+			This file should be committed to your repository.
+
+			One reason to commit this file to your repository is that it guarantees exact installations. Remember how in package.json you define patterns for the types of installations you want, like patches, minor versions, or major versions? Patterns aren't exact. You won't know if you installed, for example, version 1.4 or 1.5 if you're using a 1.x pattern.
+
+			And you might need to know which version you installed. Imagine you specify 1.x. You're using version 1.2, and a 1.4 version is released. The new version ends up breaking your code. Someone installing your app will get a non-functioning app at that point. But, if there's a package-lock.json file stating 1.2 was used, 1.2 will be installed. So, who cares about this behavior? People who use your app and CI (continuous integration) tools.
+
+			It's important to understand the process and which file determines when an installation occurs.
+
+			It works like this:
+
+			If the package.json and the package-lock.json agree on a semantic-rule level, there's no conflict. For example, if the pattern says 1.x in package.json and package-lock.json specifies that version 1.4 is installed, 1.4 will be installed.
+			But if the package.json specifies, for example, 1.8.x, package-lock.json won't be obeyed. Version 1.8.0 or later will be installed, or a higher patch version if one is available.
+			The package-lock.json file also provides other features. For example, it makes it easy to see what has changed between commits and helps to optimize the installation process.
+
+
+
+	---
+	Find and update outdated packages
+	
+			The 
+***				>npm outdated
+				
+			command lists outdated packages. This command can help you learn when there are newer versions of packages available. Here's a typical output from the command:
+
+			Output
+
+			Copy
+			Package     Current  Wanted   Latest  Location
+			lodash        1.0.0   1.0.0  4.17.19  lock-test
+			node-fetch    1.2.0   1.2.0    2.6.0  lock-test
+			Here are the meanings of the names of the columns in the output:
+
+			Wanted. The latest version that matches the semantic pattern you specified in the package.json file.
+			Latest. The latest version of the package.
+			Location. Where the dependency was found. The outdated command crawls through all installed packages in node_modules.
+			The recommended workflow is to run these commands, in this order:
+
+***			Run npm outdated. 						This command lists all the outdated packages. It provides information in the Wanted, Latest, and Location columns.
+***			Run npm update <optional package name>. If you run this command with a package name specified, the command will try to update only the specified package. If you don't specify a package, the command will try to update all the packages in package.json.
+
+
+
+	---
+	Managing security issues
+			Every time you update or install a package, you'll get a log response just after the installation. The response tells you what version was installed and whether there are any vulnerabilities. A log might look like this example:
+
+			Output
+
+			Copy
+			+ lodash@1.3.1
+			added 1 package from 4 contributors and audited 1 package in 0.949s
+			found 3 vulnerabilities (1 low, 2 high)
+			  run `npm audit fix` to fix them, or `npm audit` for details
+			The preceding log lists vulnerabilities with severity levels of high and low. If you have any high-level vulnerabilities, you should update the package. To fix an issue and apply an update, you can run npm audit, as indicated in the preceding log response. Doing so lists each vulnerability. A response from npm audit might look like this example:
+
+			Bash
+
+			Copy
+			# Run  npm install lodash@4.17.15  to resolve 3 vulnerabilities
+
+			| Low            | Prototype Pollution               |
+			|----------------|-----------------------------------|
+			| Package        | lodash                            |
+			| Dependency of  | lodash                            |
+			| Path           | lodash                            |
+			| More info      | https://npmjs.com/advisories/577  |  
+
+			and so on..
+			The npm audit fix command tries to fix the problem. It tries to upgrade to a minor version for which the problem doesn't exist. That action might not be enough. The command might prompt you to run npm audit fix --force to fix the problem. This action involves a breaking change. That is, the major version of your package will be updated.
+
+			A vulnerability is a weakness in code that attackers can exploit to commit malicious actions. Attackers can use these weaknesses to gain access to your data and your systems. You should take vulnerabilities seriously.
+
+			Vulnerabilities are discovered all the time. They're so common that GitHub has implemented a function that scans repos and automatically creates PRs suggesting that you upgrade to a safer version if it finds a vulnerability. You should run the audit command npm audit occasionally. Safety is everyone's job. A large repo provider like GitHub does its part. You can do your part by auditing and fixing vulnerabilities if you find any.
+
+
+
+
+	---
+	https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/7-exercise-dependency-management
+	
+	Exercise - Manage dependency updates in your Node.js project
+
+		Completed
+		100 XP
+		4 minutes
+		Tailwind Traders has asked you to work on an app that has some outdated dependencies. The app is small and has only a couple of dependencies. Updating it should be straightforward. See if you can update the app to take advantage of the latest features. While you're at it, if you find any vulnerabilities, fix them.
+
+		Upgrade app dependencies
+		Clone https://github.com/MicrosoftDocs/node-essentials/ by running this command:
+
+		Bash
+
+		Copy
+		git clone `https://github.com/MicrosoftDocs/node-essentials/`
+		Go to your files by running this command:
+
+		Bash
+
+		Copy
+		cd node-essentials/node-dependencies/7-exercise-dependency-management
+		Install the dependencies by running this command:
+
+		Bash
+
+		Copy
+		npm install
+		Open the index.js file. It should look like this file:
+
+		JavaScript
+
+		Copy
+		const fetch = require('node-fetch')
+		const _ = require('lodash');
+		const path = require('path');
+		const fs = require('fs');
+
+		async function run() {
+		  const response = await fetch("https://dev.to/api/articles?state=rising");
+		  const json = await response.json();
+		  const sorted = _.sortBy(json, ["public_reactions_count"], ['desc']);
+		  const top5 = _.take(sorted, 3);
+
+		  const filePrefix = new Date().toISOString().split('T')[0];
+		  fs.writeFileSync(path.join(__dirname, `${filePrefix}-feed.json`), JSON.stringify(top5, null, 2));
+		 }
+
+		 run();
+		This code pulls data from a REST API by using the node-fetch library. It then processes the response by sorting it and taking the top three results by using the lodash library. The result is stored in a file.
+
+		Look at the dependencies section in the package.json file. It should look like this code:
+
+		JSON
+
+		Copy
+		"lodash": "^1.1.0",
+		"node-fetch": "^1.0.2"
+		Run this command to see what dependencies are outdated:
+
+		Bash
+
+		Copy
+		npm outdated
+		The output should look something like the following output. You might see different values in the Latest column.
+
+		Output
+
+		Copy
+		Package       Current    Wanted    Latest    Location
+		lodash        1.1.0      1.3.1     4.17.19   lock-test
+		node-fetch    1.0.2      1.7.3     2.6.0     lock-test
+		The Current column tells you what version you currently have. The Wanted column tells you the latest minor version. The Latest column tells you the most recent version. You might see a different value here. Finally, the Location column tells you the location of the dependency.
+
+		You can, with some level of confidence, update to the Wanted version. Doing so will ensure the dependencies get the latest features and patches in that major version. Run the following command:
+
+		Bash
+
+		Copy
+		npm update
+		Your output should look something like this output:
+
+		Output
+
+		Copy
+		+ lodash@1.3.1
+		+ node-fetch@1.7.3
+		added 1 package from 1 contributor, updated 2 packages and audited 6 packages in 0.514s
+		found 4 vulnerabilities (2 low, 2 high)
+		The output states that your project dependencies have been updated.
+
+		At this point, you've upgraded the dependencies as far as the patterns in your package.json will allow. You can either install the latest version by running npm install <name of package>@<known latest version> or use the latest keyword: npm install <name of package>@latest.
+
+		In the terminal, run this command:
+
+		Bash
+
+		Copy
+		npm install node-fetch@latest lodash@latest
+		Your output should look something like this output:
+
+		Output
+
+		Copy
+		+ node-fetch@2.6.0
+		+ lodash@4.17.19
+		Your results might be slightly different. The versions listed should correspond to the latest available versions of the packages.
+
+		Congratulations. You've upgraded the two dependencies in your app. Well done!
+
+
+===================================================================================================
+===================================================================================================
+===================================================================================================
+https://docs.microsoft.com/en-us/learn/modules/debug-nodejs/
+
+Interactively debug Node.js apps with the built-in and Visual Studio Code debuggers
+
+
+Zak ???
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------
+------------
+------------
+https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/4-dependency
+
+[Add packages to your Node.js project]
+
+
+
+***	tps://www.npmjs.com/package/<package name>
+		You can learn more about a package before installing it by going to https://www.npmjs.com/package/<package name>. 
+		
+		This URL will take you to a detailed page for the package. 
+		Select the Dependencies tab to see how many packages and which packages it relies on to function. 
+		
+		Another way to achieve a similar result is to run this npm command: npm view <package name>.
+***			>npm view <package name>
+
+
+
+
+---
+Install a package
+[node_modules]
+
+		A typical installation command looks like this one: 
+		
+***			>npm install <name of package>. 
+
+		When you run the install command, 
+		the command-line tool connects to a global registry, 
+		fetches the code, and places it in a node_modules folder for your project. 
+		
+		After the installation, your project directory looks something like this one:
+
+			-| node_modules/
+			---| <name of dependency>/
+			------| <files included in the dependency>
+
+
+---
+Find a package
+
+		-Registries. An example of a registry might be a global registry like the npm registry. You can host your own registries that can be either private or public.
+		
+		-Repositories. Instead of pointing to a registry, it's possible to point to a GitHub URL and install a package from there.
+		
+		-Files. You can install a package from a local folder or zipped file. Installation from a package is common when you're trying to develop your own Node.js libraries and want to test the package locally or for some reason don't want to use a registry.
+		
+		-Directories. You can install right from a directory as well.
+
+
+	[http://npmjs.org]
+	The npm registry and tool
+			When you run npm install <name of dependency>,
+			Node.js goes to a global registry called the npm registry and looks for the code to download. 
+			
+			It's located at http://npmjs.org
+
+
+
+npm commands
+		So far, you've learned how you can install dependencies by using the npm tool. But this tool can do a lot more. The npm command-line tool has quite a few commands. The commands help you with tasks like installing packages, authoring packages, and initializing Node.js projects. You don't need to know all the commands in detail. When you start out with Node.js, you're likely to use only a subset of the commands. As you expand your use of Node.js, you might use more and more commands from a variety of categories.
+
+		To help you remember what the commands do, it helps to think of them as belonging to categories:
+
+			-Manage dependencies. There are a number of commands that cover installation, removal, and cleaning up after package installations. There are commands for updating packages as well.
+			
+			-Run scripts. The npm tool can help you manage flows in your application development. Examples of application flows are running tests, building code, or running quality improvement tools to lint your code.
+			
+			-Configure the environment. There are many things you can configure, like where your installations end up and where packages should be installed from. It's common to have a setup that allows you to install packages from the global npm registry and also from a company-specific registry.
+			
+			-Author and publish packages. There are several commands that can help you with tasks like creating a compressed package and pushing the package to a registry.
+
+
+
+
+		If you want a detailed list of all commands, enter 
+***				npm --help 
+
+		in the terminal.
+
+
+
+---
+https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/4-dependency
+
+Production vs. development dependencies
+
+		Dependencies belong to one of two categories:
+
+			-Production dependencies. Production dependencies are dependencies that you need to run an application in production. Examples include a web framework with which you can build a web application.
+			
+			-Development dependencies. Development dependencies are dependencies that you need only when you develop your application. Think of these dependencies as you'd think of scaffolding for a building. When you're done building, you don't need them anymore. Examples of these dependencies are test libraries, linting tools, or bundling tools. These dependencies are an important part of ensuring your application works well, but you don't need to ship your application with them.
+
+
+		This separation of different types of dependencies is built into the npm command-line tool as well. 
+		
+		[--production]
+		If you specify the --production flag when you install a dependency, 
+		only dependencies will be installed. 
+		
+		For example, this flag is used by CI/CD pipelines to ensure that only the dependencies needed to run the app are installed.
+
+
+---
+How to install a package
+
+	[developer dependency]
+		You use the 
+			>npm install <dependency name> 
+		command to install a normal dependency that's meant to be used as part of your application. 
+		The developer dependency is something that's not meant to be shipped to production.
+
+		To install a developer dependency, add the --save-dev flag.
+		
+***			>npm install <dependency name> --save-dev
+
+	[globally]
+		There are also packages that you can install globally. These packages are usually not meant to be imported into your project. For that reason, many global packages are CLI tools. Some of these packages do allow themselves to be imported, like http-server.
+
+		If you install something globally, 
+		it's not installed in a 
+		
+			project's node_modules folder.
+
+		Instead, it's installed in a computer-specific directory, 
+		so it's available for all Node.js projects on the computer. 
+		
+		To install a global package, add the -g flag to the install command, 
+		so the command looks like this one: 
+		
+***			>npm install <dependency name> -g.
+
+
+[npx]
+		The npx tool allows you to load the dependency into the Node.js process 
+		and run the command from there. 
+		
+		After the command is run, the dependency is cleaned up and removed from your system. 
+		
+		The npx tool has been shipped with all major versions of npm since version 5.2. 
+		This tool is the preferred way to use dependencies that are meant to be run infrequently. 
+		
+		To use the npx tool, enter 
+			
+***			npx <name of package> 
+			
+		It will fetch the dependency, run the command, and clean up.
+
+
+---
+After installation
+
+		list packages at different depths. When you do so, the list command looks like this one:
+		
+***			>npm list --depth=<depth>
+
+		At depth 0, the command lists the same content that you have in the 'dependencies' section of your package.json. 
+		
+		Because you installed the Jest package, 
+		
+***			>npm list --depth=0
+
+		will produce output similar to this output:
+				├── jest@26.0.1
+
+
+		The npm list command will list all the packages in node_modules directory that were installed. 
+		Each installed package will have installed all the dependencies that it relies on.
+
+		Depth 1 allows you to see one level down: your installed packages and the primary dependencies that they consist of. 
+		If you run 
+		
+			>npm list --depth=1
+		
+		, you might see this output:
+
+				├─┬ jest@26.0.1
+				│ ├── @jest/core@26.0.1
+				│ ├── import-local@3.0.2
+				│ └── jest-cli@26.0.1
+
+
+
+
+---
+Clean up dependencies
+
+		There are two ways to clean up dependencies you no longer need:
+
+			-Uninstall. To uninstall a package, you use the uninstall command like so: 
+				
+***				>npm uninstall <name of dependency>
+				
+			 This command will remove the package from the manifest file and from the node_modules folder.
+			 
+			
+			Prune. Or you can run the prune command like so: 
+				
+***				>npm prune
+				
+			Running this command will remove all dependencies in the node_modules folder 
+			that aren't listed as dependencies in the manifest file. 
+			This command is a good choice if you want to remove more than one dependency and you don't want 
+			to run the uninstall command for each dependency. 
+			
+			To do so, 
+			remove entries from the dependencies or devDependencies section 
+			and then run the npm prune command.
+
+
+---
+https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/5-exercise-dependency
+Exercise - Install packages
+
+Add a testing package by using the npm tool
+
+		You're given some code that parses an address from a string. 
+		
+		Your task should be fairly straightforward. 
+		It involves installing the test framework, 
+		writing a couple tests, 
+		and running them.
+
+		Clone https://github.com/MicrosoftDocs/node-essentials/ by running this command:
+***			>git clone `https://github.com/MicrosoftDocs/node-essentials/`
+
+
+		NOTE: see C:\zak_dev\code.txt\JavaScript_Examples\javascripts_examples\5-exercise-dependency>
+
+		You should now have access to these files:
+			-| address-parser.js
+			-| package.json
+
+		Open address-parser.js. It should look like this file:
+
+			exports.parse = function parseOrder(order) {
+			  const match = order.match(/order:\s(?<order>\w+\s\w+).*address:\s(?<address>\w+\s\w+\s\w+).*payment info:\s(?<payment>\w+)/)
+			 return match.groups;
+			}
+
+		The preceding function takes a string and parses out information about what a customer orders, 
+		where it should be delivered, and how it will be paid for. 
+		Let's add Jest and write some tests for the function.
+
+		Install the Jest library by running this command:
+***			>npm install jest --save-dev
+
+
+		Open the package.json file and find the devDependencies section. 
+		You should now have an entry that looks like this one:
+
+			"devDependencies": {
+			   "jest": "^25.4.0"
+			 }
+
+
+		Create a __tests__ folder
+		Inside of it, create an address-parser.js file.
+
+		Your project structure should now look like this one:
+			-| package.json
+			-| address-parser.js
+			-| __tests__/
+			---| address-parser.js
+
+		Add the following content to __tests__/address-parser.js:
+		
+			const { parse } = require("../address-parser");
+			describe('Address parser', () => {
+			  test('should parse correctly', () => {
+				expect(
+				  parse(
+					 "I want to to order: 3 books to address: 112 street city here is my payment info: cardnumber"
+				  )
+				  ).toEqual({
+					order: "3 books",
+					address: "112 street city",
+					payment: "cardnumber",
+				  });
+			  })
+
+
+
+		The preceding test is written to test the parsing of address-parser.js 
+		and ensure it correctly parses out the needed information.
+
+		Open the package.json file and find the scripts section. Add this entry:
+			"test": "jest"
+
+		Run the tests by typing this command in the terminal:
+
+***			>npm run test
+
+
+		You should get the following output:
+
+			Address parser
+			 ✓ should parse correctly (2 ms)
+
+			Test Suites: 1 passed, 1 total
+			Tests:       1 passed, 1 total
+			Snapshots:   0 total
+			Time:        1.216 s
+			Ran all test suites.
+
+
+
+zak ???
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+-Azure cloud shell account:
+	-zakguler@outlook.com
+	
+	>zakguler@Azure:~$ node
+	 start coding
+	 
+	-To exit the REPL environment, enter ctrl-c twice:
+	
+	-to create a new file, enter 'code'
+		>zakguler@Azure:~$ code
+			add 'console.log('Hello World, from a script file.');'
+			ctrl-s to save
+			as index.js
+			
+		>zakguler@Azure:~$ node index.js
+			Hello World, from a script file.
+			
+			
+
+
+
+
+
+			
+			
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+jsconfig.js	
+
+		{
+		  "compilerOptions": {
+			"module": "commonjs",
+			"target": "es6",
+			// This is the line you want to add
+			"allowSyntheticDefaultImports": true
+		  },
+		  "exclude": ["node_modules", "**/node_modules/*"]
+		}
+
+
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+
+Creating a Simple Web App with Node.js
+	https://ilovecoding.org/courses/nodejs/lessons/creating-a-simple-web-app-with-nodejs
+	
+-to run 
+	Terminal> node webapp4
+
+-file structure:
+
+	app.js
+	
+	webapp4.js
+	show4.js
+	content4.js
+	
+	package.json
+	
+
+
+
+	----
+	webapp4.js
+		//https://ilovecoding.org/courses/nodejs/lessons/creating-a-simple-web-app-with-nodejs
+		var http = require('http');
+		var url = require('url')
+		var show = require('./show4');
+
+		http.createServer(onRequest).listen(7777);
+		
+		// terminal> node webapp <== to start the server
+		console.log('Server has started');
+
+		function onRequest(request, response){
+			//localhost:777/mypath
+			//???console.log('url: ' + url.parse(request.url));
+			var pathName = url.parse(request.url).pathname
+			console.log('pathname: ' + pathName);
+			show.showPage(response, pathName)
+		}
+
+
+
+
+	----
+	show4.js
+		
+		var content = require('./content4');
+		
+		function showPage(response, pathName){
+			if (content.contentMap[pathName]){
+				response.writeHead(200, { 'Content-Type': 'text/html' });
+				response.write(content.contentMap[pathName]);
+				response.end();
+
+			}else{
+				response.writeHead(404, { 'Content-Type': 'text/html' });
+				response.write('404 Page Not Found');
+				response.end();
+			}
+		}
+
+		exports.showPage = showPage;
+
+
+
+
+	----
+	content4.js
+		var contentMap = {
+			'/': '<h1>Welcome to the site</h1>',
+			'/contact' : '<h1> Contact Page</h1>',
+			'/about' : '<h1> About Page</h1>',
+			'/users' : '<h1> Users Page</h1>',
+			'/privacy' : '<h1> Privacy Page</h1>'
+		}
+
+		exports.contentMap = contentMap;
+
+
+
+
+	----
+	package.json
+		{
+		  "name": "my_nodejs_proj",
+		  "version": "1.0.0",
+		  "description": "",
+		  "main": "index.js",
+		  "scripts": {
+			"test": "echo \"Error: no test specified\" && exit 1",
+			"start": "node app.js"
+		  },
+		  "keywords": [],
+		  "author": "",
+		  "license": "ISC"
+		}
+
+
+
+
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+
+

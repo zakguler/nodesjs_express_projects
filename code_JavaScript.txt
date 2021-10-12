@@ -1,0 +1,3559 @@
+
+
+?:  conditional operator
+...	spread operator: like flat-map
+
+??? Array.some() return as soon as a true staement is found
+
+see also.. http://www.w3schools.com/js/js_function_invocation.asp
+
+================================================================================
+FIRST
+-----
+Self-Invoking Anonymous Function:
+
+          A self-invoking anonymous runs automatically/immediately when you create it and has no name, 
+          hence called anonymous. Here is the format of self-executing anonymous function:
+                  (function(){
+                   // some code…
+                  })();
+                  
+****      You must be aware of the fact that javascript functions run immediately 
+          when you put () after their names eg:
+          
+          doStuff(); // this will run immediately
+
+          And:
+          doStuff; // this will not run immediately and can be used as callback
+          
+          Now because () exist at the end of self-executing anonymous function above, it will run immediately.
+   
+[!]          SIDE NOTE:
+                  ! function(){
+                  // some code…
+                  }();
+                  
+                  Notice the addition of ! before function keyword, 
+                  it is essentially same in functionality to previous notation and also recommended (used by twitter too), 
+                  quoting docs, section 12.4:
+                  An ExpressionStatement cannot start with the function keyword because that might make it ambiguous with a FunctionDeclaration.
+   
+   
+Self-Executing Function:
+
+          Self-Executing function is a named function that runs immediately. Example:
+                  (function foo(){
+                   // some code…
+                  })()
+
+          Notice that now that we have named our function foo, 
+          it is not an anonymous function though it still is self-executing function because of () at the end.
+
+          
+          
+SECOND
+------
+Closure:
+          It makes it possible for a function to have "private" variables.
+          You create a closure by adding a function inside another function.
+          
+          One of the most important and ticklish features with closures 
+                is that the inner function still has access to the outer function’s variables 
+                even after the outer function has returned. 
+                Yep, you read that correctly. 
+          
+          
+          Remember self-invoking functions? What does this function do?
+          
+          Example
+                  var add = (function () {
+                      var counter = 0;
+                      return function () {return counter += 1;}
+                  })();
+                  
+                  add();
+                  add();
+                  add();
+          
+          // the counter is now 3
+          
+          Example Explained
+
+                  The variable add is assigned the return value of a self invoking function.  
+                  
+***                  The self-invoking function only runs once. 
+
+                  It sets the counter to zero (0), and returns a function expression.                  
+                  This way add becomes a function.
+                  
+***                  The "wonderful" part is that it can access the counter in the parent scope. 
+***                  [inner function scope can access its parent local variables and the global variable too].
+                  
+                  This is called a JavaScript closure. It makes it possible for a function to have "private" variables.                  
+                  The counter is protected by the scope of the anonymous function, and can only be changed using the add function.
+                  
+                  
+---
+Closure2:
+          What is a closure?
+                  A closure is an inner function that has access to the outer (enclosing) function’s variables—scope chain.
+                  One of the most important and ticklish features with closures 
+                      is that the inner function still has access to the outer function’s variables 
+                      even after the outer function has returned. 
+                      Yep, you read that correctly. 
+          
+                  
+                  The closure has three scope chains: 
+                          -it has access to its own scope (variables defined between its curly brackets), 
+                          -it has access to the outer function’s variables, and 
+                          -it has access to the global variables.
+
+                  [???] NOTE:
+                          The inner function has access not only to the outer function’s variables, 
+                          but also to the outer function’s parameters. 
+                          
+                          Note that the inner function cannot call the outer function’s arguments object, 
+                          however, even though it can call the outer function’s parameters directly. [???}
+
+          A Basic Example of Closures in JavaScript:
+
+                          function showName (firstName, lastName) {
+                              var nameIntro = "Your name is ";
+                              
+                              // this inner function has access to the outer function's variables, including the parameter
+                              function makeFullName () {       
+                                      return nameIntro + firstName + " " + lastName;    
+                              } 
+                              
+                              return makeFullName ();
+                          }
+                          
+                          showName ("Michael", "Jackson"); // Your name is Michael Jackson
+
+
+          Closures have access to the outer function’s variable even after the outer function returns:
+          
+                  function celebrityName (firstName) {
+                      var nameIntro = "This celebrity is ";
+                      // this inner function has access to the outer function's variables, including the parameter
+                     function lastName (theLastName) {
+                          return nameIntro + firstName + " " + theLastName;
+                      }
+                      return lastName;
+                  }
+                  
+                  var mjName = celebrityName ("Michael"); // At this juncture, the celebrityName outer function has returned.
+                  
+                  // The closure (lastName) is called here after the outer function has returned above
+                  // Yet, the closure still has access to the outer function's variables and parameter
+                  mjName ("Jackson"); // This celebrity is Michael Jackson
+                  
+                  
+          Closures store references to the outer function’s variables,  
+          they do not store the actual value:
+        
+        
+          EX1:
+                  function sayHello(name) {
+                    var text = 'Hello ' + name;
+                    var sayAlert = function() { alert(text); }
+                    sayAlert();
+                  }
+                  ..
+                  sayHello("Bob");  // returns: Hello Bob
+                  
+                  
+          EX2 [notice the () execute script]:
+                  function sayHello2(name) {
+                    var text = 'Hello ' + name; // local variable
+                    var sayAlert = function() { alert(text); }
+                    return sayAlert;
+                  }
+                  ..
+                  var say2 = sayHello2("");
+                  say2("Bob");  // returns: Hello Bob
+                  
+                  
+          EX3 [public.. private function]:
+                  a = (function () {
+                    var privatefunction = function () {
+                        alert('hello');
+                    }
+                
+                    return {
+                        publicfunction : function () {
+                            privatefunction();
+                        }
+                    }
+                })();
+                
+                As you can see there, a is now an object, with a method publicfunction ( a.publicfunction() )
+                which calls privatefunction, which only exists inside the closure. 
+                You can NOT call privatefunction directly (i.e. a.privatefunction() ), just publicfunction().
+
+
+================================================================================
+================================================================================
+================================================================================
+Spread Operatot [...]
+
+EX_1:
+	// similar to flatmap()
+	
+
+
+EX_2:
+		var x = (...n) => {
+			// console.log(arguments);  //========> { '0': 1, '1': 2, '2': 3 }
+			// console.log(n[2]);  //=============> 3
+			console.log(n);  //===================> [ 1, 2, 3 ]
+		};
+
+		x(1,2,3);
+
+
+
+================================================================================
+================================================================================
+================================================================================
+Arrow Function:
+
+EX_1:
+
+
+
+
+
+
+
+
+
+================================================================================
+================================================================================
+================================================================================
+functions:
+
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+    //Self-Invoking Functions
+    (function () {
+        var x = "Hello!!";      // I will invoke myself
+    })();
+
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+    //The arguments.length property returns the number of arguments received when the function was invoked:
+    function myFunction(a, b) {
+        return arguments.length;
+    }
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+
+    /* function */
+    function myFunction1(a, b){
+        return a * b;
+        //return 'yyy';
+        //return( { foo: "bar" } ); // returns object
+        //return( [ "foo", "bar" ] ); //foo,bar
+        //return( new Number( 123 ) ); //returns 123
+    }
+    //document.getElementById("demo").innerHTML = myFunction1(5, 7);
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+    /* Invoking a Function as a Method*/
+    var myObject = {
+        firstName:"John",
+        lastName: "Doe",
+        fullName: function () {
+            return this.firstName + " " + this.lastName;
+        }
+    }
+    myObject.fullName();         // Will return "John Doe"
+
+    var obj =
+        {name:'john',
+         last:'smith',
+         myFunction : function(a,b){
+            return a + ' ' + b;
+         }};
+    //document.getElementById("demo").innerHTML = obj.myFunction(obj.name, obj.last);
+
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+    /* Function Expressions */
+    var x = function (a, b) {return a * b};
+    var z = x(4, 3);
+    //document.getElementById("demo").innerHTML = z;
+
+//----------------------------------------------------------------------------------------
+// call()
+// apply()
+// bind()
+//----------------------------------------------------------------------------------------
+
+	call():
+			used to invoke (call) a function with an owner object as the first argument (parameter).
+
+			
+			
+    /* x.call()... x.apply()... Invoking a Function with a Function Method */
+			//
+			//Both methods takes an owner object as the first argument. The only difference is
+			// that call() takes the function arguments separately, 
+			// and apply() takes the function arguments in an array.
+			//
+			//In JavaScript strict mode, the first argument becomes the value of this in the invoked function,
+			// even if the argument is not an object.
+		
+	
+    // x.call()
+    function myFunction2(a, b) {
+        return a * b;
+    }
+    // Will return 20
+    //document.getElementById("demo").innerHTML = myFunction2.call(myObject, 10, 2); //<==== or use 'this' instead of myObject
+
+    // x.apply()
+    function myFunction4(a, b) {
+        return a * b;
+    }
+    myArray = [10,2];
+    //document.getElementById("demo").innerHTML = myFunction4.apply(myObject, myArray);   // Will also return 20
+
+
+        
+
+    //In "non-strict" mode, if the value of the first argument is null or undefined,
+    // it is replaced with the global object.
+
+	
+		
+	// x.call()
+	
+			This example calls the fullName function of person, but is using it on myObject:
+
+			Example
+			var person = {
+				firstName:"John",
+				lastName: "Doe",
+				fullName: function() {
+					return this.firstName + " " + this.lastName;
+				}
+			}
+			var myObject = {
+				firstName:"Mary",
+				lastName: "Doe",
+			}
+			person.fullName.call(myObject);  // Will return "Mary Doe"
+	
+		
+		
+		
+	----
+	[bind]
+		Bind creates a new function that will have this set to the first parameter passed to bind().
+
+		Here's an example that shows how to use bind to pass a member method around that has the correct this:
+
+		var Button = function(content) { 
+		  this.content = content;
+		};
+		Button.prototype.click = function() {
+		  console.log(this.content + ' clicked');
+		}
+
+		var myButton = new Button('OK');
+		myButton.click();	//<=== OK clicked
+
+		var looseClick = myButton.click;
+		looseClick(); // <=== undefined clicked... not bound, 'this' is not myButton - it is the global object
+
+		var boundClick = myButton.click.bind(myButton);
+		boundClick(); // <=== OK clicked... bound, 'this' is myButton
+		Which prints out:
+
+		OK clicked
+		undefined clicked
+		OK clicked
+		
+		
+		You can also add extra parameters after the 1st (this) parameter and bind will pass in those values 
+		to the original function. Any additional parameters you later pass to the bound function 
+		will be passed in after the bound parameters:
+
+		// Example showing binding some parameters
+		var sum = function(a, b) {
+		  return a + b;
+		};
+
+		var add5 = sum.bind(null, 5);
+		console.log(add5(10));
+		Which prints out:
+
+		15
+	
+		
+		
+		
+		
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+    /* Function Constructor */
+    function myFunction(arg1, arg2){
+        this.firstName = arg1;
+        this.lastName = arg2;
+    }
+    var x = new myFunction('john', 'doe');
+    //document.getElementById("demo").innerHTML = x.firstName;
+
+    //
+    var myFunction6 = function (a, b) {return a * b};
+    var x = myFunction6(4, 3);
+    document.getElementById("demo").innerHTML = x;
+
+    // function constructor called Function().
+    var myFunction5 = new Function("a", "b", "return a * b");
+    //document.getElementById("demo").innerHTML = myFunction5(4, 3);
+
+
+================================================================================
+
+array:
+          var cars = ["Saab", "Volvo", "BMW"];
+          x = cars[0];
+
+object:
+          var person = {firstName:"John", lastName:"Doe", age:46};
+          x = person["firstName"];
+          x = person.firstName;
+
+
+JSON Objects:
+
+          var obj = {"firstName":"John", "lastName":"Doe"};
+          
+          y = obj.firstName;
+
+
+JSON Arrays
+
+          "employees":[
+              {"firstName":"John", "lastName":"Doe"}, 
+              {"firstName":"Anna", "lastName":"Smith"}, 
+              {"firstName":"Peter", "lastName":"Jones"}
+          ] 
+          
+          obj.employees[0].lastName;
+ 
+ 
+ 
+Converting a JSON Text to a JavaScript Object
+
+          -First, create a JavaScript string containing JSON syntax:
+          
+                  var text = '{ "employees" : [' +
+                  '{ "firstName":"John" , "lastName":"Doe" },' +
+                  '{ "firstName":"Anna" , "lastName":"Smith" },' +
+                  '{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+          
+          
+          -[JSON.parse()] 
+          Then, use the JavaScript built-in function JSON.parse() to convert the string into a JavaScript object:
+          
+                  var obj = JSON.parse(text);
+                  
+                  
+          -Finally, use the new JavaScript object in your page:
+          
+                  <p id="demo"></p>
+                  ..
+                  <script>
+                  document.getElementById("demo").innerHTML =
+                  obj.employees[1].firstName + " " + obj.employees[1].lastName;
+                  </script>
+
+
+Converting a JSON Object to a JavaScript Text:
+                  var j={"name":"binchen"};
+                  vat text = JSON.stringify(j); // '{"name":"binchen"}'
+
+
+          
+=================
+
+split()
+
+slice()   method slices out a piece of an array
+
+splice()  splice() method can be used to add new items to an array (anywhere in the array)
+          With clever parameter setting, you can use splice() to remove elements without leaving "holes" in the array
+
+pop()     method removes the last element from an array.
+          The pop() method returns the string that was "popped out".
+
+push()    method adds a new element to an array (at the end)
+          The push() method returns the new array length.
+
+shift()   method removes the first element of an array, and "shifts" all other elements one place down.
+          The shift() method returns the string that was "shifted out".
+
+unshift() method adds a new element to an array (at the beginning), and "unshifts" older elements.
+          The unshift() method returns the new array length.
+
+delete fruits[0];   // removes the content of the first [0] indexed element and Changes the first element in fruits to 'undefined'
+                    // Using delete on array elements leaves undefined holes in the array. 
+                    // Use pop() or splice() instead.
+ 
+=================
+Best Practices
+
+  -Use local variables instead, and learn how to use closures.
+  -Always Declare Local Variables
+  -Local variables must be declared with the var keyword, otherwise they will become global variables.
+  
+  -learn how to use closures:
+            It makes it possible for a function to have "private" variables.
+            You create a closure by adding a function inside another function.
+            One of the most important and ticklish features with closures 
+                is that the inner function still has access to the outer function’s variables 
+                even after the outer function has returned. 
+                Yep, you read that correctly. 
+          
+  
+  -Don't Use new Object()
+            Use {} instead of new Object()
+            Use "" instead of new String()
+            Use 0 instead of new Number()
+            Use false instead of new Boolean()
+            Use [] instead of new Array()
+            Use /(:)/ instead of new RegExp()
+            Use function (){} instead of new function()
+            Example
+            
+            var x1 = {};           // new object
+            var x2 = "";           // new primitive string
+            var x3 = 0;            // new primitive number
+            var x4 = false;        // new primitive boolean
+            var x5 = [];           // new array object
+            var  x6 = /()/;         // new regexp object
+            var x7 = function(){}; // new function object
+            
+  -Beware of Automatic Type Conversions
+            var x = 5 + 7;       // x.valueOf() is 12,  typeof x is a number
+            var x = 5 + "7";     // x.valueOf() is 57,  typeof x is a string
+            var x = "5" + 7;     // x.valueOf() is 57,  typeof x is a string
+            var x = 5 - 7;       // x.valueOf() is -2,  typeof x is a number
+            var x = 5 - "7";     // x.valueOf() is -2,  typeof x is a number
+            var x = "5" - 7;     // x.valueOf() is -2,  typeof x is a number
+            var x = 5 - "x";     // x.valueOf() is NaN, typeof x is a number
+
+  -Subtracting a string from a string, does not generate an error but returns NaN (Not a Number):
+            "Hello" - "Dolly"    // returns NaN
+
+  -The == comparison operator always converts (to matching types) before comparison.
+            The === operator forces comparison of values and type:
+                    0 == "";        // true
+                    1 == "1";       // true
+                    1 == true;      // true
+                    
+                    0 === "";       // false
+                    1 === "1";      // false
+                    1 === true;     // false
+
+  -If a function is called with a missing argument, the value of the missing argument is set to undefined.
+    Undefined values can break your code. It is a good habit to assign default values to arguments.
+    
+            function myFunction(x, y) {
+                if (y === undefined) {
+                    y = 0;
+                }
+            }
+            Or, even simpler:
+            
+            function myFunction(x, y) {
+                y = y || 0;   <=============== if y is missing then y is undefined.. 
+                                               if y does not have a value.. then y=0
+                                               otherwise y = y
+            }
+
+  -Avoid Using eval()
+            The eval() function is used to run text as code. In almost all cases, it should not be necessary to use it.
+
+
+=================
+
+Hoisting vs Strict in javascript:
+          Hoisting will allow using the variable before it is declared,
+          but Strict won't let you use a variable unless you declare it first.
+
+Strict Mode
+          Strict mode makes it easier to write "secure" JavaScript.
+          Strict mode is declared by adding "use strict"; to the beginning of a JavaScript file, or a JavaScript function.          
+          Declared at the beginning of a JavaScript file, it has global scope (all code will execute in strict mode)          
+          Declared inside a function, it has local scope (only the code inside the function is in strict mode).
+
+
+***undefined                [typeof: undefined]....... var str; <== not defined
+***null       [is a value]  [typeof: object].......... Unfortunately, in JavaScript, the data type of null is an object
+***NaN        [is a value]  [typeof: number].......... var x = 100 / "Apple";  // x will be NaN (Not a Number)
+***Infinity                 [typeof: number].......... is the value JavaScript will return if you calculate a number outside the largest possible number.
+
+***Difference Between Undefined and Null
+              typeof undefined             // undefined
+              typeof null                  // object
+              null === undefined           // false
+              null == undefined            // true
+
+
+***Undefined is Not Null
+
+              null is for objects, 
+              undefined is for variables, properties, and methods.
+              
+              To be null, an object has to be defined, otherwise it will be undefined.
+              
+              If you want to test if an object exists, this will throw an error if the object is undefined:
+              
+              Incorrect:              
+                  if (myObj !== null && typeof myObj !== "undefined") 
+                  Because of this, you must test typeof() first:
+              
+              Correct:              
+                  if (typeof myObj !== "undefined" && myObj !== null) 
+
+
+***data types:
+              [undefined].. may be a type ??? typeof null == undefined
+              string
+              number
+              boolean
+              object.. [Object, Date, Array]
+              function
+              
+              *** there are 3 types of objects:
+                  Object
+                  Date
+                  Array
+
+
+***Expecting Block Level Scope
+              JavaScript does not create a new scope for each code block.              
+              It is true in many programming languages, but not true in JavaScript.
+              
+              It is a common mistake, among new JavaScript developers, to believe that this code returns undefined:
+                  
+                  for (var i = 0; i < 10; i++) {
+                      // come code
+                  }
+                  return i; <=================================================== in javascript. 'i' is defined
+
+
+***Using zaksNumber.MAX_VALUE, where zaksNumber is a variable, expression, or value, will return undefined.. 
+              instead of 'Number.MAX_VALUE'
+              
+***JavaScript counts months from 0 to 11. January is 0. December is 11.
+
+***random()          Returns a random number between 0 and 1
+OR
+***Math.floor() and Math.random() can be used together to return a random number between 0 and 10:
+            Math.floor(Math.random() * 11);   // returns a random number between 0 and 10
+
+
+***In JavaScript, all data types have a valueOf() and a toString() method.
+
+***If you add a number and a string, the result will be a string!
+            var x = "5" + 2 + 3; <== output: 523
+            var x = 5 + 2 + 3;  <=== output: 10
+            
+            but
+            var x = 100 / "10";     // x will be 10
+            
+
+***[prototype]  Allows you to add properties and methods to an object.
+
+***objects use named indexes:   person["firstName"] = "John"; ... person[0]; // person[0] will return undefined
+
+***arrays use numbered indexes: person[0] = "John";
+
+***Arrays use numbers to access its "elements". In this example, person[0] returns John:
+            document.getElementById("demo").innerHTML = person[0];
+                        
+***Array pop()     method removes the last element from an array.
+                   The pop() method returns the string that was "popped out".
+
+***Array push()    method adds a new element to an array (at the end)
+                   The push() method returns the new array length.
+                   
+***Array shift()       method removes the first element of an array, and "shifts" all other elements one place down.
+                       The shift() method returns the string that was "shifted out".
+
+***Array unshift() method adds a new element to an array (at the beginning), and "unshifts" older elements.
+                       The unshift() method returns the new array length.
+                       
+***Array slice()   slice() method copies the array into a new array.  
+
+***Array splice()  splice() method can be used to add new items to an array (anywhere in the array)
+                   With clever parameter setting, you can use splice() to remove elements without leaving "holes" in the array
+                   fruits.splice(2, 0, "Lemon", "Kiwi");
+                   
+???***Array delete.ary[2] will delete the value but the element becomes undefined 9keeps the place holder, will not remove from the array.                   
+
+***By default, the sort() function sorts values as strings.
+
+***objects use named indexes.
+***Objects use names to access its "members". In this example, person.firstName returns John:
+            var person = {firstName:"John", lastName:"Doe", age:46};
+            document.getElementById("demo").innerHTML = person["firstName"];
+            document.getElementById("demo").innerHTML = person.firstName;
+
+
+***[Unicode] JavaScript uses the Unicode character set.
+
+***You can declare many variables in one statement: 
+            var person = "John Doe", carName = "Volvo", price = 200;
+
+***re-declare a JavaScript variable, it will not lose its value:
+            var carName = "Volvo";
+            var carName;
+
+
+***[function] Accessing a function without () will return the function definition:
+            function toCelsius(fahrenheit) {
+                return (5/9) * (fahrenheit-32);
+            }
+            document.getElementById("demo").innerHTML = toCelsius;  <==== returns: function toCelsius(f) { return (5/9) * (f-32); }
+            document.getElementById("demo").innerHTML = toCelsius(32);<== returns: 0
+ 
+***[search][indexOf] The two methods are equal, but the search() method can take much more powerful search values.
+ 
+***substring() cannot accept negative indexes.
+
+***substr() is similar to slice().
+          The difference is that the second parameter specifies the length of the extracted part.
+            
+
+***[undefined] ...var carName; <==== A variable declared without a value will have the value undefined.
+
+               ...y would be undefined if it is missing from the parameter list (arguments): 
+                function myFunction(x, y) {
+                    if (y === undefined) {
+                        y = 0;
+                    }
+                }
+ 
+
+
+
+--------------------------------------------------------------------------------
+
+<script src="myScript.js"></script>
+<script>...</script>
+
+[window.alert] Writing into an alert box, using window.alert().
+[document.write] Writing into the HTML output using document.write()  <=== will delete all existing HTML
+[innerHTML] Writing into an HTML element, using innerHTML             <=== property defines the HTML content
+[console.log] Writing into the browser console, using console.log().
+
+
+
+//          comments.
+/* ... */   comments.
+;           Add a semicolon at the end of each executable statement.
+{..}        code blocks, inside curly brackets {...}.
+
++           string concatenation operator... txt3 = txt1 + " " + txt2;
++=          string concatenation operator
+                txt1 = "What a very ";
+                txt1 += "nice day";
+                The result of txt1 will be:
+                  'What a very nice day' 
+ 
+=           assignment operator ( = ) to assign values to variables
+
+arithmetic operators ( + - *  / ) to compute values:
++
+-
+*
+/ 
+%           The modular operator (%) returns division remainder.
+++          Increment
+--          Decrement
+
+==          The "equal to" operator is written like == in JavaScript
+===         the two objects must be of the same typeof.
+
+=   x = y	    x = y
++=	x += y	  x = x + y
+-=	x -= y	  x = x - y
+*=	x *= y	  x = x * y
+/=	x /= y	  x = x / y
+%=	x %= y	  x = x % y
+
+&&  and	      (x < 10 && y > 1)         is true
+||	or	      (x == 5 || y == 5)        is false
+!	  not	      !(x == y)                 is true
+
+
+Data types:
+  String, Number, Boolean, Array, Object and Undefined 
+  
+            var length = 16;                               // Number
+            var lastName = "Johnson";                      // String
+            var cars = ["Saab", "Volvo", "BMW"];           // Array
+            var x = {firstName:"John", lastName:"Doe"};    // Object
+            var y = false;                                 // boolean: true/false
+            var person;                                    // The value is undefined, the typeof is undefined
+
+
+
+[typeof]
+            typeof operator to find the type of a JavaScript variable:
+              typeof "John"                // Returns string 
+              typeof 3.14                  // Returns number
+              typeof false                 // Returns boolean
+              typeof [1,2,3,4]             // Returns object
+              typeof {name:'John', age:34} // Returns object
+              typeof Infinity;             // returns "number"
+              typeof NaN;                  // returns "number"
+
+
+
+Objects:
+            Object properties are written as name:value pairs, separated by commas
+            
+            var car = {type:"Fiat", model:500, color:"white"};
+            properties: type, modle, color
+            property values: "Fiat", 500, "white"
+            
+            var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+            var person = {
+                firstName:"John",
+                lastName:"Doe",
+                age:50,
+                eyeColor:"blue"
+            };
+
+            Accessing Object Properties:
+              person.lastName;
+              person["lastName"];
+              
+            Accessing Object Methods:
+              name = person.fullName(); <===If you access the fullName property, without (), it will return the function definition
+              
+            Do Not Declare Strings, Numbers, and Booleans as Objects!  
+              var x = new String();        // Declares x as a String object
+              var y = new Number();        // Declares y as a Number object
+              var z = new Boolean();       //  Declares z as a Boolean object
+            Avoid String, Number, and Boolean objects. They complicate your code and slow down execution speed.
+
+
+
+Scope:
+            Local scope:
+                    Variables declared within a JavaScript function, become LOCAL to the function.
+                    Local variables are created when a function starts, and deleted when the function is completed.
+                    
+            Global scope:
+                    A variable declared outside a function, becomes GLOBAL.
+                    Global variables are deleted when you close the page.
+                    All scripts and functions on a web page can access it. 
+                    
+                    If you assign a value to a variable that has not been declared, it will automatically become a GLOBAL variable.
+                    This code example will declare carName as a global variable, even if it is executed inside a function.
+                    
+                          // code here can use carName
+                          function myFunction() {
+                              carName = "Volvo";
+                              // code here can use carName
+                          }
+                          
+                          
+            Function Arguments
+                    Function arguments (parameters) work as local variables inside functions.
+
+
+            Global Variables in HTML
+                    With JavaScript, the global scope is the complete JavaScript environment.
+                    
+                    In HTML, the global scope is the window object: All global variables belong to the window object.
+                          Example
+                          // code here can use window.carName
+                          function myFunction() {
+                              carName = "Volvo";
+                          }
+
+
+
+Events:
+            [event][onclick]  <button type="button" onclick="myFunction()">Try it</button>
+                              <button onclick='getElementById("demo").innerHTML=Date()'>The time is?</button>
+            [onclick][this]   <button onclick="this.innerHTML=Date()">The time is?</button>
+
+            onchange          An HTML element has been changed
+            onclick	          The user clicks an HTML element
+            onmouseover	      The user moves the mouse over an HTML element
+            onmouseout	      The user moves the mouse away from an HTML element
+            onkeydown	        The user pushes a keyboard key
+            onload	          The browser has finished loading the page
+
+
+Strings:
+            [length] var sln = txt.length;
+            [\ escape character] var y = "We are the so-called \"Vikings\" from the north."
+            
+                  Code  Outputs
+                  \'	single quote
+                  \"	double quote
+                  \\	backslash
+                  \n	new line
+                  \r	carriage return
+                  \t	tab
+                  \b	backspace
+                  \f	form feed
+            
+                  You can also break up a code line within a text string with a single backslash:
+                      document.getElementById("demo").innerHTML = "Hello \
+                                                                  Dolly!";  <=== no " in the beginning of the continuation line.
+                                                                  
+            Strings Can be Objects:
+                  var x = "John";
+                  var y = new String("John");                  
+                  // type of x will return String
+                  // type of y will return Object
+
+            [===] the two objects must be of the same typeof. The === operator expects equality in both type and value.
+
+
+            String Methods
+                Method                Description
+                charAt()	            Returns the character at the specified index (position)
+                charCodeAt()	        Returns the Unicode of the character at the specified index
+                concat()	            Joins two or more strings, and returns a copy of the joined strings
+                fromCharCode()	      Converts Unicode values to characters
+                indexOf()	            Returns the position of the first found occurrence of a specified value in a string
+                lastIndexOf()	        Returns the position of the last found occurrence of a specified value in a string
+                localeCompare()	      Compares two strings in the current locale
+                match()	              Searches a string for a match against a regular expression, and returns the matches
+                replace()	            Searches a string for a value and returns a new string with the value replaced
+                search()	            Searches a string for a value and returns the position of the match
+                slice()	              Extracts a part of a string and returns a new string
+                split()	              Splits a string into an array of substrings
+                substr()	            Extracts a part of a string from a start position through a number of characters
+                substring()	          Extracts a part of a string between two specified positions
+                toLocaleLowerCase()	  Converts a string to lowercase letters, according to the host's locale
+                toLocaleUpperCase()	  Converts a string to uppercase letters, according to the host's locale
+                toLowerCase()	        Converts a string to lowercase letters
+                toString()	          Returns the value of a String object
+                toUpperCase()	        Converts a string to uppercase letters
+                trim()	              Removes whitespace from both ends of a string
+                valueOf()	            Returns the primitive value of a String object
+
+            [indexOf][lastIndexOf] Both the indexOf() and the lastIndexOf() methods return -1 if the text is not found.
+            
+            [search][indexOf] The two methods are equal, but the search() method can take much more powerful search values.
+            
+            extracting a part of a string:
+                slice(start, end)
+                substring(start, end)
+                substr(start, length)
+            
+            slice:
+                The method takes 2 parameters: the starting index (position), and the ending index (position).
+                var res = str.slice(7,13);
+                var res = str.slice(7);
+                var res = str.slice(-12);
+            
+            substring() cannot accept negative indexes.
+            var res = str.substring(7,13);
+            
+            substr() is similar to slice().
+                The difference is that the second parameter specifies the length of the extracted part.
+            
+            replace() method replaces a specified value with another value in a string:
+                str = "Please visit Microsoft!";
+                var n = str.replace("Microsoft","W3Schools");
+            
+            [toUpperCase] var text2 = text1.toUpperCase();  // text2 is text1 converted to upper
+            [toLowerCase] var text2 = text1.toLowerCase();  // text2 is text1 converted to lower
+            
+            [concat]  text3 = text1.concat("  ",text2);
+            [+]       var text = "Hello" + " " + "World!";
+                      var text = "Hello".concat(" ","World!");
+            
+            
+            Accessing a String as an Array is Unsafe
+                      str[0]; <=== valid, but do not do this.
+            
+            
+            [split] A string can be converted to an array with the split() method:
+                      var txt = "a,b,c,d,e";   // String
+                      txt.split(",");          // Split on commas
+                      txt.split(" ");          // Split on spaces
+                      txt.split("|");          // Split on pipe    
+            
+            
+
+
+numbers:
+            var x = 34.00;    // A number with decimals
+            var y = 34;       // A number without decimals
+            var x = 123e5;    // 12300000
+            var y = 123e-5;   // 0.00123
+            
+            Don't create Number objects. They slow down execution speed, and produce nasty side effects
+                var y = new Number(123);
+
+            Integers (numbers without a period or exponent notation) are considered accurate up to 15 digits.
+            var x = 999999999999999;   // x will be 999999999999999
+            var y = 9999999999999999;  // y will be 10000000000000000
+
+
+            [toString()] method to output numbers as base 16 (hex), base 8 (octal), or base 2 (binary).
+                var myNumber = 128;
+                myNumber.toString(16);     // returns 80
+                myNumber.toString(8);      // returns 200
+                myNumber.toString(2);      // returns 10000000
+          
+          
+            [Infinity]
+                Infinity (or -Infinity) is the value JavaScript will return if you calculate a number outside the largest possible number.
+                    var myNumber = 2;
+                    while (myNumber != Infinity) {          // Execute until Infinity
+                        myNumber = myNumber * myNumber;
+                    }
+
+                Division by 0 (zero) also generates Infinity:
+                    var x =  2 / 0;          // x will be Infinity
+                    var y = -2 / 0;          // y will be -Infinity
+
+                Infinity is a number: typeOf Infinity returns number.
+                    typeof Infinity;        // returns "number"
+
+            
+            [NaN not a number]
+                var x = 100 / "Apple";  // x will be NaN (Not a Number)
+                but
+                var x = 100 / "10";     // x will be 10
+            
+                Watch out for NaN. If you use NaN in a mathematical operation, the result will also be NaN.
+                    var x = NaN;
+                    var y = 5;
+                    var z = x + y;         // z will be NaN
+
+                NaN is a number: typeOf NaN returns number.
+                    typeof NaN;             // returns "number"
+                    
+            
+            [isNaN().. function]:
+                var x = 100 / "Apple";
+                isNaN(x);               // returns true because x is Not a Number
+
+
+            Number Properties
+                Property          Description
+                
+                MAX_VALUE	        Returns the largest number possible in JavaScript
+                MIN_VALUE	        Returns the smallest number possible in JavaScript
+                NEGATIVE_INFINITY	Represents negative infinity (returned on overflow)
+                NaN	              Represents a "Not-a-Number" value
+                POSITIVE_INFINITY	Represents infinity (returned on overflow)
+
+                var x = Number.MAX_VALUE;
+
+                Using myNumber.MAX_VALUE, where myNumber is a variable, expression, or value, will return undefined:
+                      var x = 6;
+                      var y = x.MAX_VALUE;    // y becomes undefined
+
+
+
+            Global Methods
+                Number()	    Returns a number, converted from its argument.
+                parseFloat()	Parses its argument and returns a floating point number
+                parseInt()	  Parses its argument and returns an integer
+    
+            Number Methods
+                toString()	    Returns a number as a string
+                toExponential()	Returns a string, with a number rounded and written using exponential notation.
+                toFixed()	      Returns a string, with a number rounded and written with a specified number of decimals.
+                toPrecision()	  Returns a string, with a number written with a specified length
+                valueOf()	      Returns a number as a number
+                
+            Note:	All number methods return a new variable. They do not change the original variable.
+
+            [toString()]
+                var x = 123;
+                x.toString();            // returns 123 from variable x
+                (123).toString();        // returns 123 from literal 123
+                (100 + 23).toString();   // returns 123 from expression 100 + 23
+
+
+            [toFixed()] ...[specified number of decimals]
+                toFixed() returns a string, with the number written with a specified number of decimals:                
+                      var x = 9.656;
+                      x.toFixed(0);           // returns 10
+                      x.toFixed(2);           // returns 9.66
+                      x.toFixed(4);           // returns 9.6560
+                      x.toFixed(6);           // returns 9.656000
+
+            [toPrecision()] ...[specified length]
+                toPrecision() returns a string, with a number written with a specified length:                
+                      var x = 9.656;
+                      x.toPrecision();        // returns 9.656
+                      x.toPrecision(2);       // returns 9.7
+                      x.toPrecision(4);       // returns 9.656
+                      x.toPrecision(6);       // returns 9.65600
+
+
+            [Converting Variables to Numbers]
+                There are 3 JavaScript functions that can be used to convert variables to numbers:                     
+                      The Number() method
+                      The parseInt() method
+                      The parseFloat() method
+                      
+                These methods are not number methods, but global JavaScript methods.
+
+                [Number()]
+                      can be used to convert JavaScript variables to numbers:
+                          x = true;
+                          Number(x);        // returns 1
+                          x = false;     
+                          Number(x);        // returns 0
+                          x = new Date();
+                          Number(x);        // returns 1404568027739
+                          x = "10"
+                          Number(x);        // returns 10
+                          x = "10 20"
+                          Number(x);        // returns NaN
+                
+                
+                [parseInt()]
+                      parses a string and returns a whole number. Spaces are allowed. Only the first number is returned:
+                          parseInt("10");         // returns 10
+                          parseInt("10.33");      // returns 10
+                          parseInt("10 20 30");   // returns 10
+                          parseInt("10 years");   // returns 10
+                          parseInt("years 10");   // returns NaN 
+
+                
+                [parseFloat()]
+                      parseFloat() parses a string and returns a number. Spaces are allowed. Only the first number is returned:
+                          parseFloat("10");        // returns 10
+                          parseFloat("10.33");     // returns 10.33
+                          parseFloat("10 20 30");  // returns 10
+                          parseFloat("10 years");  // returns 10
+                          parseFloat("years 10");  // returns NaN
+
+
+                [valueOf()]
+                      valueOf() returns a number as a number.
+                          var x = 123;
+                          x.valueOf();            // returns 123 from variable x
+                          (123).valueOf();        // returns 123 from literal 123
+                          (100 + 23).valueOf();   // returns 123 from expression 100 + 23
+
+
+
+Math Object:
+                Math.random();                     // returns a random number
+                Math.min(0, 150, 30, 20, -8);      // returns -8
+                Math.max(0, 150, 30, 20, -8);      // returns 150
+
+                Math.round() rounds a number to the nearest integer:
+                      Math.round(4.7);             // returns 5
+                      Math.round(4.4);             // returns 4
+
+                Math.ceil() rounds a number up to the nearest integer:
+                     Math.ceil(4.4);               // returns 5
+
+                Math.floor() rounds a number down to the nearest integer:
+                     Math.floor(4.7);            // returns 4
+
+                Math.floor() and Math.random() can be used together to return a random number between 0 and 10:
+                     Math.floor(Math.random() * 11);   // returns a random number between 0 and 10
+
+
+                Math Object Methods
+                    Method            Description
+                    
+                    abs(x)	          Returns the absolute value of x
+                    acos(x)	          Returns the arccosine of x, in radians
+                    asin(x)	          Returns the arcsine of x, in radians
+                    atan(x)	          Returns the arctangent of x as a numeric value between -PI/2 and PI/2 radians
+                    atan2(y,x)	      Returns the arctangent of the quotient of its arguments
+                    ceil(x)	          Returns x, rounded upwards to the nearest integer
+                    cos(x)	          Returns the cosine of x (x is in radians)
+                    exp(x)	          Returns the value of Ex
+                    floor(x)	        Returns x, rounded downwards to the nearest integer
+                    log(x)	          Returns the natural logarithm (base E) of x
+                    max(x,y,z,...,n)	Returns the number with the highest value
+                    min(x,y,z,...,n)	Returns the number with the lowest value
+                    pow(x,y)	        Returns the value of x to the power of y
+                    random()	        Returns a random number between 0 and 1
+                    round(x)	        Rounds x to the nearest integer
+                    sin(x)	          Returns the sine of x (x is in radians)
+                    sqrt(x)	          Returns the square root of x
+                    tan(x)	          Returns the tangent of an angle
+
+
+
+Dates:
+                JavaScript dates are calculated in milliseconds from 01 January, 1970 00:00:00 Universal Time (UTC).
+                One day contains 86,400,000 millisecond.
+                
+                JavaScript counts months from 0 to 11. January is 0. December is 11.
+
+                Date():
+                        <p id="demo"></p>
+                        ..                    
+                        <script>
+                        document.getElementById("demo").innerHTML = Date();
+                        </script>
+                
+                
+                There are 4 ways of initiating a date:
+                        new Date()
+                        new Date(milliseconds)
+                        new Date(dateString)
+                        new Date(year, month, day, hours, minutes, seconds, milliseconds)
+                        
+                        
+                [new Date();] creates a new date object with the current date and time:
+                        <script>
+                        var d = new Date();
+                        document.getElementById("demo").innerHTML = d;
+                        </script>
+              
+              
+                [new Date(date string);] creates a new date object from the specified date and time:
+                        <script>
+                        var d = new Date("October 13, 2014 11:13:00");
+                        document.getElementById("demo").innerHTML = d;
+                        </script>
+              
+              
+                [new Date(number);] creates a new date object as zero time plus the number.       
+                    Zero time is 01 January 1970 00:00:00 UTC. The number is specified in milliseconds:
+                        <script>
+                        var d = new Date(86400000);
+                        document.getElementById("demo").innerHTML = d;
+                        </script>
+              
+
+                [new Date(7 numbers)] [new Date(99,5,24,11,33,30,0);]
+                    creates a new date object with the specified date and time:
+                    The 7 numbers specify the year, month, day, hour, minute, second, and millisecond, in that order:
+                        <script>
+                        var d = new Date(99,5,24,11,33,30,0);
+                        document.getElementById("demo").innerHTML = d;
+                        </script>
+
+                        output:
+                        Thu Jun 24 1999 11:33:30 GMT-0600 (Mountain Daylight Time)
+
+                    ex2: new Date(99,5,24);     //returns: Thu Jun 24 1999 00:00:00 GMT-0600 (Mountain Daylight Time)
+
+
+
+                Date Examples:
+                    <p id="demo"></p>                
+                    <script>
+                    d = new Date();
+                    document.getElementById("demo").innerHTML = d;                //same as d.toString()
+                    document.getElementById("demo").innerHTML = d.toString();     //same as d... returns: Sat Jan 03 2015 00:25:33 GMT-0700 (Mountain Standard Time)
+                    document.getElementById("demo").innerHTML = d.toUTCString();  //returns:  Sat, 03 Jan 2015 07:22:05 GMT
+                    document.getElementById("demo").innerHTML = d.toDateString(); //returns:  Sat Jan 03 2015
+                    </script>
+
+
+                [Date Get Methods]
+                    Get methods are used for getting a part of a date. Here are the most common (alphabetically):
+                    
+                        Method            Description
+                        
+                        getDate()	        Get the day as a number (1-31)
+                        getDay()	        Get the weekday as a number (0-6)
+                        getFullYear()	    Get the four digit year (yyyy)
+                        getHours()	      Get the hour (0-23)
+                        getMilliseconds()	Get the milliseconds (0-999)
+                        getMinutes()	    Get the minutes (0-59)
+                        getMonth()	      Get the month (0-11)
+                        getSeconds()	    Get the seconds (0-59)
+                        getTime()	        Get the time (milliseconds since January 1, 1970)
+
+
+                [Date Set Methods]
+                    Set methods are used for setting a part of a date. Here are the most common (alphabitically):
+                    
+                        Method            Description
+                        
+                        setDate()	        Set the day as a number (1-31)
+                        setFullYear()	    Set the year (optionally month and day yyyy.mm.dd)
+                        setHours()	      Set the hour (0-23)
+                        setMilliseconds()	Set the milliseconds (0-999)
+                        setMinutes()	    Set the minutes (0-59)
+                        setMonth()	      Set the month (0-11)
+                        setSeconds()	    Set the seconds (0-59)
+                        setTime()	        Set the time (milliseconds since January 1, 1970)
+                    
+                    ex:
+                        The setFullYear() Method
+                        setFullYear() sets a date object to a specific date. In this example, to January 14, 2020:
+
+                            <script>
+                            var d = new Date();
+                            d.setFullYear(2020, 0, 14);
+                            document.getElementById("demo").innerHTML = d;  //returns: Tue Jan 14 2020 00:36:48 GMT-0700 (Mountain Standard Time)
+                            </script>
+                        
+
+                [Date Input - Parsing Dates]
+                    If you have an input value (or any string), you can use the Date.parse() method to convert it to milliseconds.
+                    
+                    Date.parse() returns the number of milliseconds between the date and January 1, 1970:
+                    
+                    Example                    
+                        <script>
+                        var msec = Date.parse("March 21, 2012");
+                        document.getElementById("demo").innerHTML = msec;
+                        </script>                    
+
+                    You can then use the number of milliseconds to convert it to a date object:
+                    
+                    Example                   
+                        <script>
+                        var msec = Date.parse("March 21, 2012");
+                        var d = new Date(msec);
+                        document.getElementById("demo").innerHTML = d;
+                        </script>
+                        
+
+                [Compare Dates]
+                    Dates can easily be compared.                    
+                    The following example compares today's date with January 14, 2100:
+                    
+                    Example
+                        var today, someday, text;
+                        today = new Date();
+                        someday = new Date();
+                        someday.setFullYear(2100, 0, 14);
+                        
+                        if (someday > today) {
+                            text = "Today is before January 14, 2100.";
+                        } else {
+                            text = "Today is after January 14, 2100.";
+                        }
+                        document.getElementById("demo").innerHTML = text;
+    
+
+
+
+Arrays:
+                <p id="demo"></p>
+                ..                
+                <script>
+                var cars = ["Saab", "Volvo", "BMW"];
+                document.getElementById("demo").innerHTML = cars;
+                </script>
+                
+                ----------
+                
+                var cars = ["Saab", "Volvo", "BMW"];
+                var cars = new Array("Saab", "Volvo", "BMW");
+                var points = new Array(40, 100);              // Creates an array with two elements (40 and 100)
+                var person = {firstName:"John", lastName:"Doe", age:46};
+                document.getElementById("demo").innerHTML = person["firstName"];
+                document.getElementById("demo").innerHTML = person.firstName;
+                document.getElementById("demo").innerHTML = person[0];
+                var name = cars[0];
+                cars[0] = "Opel";
+                fruits[fruits.length] = "Lemon";              // adds a new element (Lemon) to fruits
+                
+                myArray[0] = Date.now;
+                myArray[1] = myFunction;
+                myArray[2] = myCars;
+
+                var x = cars.length;                          // The length property returns the number of elements in cars
+                
+                var y = cars.sort();                          // The sort() method sort cars in alphabetical order 
+                points.sort(function(a, b){return b-a});      // normally sorts 'strings'... use comparison function to sort numeric values.
+                
+                fruits.sort();                                // Sorts the elements of fruits 
+                fruits.reverse();                             // Reverses the order of the elements
+
+                var fruitVal = fruits.valueOf();
+                var fruitVal = fruits.toString();             //returns Banana,Orange,Apple,Mango
+                var fruitVal = fruits.join(" * ");            //returns Banana * Orange * Apple * Mango
+
+                fruits.pop();                                 // Removes the last element ("Mango") from fruits
+                fruits.push("Kiwi");                          //  Adds a new element ("Kiwi") to fruits
+                
+                fruits.shift();            `                  // Removes the first element "Banana" from fruits
+                fruits.unshift("Lemon");                      // Adds a new element "Lemon" to fruits
+                fruits[0] = "Kiwi";                           // Changes the first element of fruits to "Kiwi"
+                delete fruits[0];                             // Changes the first element in fruits to undefined
+                                                              // Use pop() or splice() instead
+                                                              
+                fruits.splice(2, 0, "Lemon", "Kiwi");         // add in position 2, delete 0 elements, new 2 elements
+                fruits.splice(0,1);                           // position 0, Removes the first element of fruits, no new elements list                                                            
+
+                var myChildren = arr1.concat(arr2, arr3);     // Concatenates arr1 with arr2 and arr3
+                
+                ----------
+                
+                The typeof operator in JavaScript returns "object" for arrays.
+                
+                arrays use numbered indexes. 
+                objects use named indexes.
+
+                Arrays use numbers to access its "elements". In this example, person[0] returns John:
+                        document.getElementById("demo").innerHTML = person[0];
+                        
+                Objects use names to access its "members". In this example, person.firstName returns John:
+                        var person = {firstName:"John", lastName:"Doe", age:46};
+                        document.getElementById("demo").innerHTML = person["firstName"];
+                        document.getElementById("demo").innerHTML = person.firstName;
+
+
+
+                Creating an Array:
+                        var cars = ["Saab", "Volvo", "BMW"];
+                        var cars = new Array("Saab", "Volvo", "BMW");
+                        var points = new Array(40, 100);  // Creates an array with two elements (40 and 100)
+                    
+                    
+                    
+                Access the Elements of an Array
+                        var name = cars[0];
+                        cars[0] = "Opel";
+                
+                You Can Have Different Objects in One Array
+                        myArray[0] = Date.now;
+                        myArray[1] = myFunction;
+                        myArray[2] = myCars;
+
+                
+                Array Properties and Methods
+                        var x = cars.length;         // The length property returns the number of elements in cars
+                        var y = cars.sort();         // The sort() method sort cars in alphabetical order
+
+
+                Adding Array Elements
+                
+                    The easiest way to add a new element to an array is to use the length property:
+                    
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits[fruits.length] = "Lemon";     // adds a new element (Lemon) to fruits
+
+                    Adding elements with high indexes can create undefined "holes" in an array:
+                    
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits[10] = "Lemon";                // adds a new element (Lemon) to fruits
+                        var x = fruits[8];                   // returns undefined...
+                        x == 5	      true
+
+                Looping Array Elements
+                        var index;
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        for  (index = 0; index < fruits.length; index++) {
+                            text += fruits[index];
+                        }
+
+
+
+
+*** you can also use [.map/key] as for-each loop
+
+
+
+
+
+                Associative Arrays?
+                        uses names
+                        not supported in javascript
+                        
+                        ex:
+                        var person = [];
+                        person["firstName"] = "John";
+                        person["lastName"] = "Doe";
+                        person["age"] = 46;
+                        var x = person.length;         // person.length will return 0
+                        var y = person[0];             // person[0] will return undefined
+
+                
+
+                [isArray().. user function] How to Recognize an Array?
+                
+                        isArray() returns true
+                        Or more precisely: it returns true if the object prototype of the argument is "[object array]":
+                              function isArray(myArray) {
+                                return Object.prototype.toString.call(myArray) === '[object Array]';
+                              }
+
+                
+                        <p id="demo"></p>
+                        ..
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        document.getElementById("demo").innerHTML = isArray(fruits);  <======= if array, returns true
+                        
+                              function isArray(myArray) {
+                                return Object.prototype.toString.call(myArray) === '[object Array]';
+                
+                }
+
+                Converting Arrays to Strings 
+                        valueOf() and 
+                        toString() are equal:
+                         
+                            document.getElementById("demo").innerHTML = fruits.valueOf();
+                            document.getElementById("demo").innerHTML = fruits.toString();
+
+                        join()
+                            document.getElementById("demo").innerHTML = fruits.join(" * ");  //returns Banana * Orange * Apple * Mango
+
+
+
+                Popping and Pushing
+                        When you work with arrays, it is easy to remove elements and add new elements.
+                        
+                        Popping items out of an array, 
+                        The pop() method returns the string that was "popped out".
+
+                        pushing items into an array.
+                        The push() method returns the new array length.
+
+                        
+                        The pop() method removes the last element from an array:
+                                var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                                fruits.pop();              // Removes the last element ("Mango") from fruits
+                        
+                        
+                        The push() method adds a new element to an array (at the end):
+                                var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                                fruits.push("Kiwi");       //  Adds a new element ("Kiwi") to fruits
+
+
+
+                The shift() 
+                        method removes the first element of an array, and "shifts" all other elements one place down.
+                        The shift() method returns the string that was "shifted out".
+                        
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits.shift();            // Removes the first element "Banana" from fruits
+
+                The unshift() 
+                        method adds a new element to an array (at the beginning), and "unshifts" older elements:
+                        The unshift() method returns the new array length.
+                        
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits.unshift("Lemon");    // Adds a new element "Lemon" to fruits
+
+
+                Changing Elements
+                        Array elements are accessed using their index number:
+                        
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits[0] = "Kiwi";        // Changes the first element of fruits to "Kiwi"
+
+
+                Deleting Elements
+                        Since JavaScript arrays are objects, elements can be deleted by using the JavaScript operator delete:
+                        Note  Using delete on array elements leaves undefined holes in the array. Use pop() or splice() instead.
+                        
+                            var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                            delete fruits[0];           // Changes the first element in fruits to undefined
+
+
+                Splicing an Array
+                        The splice() method can be used to add new items to an array:
+                        
+                            var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                            fruits.splice(2, 0, "Lemon", "Kiwi");
+                        
+                                The first parameter (2) defines the position where new elements should be added (spliced in).                                
+                                The second parameter (0) defines how many elements should be removed.                                
+                                The rest of the parameters ("Lemon" , "Kiwi") define the new elements to be added.
+
+                        Using splice() to Remove Elements
+                            With clever parameter setting, you can use splice() to remove elements without leaving "holes" in the array:
+                                var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                                fruits.splice(0,1);        // Removes the first element of fruits
+
+                Sorting an Array
+                        var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                        fruits.sort();            // Sorts the elements of fruits 
+                        fruits.reverse();         // Reverses the order of the elements
+
+
+                Numeric Sort
+                        By default, the sort() function sorts values as strings.
+
+                        This works well for strings ("Apple" comes before "Banana").
+                        
+                        However, if numbers are sorted as strings, "25" is bigger than "100", because "2" is bigger than "1".
+                        
+                        Because of this, the sort() method will produce incorrect result when sorting numbers.
+                        
+                        You can fix this by providing a compare function:
+                        
+                        Example
+                        var points = [40, 100, 1, 5, 25, 10];
+                        points.sort(function(a, b){return a-b});
+                        
+                        Use the same trick to sort an array descending:
+                        
+                        Example
+                        var points = [40, 100, 1, 5, 25, 10];
+                        points.sort(function(a, b){return b-a});
+                        
+                        
+                The Compare Function
+                        The purpose of the compare function is to define an alternative sort order.
+                        
+                        The compare function should return a negative, zero, or positive value, depending on the arguments:
+                        
+                        function(a, b){return a-b}
+                        When the sort() function compares two values, it sends the values to the compare function, and sorts the values according to the returned (negative, zero, positive) value.
+                        
+                        Example:
+                        When comparing 40 and 100, the sort() method calls the compare function(40,100).
+                        
+                        The function calculates 40-100, and returns -60 (a negative value).
+                        
+                        The sort function will sort 40 as a value lower than 100.
+
+
+                Array: Find the Highest (or Lowest) Value
+                
+                        How to find the highest value in an array?
+                        
+                        Example
+                        var points = [40, 100, 1, 5, 25, 10];
+                        points.sort(function(a, b){return b-a});
+                        // now points[0] contains the highest value
+                        
+                        And the lowest:
+                        
+                        Example                        
+                        var points = [40, 100, 1, 5, 25, 10];
+                        points.sort(function(a, b){return a-b});
+                        // now points[0] contains the lowest value
+                        
+
+                Joining Arrays
+                
+                        The concat() method creates a new array by concatenating two arrays:
+                        
+                        Example
+                        var myGirls = ["Cecilie", "Lone"];
+                        var myBoys = ["Emil", "Tobias","Linus"];
+                        var myChildren = myGirls.concat(myBoys);     // Concatenates (joins) myGirls and myBoys
+                        
+                        The concat() method can take any number of array arguments:
+                        
+                        Example                        
+                        var arr1 = ["Cecilie", "Lone"];
+                        var arr2 = ["Emil", "Tobias","Linus"];
+                        var arr3 = ["Robin", "Morgan"];
+                        var myChildren = arr1.concat(arr2, arr3);     // Concatenates arr1 with arr2 and arr3
+                   
+                   
+                  Slicing an Array
+                  
+                        <p id="demo"></p>
+                        ..
+                        function myFunction() {
+                            var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+                            var citrus = fruits.slice(1,3);
+                            document.getElementById("demo").innerHTML = citrus;
+                        }
+
+
+
+Boolean function [true/false] [NOT 'true'/'false']
+
+                  var x = false;                // returns false.. this is boolean true/false.
+                  but 
+                  var x = "false";              // returns true.. any real value is true.
+                                   
+                  Boolean represents one of two values: true or false.
+                  
+                  Boolean(10 > 9)
+                        <p id="demo"></p>
+                        <script>
+                        function myFunction() {
+                            document.getElementById("demo").innerHTML = Boolean(10 > 9);
+                        }
+                        </script>
+
+
+                  Or even easier:
+                        (10 > 9)              // also returns true
+                        10 > 9                // also returns true
+
+
+                  everything with a real value is 'true':
+                  
+                        <p id="demo"></p>
+                        <script>
+                        var b1 = Boolean(100);
+                        var b2 = Boolean(3.14);
+                        var b3 = Boolean(-15);
+                        var b4 = Boolean("Hello");
+                        var b5 = Boolean('false');
+                        var b6 = Boolean(1 + 7 + 3.14);
+                        
+                        document.getElementById("demo").innerHTML =
+                        "100 is " + b1 + "<br>" +
+                        "3.14 is " + b2 + "<br>" +
+                        "-15 is " + b3 + "<br>" +
+                        "Any (not empty) string is " + b4 + "<br>" +
+                        "Even the string 'false' is " + b5 + "<br>" +
+                        "Any expression (except zero) is " + b6;
+                        </script>
+
+
+                  Everything Without a Real Value is False
+                  
+                        The Boolean value of 0 (zero) is false:
+                                var x = 0;
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of -0 (minus zero) is false:                        
+                                var x = -0;
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of "" (empty string) is false:
+                                var x = "";
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of undefined is false:
+                                var x;
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of null is false:
+                                var x = null;
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of false is (you guessed it) false:                        
+                                var x = false;
+                                Boolean(x);       // returns false
+                        
+                        The Boolean value of NaN is false:                        
+                                var x = 10 / "H";
+                                Boolean(x);       // returns false
+
+
+
+
+Comparison and Logical Operators
+
+                  Given that x=5, the table below explains the comparison operators:
+                  
+                        ==  equal to
+                                  x == 8	      false
+                                  x == 5	      true
+                                  x == "5"      true
+                                  
+                        ===	equal value and equal type	
+                                  x === "5"	    false
+                                  x === 5	      true
+                                  
+                        !=	not equal	
+                                  x != 8	      true
+                                  
+                        !==	not equal value or not equal type	
+                                  x !== "5"	    true
+                                  x !== 5	      false
+                                  
+                        >	 greater than	
+                                  x > 8	        false
+                                  
+                        <	 less than	
+                                  x < 8	        true
+                                  
+                        >=	 greater than or equal to	
+                                  x >= 8	      false
+                                  
+                        <=	 less than or equal to	
+                                  x <= 8	      true
+                  
+                  
+Logical Operators
+                  Logical operators are used to determine the logic between variables or values.
+                  
+                  Given that x=6 and y=3, the table below explains the logical operators:
+                  
+                  &&	and	        (x < 10 && y > 1)         is true
+                  ||	or	        (x == 5 || y == 5)        is false
+                  !	not	          !(x == y)                 is true
+
+
+Bitwise Operators
+                  Operator  Description	Example	      Same-as	        Result	  Decimal
+                  &         AND	        x = 5 & 1	    0101 & 0001	    0001	    1
+                  |	        OR	        x = 5 | 1	    0101 | 0001	    0101	    5
+                  ~	        NOT	        x = ~ 5	      ~0101	          1010	    10
+                  ^	        XOR	        x = 5 ^ 1	    0101 ^ 0001	    0100    	4
+                  <<	      Left shift	x = 5 << 1	  0101 << 1	      1010	    10
+                  >>	      Right shift	x = 5 >> 1	  0101 >> 1	      0010	    2
+                  
+
+
+
+Conditional Operator
+
+                  voteable = (age < 18) ? "Too young":"Old enough";
+
+If Else Statementst
+                  
+                  if (time < 20) {
+                      greeting = "Good day";
+                  }
+
+                  ---
+                  if (time < 20) {
+                      greeting = "Good day";
+                  } else {
+                      greeting = "Good evening";
+                  }
+                  
+                  ---
+                  if (time < 10) {
+                      greeting = "Good morning";
+                  } else if (time < 20) {
+                      greeting = "Good day";
+                  } else {
+                      greeting = "Good evening";
+                  }
+                  
+                
+                
+Switch Statement
+                  If today is neither Saturday nor Sunday, write a default message:
+
+                  switch (new Date().getDay()) {
+                      case 6:
+                          text = "Today is Saturday";
+                          break; 
+                      case 0:
+                          text = "Today is Sunday";
+                          break; 
+                      default: 
+                          text = "Looking forward to the Weekend";
+                  }
+
+                  ---
+                  Common Code and Fall-Through
+                        Sometimes, in a switch block, you will want different cases to use the same code, or fall-through to a common default.
+                        
+                        Note from the next example, that cases can share the same code block, and that the default case does not have to be the last case in a switch block:
+                        
+                        Example
+                        
+                        switch (new Date().getDay()) {
+                            case 1:
+                            case 2:
+                            case 3:
+                            default: 
+                                text = "Looking forward to the Weekend";
+                                break; 
+                            case 4:
+                            case 5:
+                               text = "Soon it is Weekend";
+                                break; 
+                            case 0:
+                            case 6:
+                               text = "It is Weekend";
+                        }
+
+
+For Loop
+                  for (statement 1; statement 2; statement 3) {
+                      code block to be executed
+                  }
+                        Statement 1 is executed before the loop (the code block) starts.
+                        
+                        Statement 2 defines the condition for running the loop (the code block).
+                        
+                        Statement 3 is executed each time after the loop (the code block) has been executed.
+                        
+                        Example                          
+                                for (i = 0; i < 5; i++) {
+                                    text += "The number is " + i + "<br>";
+                                }
+      
+                        From the example above, you can read:
+      
+                        Statement 1 sets a variable before the loop starts (var i = 0).
+                        
+                        Statement 2 defines the condition for the loop to run (i must be less than 5).
+                        
+                        Statement 3 increases a value (i++) each time the code block in the loop has been executed.
+
+
+                  ---
+                  Statement 1
+                  You can initiate many values in statement 1 (separated by comma):
+                        
+                        for (i = 0, len = cars.length, text = ""; i < len; i++) { 
+                            text += cars[i] + "<br>";
+                        }
+
+
+                  ---
+                  Statement 1
+                  you can omit statement 1 (like when your values are set before the loop starts):
+
+                        var i = 2;
+                        var len = cars.length;
+                        var text = "";
+                        for (; i < len; i++) { 
+                            text += cars[i] + "<br>";
+                        }
+
+
+                  ---
+                  Statement 2
+                        Often statement 2 is used to evaluate the condition of the initial variable.
+                        
+                        This is not always the case, JavaScript doesn't care. Statement 2 is also optional.
+                        
+                        If statement 2 returns true, the loop will start over again, if it returns false, the loop will end.
+                        
+                        Note  If you omit statement 2, you must provide a break inside the loop. 
+                        Otherwise the loop will never end. This will crash your browser. 
+
+                  ---
+                  Statement 3
+                        Often statement 3 increases the initial variable.
+                        
+                        This is not always the case, JavaScript doesn't care, and statement 3 is optional.
+                        
+                        Statement 3 can do anything like negative increment (i--), or larger increment (i = i + 15), or anything else.
+                        
+                        Statement 3 can also be omitted (like when you increment your values inside the loop):
+                        
+                        Example:
+                              var i = 0;
+                              var len = cars.length;
+                              for (; i < len; ) { 
+                                  text += cars[i] + "<br>";
+                                  i++;
+                              }
+
+
+[loop thru objects]
+The For/In Loop
+                  The JavaScript for/in statement loops through the properties of an object:
+
+                  <p id="demo"></p>
+                  ..
+                  <script>
+                  var txt = "";
+                  var person = {fname:"John", lname:"Doe", age:25}; 
+                  var x;
+                  for (x in person) {
+                      txt += person[x] + " "; <====================== note: person.x WON'T work.. has to be person[x].
+                  }
+                  document.getElementById("demo").innerHTML = txt;
+                  </script>
+
+
+
+While loop
+                  while (i < 10) {
+                      text += "The number is " + i;
+                      i++;
+                  }
+
+
+
+Do/While Loop
+                  do {
+                      text += "The number is " + i;
+                      i++;
+                  }
+                  while (i < 10);
+
+
+
+Break and Continue
+                The break statement "jumps out" of a loop.
+                The continue statement "jumps over" one iteration in the loop.
+
+                      for (i = 0; i < 10; i++) {
+                          if (i == 3) { break; }
+                          text += "The number is " + i + "<br>";
+                      }
+
+                      ---
+                      for (i = 0; i <= 10; i++) {
+                          if (i == 3) { continue; }
+                          text += "The number is " + i + "<br>";
+                      }
+
+
+Labels
+                break labelname; 
+
+                continue labelname;
+
+                The continue statement (with or without a label reference) can only be used inside a loop.
+                The break statement, without a label reference, can only be used inside a loop or a switch.
+
+                With a label reference, it can be used to "jump out of" any JavaScript code block:
+                
+                        cars = ["BMW", "Volvo", "Saab", "Ford"];
+                        list: {
+                            text += cars[0] + "<br>"; 
+                            text += cars[1] + "<br>"; 
+                            text += cars[2] + "<br>"; 
+                            text += cars[3] + "<br>"; 
+                            break list;
+                            text += cars[4] + "<br>"; 
+                            text += cars[5] + "<br>"; 
+                        }
+
+
+
+typeof, null, and undefined
+
+                typeof:
+                        typeof "John"                // Returns string 
+                        typeof 3.14                  // Returns number
+                        typeof false                 // Returns boolean
+                        typeof [1,2,3,4]             // Returns object
+                        typeof {name:'John', age:34} // Returns object
+                        typeof null                  // Returns object
+
+
+                null
+                        null is "nothing".
+                        [null] Unfortunately, in JavaScript, the data type of null is an object
+                        
+                                <p id="demo"></p>
+                                ..
+                                <script>
+                                var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+                                var person = null;
+                                document.getElementById("demo").innerHTML = typeof person;  <======== returns 'object'
+                                </script>
+
+
+                        You can empty an object by setting it to null:
+                                var person = null;           // Value is null, but type is still an object
+
+
+                        You can also empty an object by setting it to undefined:
+                                var person = undefined;     // Value is undefined, type is undefined
+
+
+                Undefined
+                        In JavaScript, undefined is a variable with no value.
+                        
+                        The typeof a variable with no value is also undefined.
+                        
+                                var person;                  // Value is undefined, type is undefined
+                        
+                        Any variable can be emptied, by setting the value to undefined. The type will also be undefined.
+                        
+                                person = undefined;          // Value is undefined, type is undefined
+
+
+                Difference Between Undefined and Null
+                        typeof undefined             // undefined
+                        typeof null                  // object
+                        null === undefined           // false
+                        null == undefined            // true
+
+
+
+Data types
+                [undefined]... may be a type
+                string
+                number
+                boolean
+                object
+                function
+
+                ***there are 3 types of objects:
+                        Object
+                        Date
+                        Array
+
+                EX:
+                        typeof "John"                 // Returns string 
+                        typeof 3.14                   // Returns number
+                        typeof NaN                    // Returns number
+                        typeof false                  // Returns boolean
+                        typeof [1,2,3,4]              // Returns object
+                        typeof {name:'John', age:34}  // Returns object
+                        typeof new Date()             // Returns object
+                        typeof function () {}         // Returns function
+                        typeof myCar                  // Returns undefined <======== (if myCar is not declared)
+                        typeof null                   // Returns object
+
+
+
+The constructor Property
+
+                You can check the constructor property to find out if an object is an Array (contains the word "Array"): 
+                Example                      
+                      function isArray(myArray) {
+                          return myArray.constructor.toString().indexOf("Array") > -1;
+                      }
+                
+                ---
+                You can check the constructor property to find out if an object is a Date (contains the word "Date"):
+                Example
+                
+                      function isDate(myDate) {
+                          return myDate.constructor.toString().indexOf("Date") > -1;
+                      }
+
+                ---
+                "John".constructor                 // Returns function String()  { [native code] }
+                (3.14).constructor                 // Returns function Number()  { [native code] }
+                false.constructor                  // Returns function Boolean() { [native code] }
+                [1,2,3,4].constructor              // Returns function Array()   { [native code] }
+                {name:'John', age:34}.constructor  // Returns function Object()  { [native code] }
+                new Date().constructor             // Returns function Date()    { [native code] }
+                function () {}.constructor         // Returns function Function(){ [native code] }
+
+                EX:                
+                        <p id="demo"></p>
+                        ...
+                        <script>
+                        document.getElementById("demo").innerHTML = 
+                            "john".constructor + "<br>" +
+                            (3.14).constructor + "<br>" +
+                            false.constructor + "<br>" +
+                            [1,2,3,4].constructor + "<br>" +
+                            {name:'john', age:34}.constructor + "<br>" +
+                            new Date().constructor + "<br>" +
+                            function () {}.constructor;
+                        </script>
+        
+                        RETURNS:
+                                function String() { [native code] }
+                                function Number() { [native code] }
+                                function Boolean() { [native code] }
+                                function Array() { [native code] }
+                                function Object() { [native code] }
+                                function Date() { [native code] }
+                                function Function() { [native code] }
+
+
+
+Type Conversion            
+                'see more in the number section up above'.
+                'see more in the date section up above'.
+            
+                Converting Numbers to Strings: 
+                
+                        String() 
+                                global method String() can convert numbers to strings.
+                                It can be used on any type of numbers, literals, variables, or expressions:                                
+                                Example                                
+                                        String(x)         // returns a string from a number variable x
+                                        String(123)       // returns a string from a number literal 123
+                                        String(100 + 23)  // returns a string from a number from an expression 
+
+
+                        toString()        
+                                The Number method toString() does the same.
+                                Example                                
+                                      x.toString()
+                                      (123).toString()
+                                      (100 + 23).toString()
+
+
+                        toExponential()  
+                                Returns a string, with a number rounded and written using exponential notation.
+                                
+                        toFixed()	
+                                Returns a string, with a number rounded and written with a specified number of decimals.
+                                
+                        toPrecision()	
+                                Returns a string, with a number written with a specified length
+
+
+
+                Converting Booleans to Strings
+                
+                        String()
+                                The global method String() can convert booleans to strings.
+                                
+                                String(false)        // returns "false"
+                                String(true)         // returns "true"
+                                The Boolean method toString() does the same.
+                                
+                                false.toString()     // returns "false"
+                                true.toString()      // returns "true"
+
+
+                Converting Dates to Strings
+                
+                        String()
+                                The global method String() can convert dates to strings.
+                                
+                                String(Date())      // returns Thu Jul 17 2014 15:38:19 GMT+0200 (W. Europe Daylight Time)
+                                The Date method toString() does the same.
+                                
+                                Example
+                                
+                                Date().toString()   // returns Thu Jul 17 2014 15:38:19 GMT+0200 (W. Europe Daylight Time)
+                                In the chapter Date Methods, you will find more methods that can be used to convert dates to strings:
+                                
+                                Method  Description
+                                getDate()	        Get the day as a number (1-31)
+                                getDay()	        Get the weekday a number (0-6)
+                                getFullYear()	    Get the four digit year (yyyy)
+                                getHours()	      Get the hour (0-23)
+                                getMilliseconds()	Get the milliseconds (0-999)
+                                getMinutes()	    Get the minutes (0-59)
+                                getMonth()	      Get the month (0-11)
+                                getSeconds()	    Get the seconds (0-59)
+                                getTime()	        Get the time (milliseconds since January 1, 1970)
+
+
+
+                Converting Strings to Numbers
+                
+                        Number()
+                              The global method Number() can convert strings to numbers.
+                              
+                              Strings containing numbers (like "3.14") convert to numbers (like 3.14).
+                              
+                              Empty strings convert to 0.
+                              
+                              Anything else converts to NaN (Not a number).
+                              
+                              Number("3.14")    // returns 3.14
+                              Number(" ")       // returns 0 
+                              Number("")        // returns 0
+                              Number("99 88")   // returns NaN
+                              
+                              
+                        parseFloat()  
+                              Parses a string and returns a floating point number
+                              
+                        parseInt()	
+                              Parses a string and returns an integer
+
+
+
+                  Converting Booleans to Numbers
+                  
+                        Number()
+                              The global method Number() can also convert booleans to numbers.
+                              
+                              Number(false)     // returns 0
+                              Number(true)      // returns 1
+
+
+                  Converting Dates to Numbers
+                  
+                        Number()
+                              The global method Number() can be used to convert dates to numbers.
+                              
+                              d = new Date();
+                              Number(d)          // returns 1404568027739
+                              The date method getTime() does the same.
+                              
+                              d = new Date();
+                              d.getTime()        // returns 1404568027739
+                              
+
+
+                  Automatic Type Conversion
+                              When JavaScript tries to operate on a "wrong" data type, it will try to convert the value to a "right" type.
+                              
+                              The result is not always what you expect:
+                              
+                              5 + null    // returns 5         because null is converted to 0
+                              "5" + null  // returns "5null"   because null is converted to "null"
+                              "5" + 1     // returns "51"      because 1 is converted to "1"  
+                              "5" - 1     // returns 4         because "5" is converted to 5
+                              
+                              Automatic String Conversion
+                              JavaScript automatically calls the variable's toString() function when you try to "output" an object or a variable:
+                              
+                              document.getElementById("demo").innerHTML = myVar;
+                              
+                              // if myVar = {name:"Fjohn"}  // toString converts to "[object Object]"
+                              // if myVar = [1,2,3,4]       // toString converts to "1,2,3,4"
+                              // if myVar = new Date()      // toString converts to "Fri Jul 18 2014 09:08:55 GMT+0200"
+                              Numbers and booleans are also converted, but this is not very visible:
+                              
+                              // if myVar = 123             // toString converts to "123"
+                              // if myVar = true            // toString converts to "true"
+                              // if myVar = false           // toString converts to "false"
+
+
+[??? incomplete.. find more examples..]
+Regular Expressions
+
+                  var patt = /w3schools/i
+                  str.search(/w3Schools/i);
+                  str.search("W3Schools");
+                  str.replace(/microsoft/i,"W3Schools");
+                  str.replace(/microsoft/i,"W3Schools");
+                  var patt = /e/; patt.test("The best things in life are free!");...........  // returns: true
+                  OR: /e/.test("The best things in life are free!");........................  // returns: true
+                  /e/.exec("The best things in life are free!");............................  // returns: e
+
+                  --------------
+                  A regular expression is a sequence of characters that forms a search pattern.
+
+                  The search pattern can be used for text search and text replace operations.
+                  
+                  What Is a Regular Expression?
+                  A regular expression is a sequence of characters that forms a search pattern.
+                  
+                  When you search for data in a text, you can use this search pattern to describe what you are searching for.
+                  
+                  A regular expression can be a single character, or a more complicated pattern.
+                  
+                  Regular expressions can be used to perform all types of text search and text replace operations.
+                  
+                  Syntax
+                  /pattern/modifiers;
+                  
+                  Example:
+                          
+                              var patt = /w3schools/i
+                              Example explained:
+                              
+                              /w3schools/i  is a regular expression.
+                              
+                              w3schools  is a pattern (to be used in a search).
+                              
+                              i  is a modifier (modifies the search to be case-insensitive).
+
+
+                  Using String Methods
+                          
+                  The search() method uses an expression to search for a match, and returns the position of the match.
+                  The replace() method returns a modified string where the pattern is replaced.
+
+                  search() With a Regular Expression
+                          EX:
+                          <p id="demo"></p>
+                          ..
+                          <script>
+                          function myFunction() {
+                              var str = "Visit W3Schools!"; 
+                              var n = str.search(/w3Schools/i);
+                              document.getElementById("demo").innerHTML = n;....... // returns: 6.... it seems that it's 0-based index position !!!
+                          }
+                          </script>
+                    
+                    
+                  search() 
+                          var str = "Visit W3Schools";
+                          var n = str.search(/w3schools/i);
+                          
+                          -----
+                          var str = "Visit W3Schools!";
+                          var n = str.search("W3Schools");
+
+
+                  replace() With a Regular Expression
+                          EX:
+                          <p id="demo">Please visit Microsoft!</p>
+                          -----
+                          <script>
+                          function myFunction() {
+                              var str = document.getElementById("demo").innerHTML; 
+                              var txt = str.replace(/microsoft/i,"W3Schools");
+                              document.getElementById("demo").innerHTML = txt;
+                          }
+                          </script>
+
+                          RESULT:
+                          Please visit W3Schools!
+
+
+                  replace() With a String
+                          The replace() method will also accept a string as search argument:
+                          
+                          var str = "Visit Microsoft!";
+                          var res = str.replace("Microsoft", "W3Schools");
+
+
+                  Modifiers
+                          
+                          Modifier  Description
+                          i	        Perform case-insensitive matching
+                          g	        Perform a global match (find all matches rather than stopping after the first match)
+                          m	        Perform multiline matching
+
+
+                  Patterns                          
+                          []......Brackets are used to find a range of characters:
+                                  
+                                  Expression  Description
+                                  [abc]	      Find any of the characters between the brackets
+                                  [^abc]      Find any character NOT between the brackets                                  
+                                  [0-9]	      Find any digit between the brackets
+                                  [^0-9]	    Find any digit NOT between the brackets
+                                  (x|y)	      Find any of the alternatives separated with |
+
+
+                  Metacharacters are characters with a special meaning:
+                          Metacharacter  Description
+                          \d	    Find a digit
+                          \s	    Find a whitespace character
+                          \b	    Find a match at the beginning or at the end of a word
+                          \uxxxx	Find the Unicode character specified by the hexadecimal number xxxx
+
+
+                  Quantifiers define quantities:
+                          Quantifier  Description
+                          n+	    Matches any string that contains at least one n
+                          n*	    Matches any string that contains zero or more occurrences of n
+                          n?    	Matches any string that contains zero or one occurrences of n
+
+
+                  test().. returns true/false
+                  
+                          The test() method is a RegExp expression method.                          
+                          It searches a string for a pattern, and returns true or false, depending on the result.
+                          
+                          The following example searches a string for the character "e":
+                          
+                          Example                          
+                                  var patt = /e/;
+                                  patt.test("The best things in life are free!");
+                                  Since there is an "e" in the string, the output of the code above will be:
+                                  
+                                  RETURNS: true
+
+                          You don't have to put the regular expression in a variable first. The two lines above can be shortened to one:
+                                  /e/.test("The best things in life are free!")
+                  
+                  
+                  exec().. returns string found or null
+                  
+                          The exec() method is a RegExp expression method.                          
+                          It searches a string for a specified pattern, and returns the found text.                          
+                          If no match is found, it returns null.
+                          
+                          The following example searches a string for the character "e":
+                          
+                          Example 1
+                          
+                                  /e/.exec("The best things in life are free!");
+                                  Since there is an "e" in the string, the output of the code above will be:
+                                  
+                                  RETURNS: e
+
+
+
+Errors - Throw and Try to Catch
+
+                  The try statement lets you test a block of code for errors.                  
+                  The catch statement lets you handle the error.                  
+                  The throw statement lets you create custom errors.s                  
+                  The finally statement lets you execute code, after try and catch, regardless of the result.
+
+                  Example 1        
+                          <p id="demo"></p>
+                          ..
+                          <script>
+                          try {
+                              adddlert("Welcome guest!");
+                          }
+                          catch(err) {
+                              document.getElementById("demo").innerHTML = err.message;  ...// returns: adddlert is not defined
+                          }
+                          </script>
+
+
+                  The throw Statement
+                          The throw statement allows you to create a custom error.                          
+                          The technical term for this is: throw an exception.                          
+                          The exception can be a JavaScript String, a Number, a Boolean or an Object:
+                          
+                                  throw "Too big";    // throw a text
+                                  throw 500;          // throw a number
+
+
+                  The finally Statement
+                          The finally statement lets you execute code, after try and catch, regardless of the result
+
+
+                  Example 2
+                          <body>
+
+                              <p>Please input a number between 5 and 10:</p>
+                              
+                              <input id="demo" type="text">
+                              <button type="button" onclick="myFunction()">Test Input</button>
+                              <p id="message"></p>
+                              
+                              <script>
+                              function myFunction() {
+                                  var message, x;
+                                  message = document.getElementById("message");
+                                  message.innerHTML = "";
+                                  x = document.getElementById("demo").value;
+                                  try { <============================================== try
+                                      x = Number(x);
+                                      if(x == "") throw "is empty";             <====== throw
+                                      if(isNaN(x)) throw "is not a number";     <====== throw
+                                      if(x > 10) throw "is too high";           <====== throw
+                                      if(x < 5) throw "is too low";             <====== throw
+                                  }
+                                  catch(err) {  <====================================== catch
+                                      message.innerHTML = "Input " + err;
+                                  }
+                                  finally { <========================================== finally
+                                      document.getElementById("demo").value = "";
+                                  }
+                              }
+                              </script>
+                              
+                          </body>
+
+
+
+debugging
+                  console.log() Method
+                          console.log("found error here...");
+
+
+                  debugger Keyword
+                          The debugger keyword stops the execution of JavaScript, and calls (if available) the debugging function.
+                          
+                          This has the same function as setting a breakpoint in the debugger.
+                          
+                          If no debugging is available, the debugger statement has no effect.
+                          
+                          With the debugger turned on, this code will stop executing before it executes the third line.
+                          
+                          Example                          
+                                  var x = 15 * 5;
+                                  debugger;
+                                  document.getElementbyId("demo").innerHTML = x;
+
+
+
+Hoisting
+                  Hoisting is JavaScript's default behavior of moving declarations to the top.
+                  
+                  JavaScript Declarations are Hoisted
+                  
+                  a variable can be declared after it has been used.
+                  
+                  In other words; a variable can be used before it has been declared.
+                  
+                  Example 1 gives the same result as Example 2:
+                  
+                  Example 1                          
+                          x = 5; // Assign 5 to x <=============================================== variable x is being used before it is declared                      
+                          elem = document.getElementById("demo"); // Find an element 
+                          elem.innerHTML = x;                     // Display x in the element                          
+                          var x; // Declare x <=================================================== variable x has been declared after it is being used
+                  
+                  Example 2
+                          var x; // Declare x
+                          x = 5; // Assign 5 to x
+                          
+                          elem = document.getElementById("demo"); // Find an element 
+                          elem.innerHTML = x;                     // Display x in the element
+                  
+
+                  --------
+                  Initializations are Not Hoisted
+                  
+                          JavaScript only hoists declarations, not initializations.
+                          
+                          Example 1 does not give the same result as Example 2:
+                          
+                          Example 1                          
+                                  var x = 5; // Initialize x
+                                  var y = 7; // Initialize y
+                                  
+                                  elem = document.getElementById("demo"); // Find an element 
+                                  elem.innerHTML = x + " " + y;           // Display x and y
+                          
+                          
+                          Example 2
+                                  var x = 5; // Initialize x
+                                  
+                                  elem = document.getElementById("demo"); // Find an element 
+                                  elem.innerHTML = x + " " + y;           // Display x and y  <========== the 'y' here will be 'undefined'
+                                  
+                                  var y = 7; // Initialize y
+                          
+                          Does it make sense that y is undefined in the last example?
+                          
+                          This is because only the declaration (var y), not the initialization (=7) is hoisted to the top.
+                          
+                          Because of hoisting, y has been declared before it is used, but because initializations are not hoisted, 
+                          the value of y is undefined.
+
+
+
+"use strict" Directive
+                  Strict mode makes it easier to write "secure" JavaScript.
+                  The "use strict" directive is new in JavaScript 1.8.5 (ECMAScript version 5).                  
+                  It is not a statement, but a literal expression, ignored by earlier versions of JavaScript.                 
+                  The purpose of "use strict" is to indicate that the code should be executed in "strict mode".
+                  
+                  With strict mode, you can not, for example, use undeclared variables.
+
+                  Declaring Strict Mode
+                  
+                          Strict mode is declared by adding "use strict"; to the beginning of a JavaScript file, or a JavaScript function.
+                          
+                          Declared at the beginning of a JavaScript file, it has global scope (all code will execute in strict mode).
+                          Declared inside a function, it has local scope (only the code inside the function is in strict mode).
+                          
+                          Global declaration:                          
+                                  "use strict"; <================================================ global: use strict
+                                  x = 3.14;       // This will cause an error
+                                  myFunction();   // This will also cause an error
+                                  
+                                  function myFunction() {
+                                      x = 3.14;
+                                  }
+               
+               
+                          Local declaration:                          
+                                  x = 3.14;       // This will not cause an error. 
+                                  myFunction();   // This will cause an error
+                                  
+                                  function myFunction() {
+                                     "use strict";  <============================================ local: use strict
+                                      x = 3.14;
+                                  }
+
+                  Not Allowed in Strict Mode
+                          Using a variable (property or object) without declaring it, is not allowed:
+                                  
+                                  "use strict";
+                                  x = 3.14;                 // This will cause an error (if x has not been declared)
+                          
+                          
+                          Deleting a variable, a function, or an argument, is not allowed.
+                                  
+                                  "use strict";
+                                  x = 3.14;
+                                  delete x;                 // This will cause an error
+                          
+                          
+                          Defining a property more than once, is not allowed:
+                                  
+                                  "use strict";
+                                  var x = {p1:10, p1:20};   // This will cause an error
+                          
+                          
+                          Duplicating a parameter name is not allowed:
+                                  
+                                  "use strict";
+                                  function x(p1, p1) {};    // This will cause an error
+                          
+                          
+                          Octal numeric literals and escape characters are not allowed:
+                                  
+                                  "use strict";
+                                  var x = 010;             // This will cause an error
+                                  var y = \010;            // This will cause an error
+                          
+                          
+                          Writing to a read-only property is not allowed:
+                                  
+                                  "use strict";
+                                  var obj = {};
+                          
+                          
+                          obj.defineProperty(obj, "x", {value:0, writable:false});
+                                  
+                                  obj.x = 3.14;            // This will cause an error
+                          
+                          
+                          Writing to a get-only property is not allowed:
+                                  
+                                  "use strict";
+                                  var obj = {get x() {return 0} };
+                                  
+                                  obj.x = 3.14;            // This will cause an error
+                          
+                          
+                          Deleting an undeletable property is not allowed:
+                                  
+                                  "use strict";
+                                  delete Object.prototype; // This will cause an error
+                          
+                          
+                          The string "eval" cannot be used as a variable:
+                                  
+                                  "use strict";
+                                  var eval = 3.14;         // This will cause an error
+                          
+                          
+                          The string "arguments" cannot be used as a variable:
+                                  
+                                  "use strict";
+                                  var arguments = 3.14;    // This will cause an error
+                          
+                          
+                          The with statement is not allowed:
+                                  
+                                  "use strict";
+                                  with (Math){x = cos(2)}; // This will cause an error
+                          
+                          
+                          For security reasons, eval() are not allowed to create variables in the scope from which it was called:
+                                  
+                                  "use strict";
+                                  eval ("var x = 2");
+                                  alert (x)                // This will cause an error
+                          
+                          
+                          In function calls like f(), the this value was the global object. In strict mode, it is now undefined.
+                                  
+                          Future reserved keywords are not allowed. These are:
+                                  
+                                  implements
+                                  interface
+                                  package
+                                  private
+                                  protected
+                                  public
+                                  static
+                                  yield
+                                  Watch Out!
+                          
+                          
+                          Note  The "use strict" directive is only recognized at the beginning of a script or a function.
+        
+
+JSON
+                  JSON is a format for storing and transporting data.
+                  JSON is often used when data is sent from a server to a web page.
+                  
+                  What is JSON?
+                  JSON stands for JavaScript Object Notation
+                  JSON is lightweight data interchange format
+                  JSON is language independent *
+                  JSON is "self-describing" and easy to understand
+
+                  JSON Syntax Rules
+                      -Data is in name/value pairs
+                      -Data is separated by commas
+                      -Curly braces hold objects
+                      -Square brackets hold arrays
+
+
+                  JSON Objects:
+
+                            var obj = {"firstName":"John", "lastName":"Doe"}
+                            x = obj.firstName;
+                            
+                  
+                  
+                  JSON Arrays
+                  
+                            var obj = {"employees":[
+                                            {"firstName":"John", "lastName":"Doe"}, 
+                                            {"firstName":"Anna", "lastName":"Smith"}, 
+                                            {"firstName":"Peter", "lastName":"Jones"}
+                                        ]};
+                            x = obj.employee[0].firstName;
+                            
+
+
+                  Converting a JSON Text to a JavaScript Object
+
+                            -First, create a JavaScript string containing JSON syntax:
+                            
+                                    var text = '{ "employees" : [' +
+                                    '{ "firstName":"John" , "lastName":"Doe" },' +
+                                    '{ "firstName":"Anna" , "lastName":"Smith" },' +
+                                    '{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+                            
+                            
+                            -[JSON.parse()] 
+                            Then, use the JavaScript built-in function JSON.parse() to convert the string into a JavaScript object:
+                            
+                                    var obj = JSON.parse(text);
+                                    
+                                    
+                            -Finally, use the new JavaScript object in your page:
+                            
+                                    <p id="demo"></p>
+                                    ..
+                                    <script>
+                                    document.getElementById("demo").innerHTML =
+                                    obj.employees[1].firstName + " " + obj.employees[1].lastName;
+                                    </script>
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+document.writeln('Hi you...'+'<br>'); <=== will delete all existing HTML
+
+[innerHTML] document.getElementById("demo").innerHTML = "Hello JavaScript";
+
+
+
+associativeArray .. add a property to the array:
+    var myArray['person'] = "John"; 
+    
+normalArray[1] = 'This is an enumerated array';
+
+[slice] myArray.slice();    <==== Passing Arrays As Values
+
+[length] Array.length    <======== is NOT a read-only value, you can set it as you wish.
+
+
+
+
+
+break         Terminates a switch or a loop
+continue	    Jumps out of a loop and starts at the top
+debugger	    Stops the execution of JavaScript, and calls (if available) the debugging function
+do ... while	Executes a block of statements, and repeats the block, while a condition is true
+for	          Marks a block of statements to be executed, as long as a condition is true
+function	    Declares a function
+if ... else	  Marks a block of statements to be executed, depending on a condition
+return	      Exits a function
+switch	      Marks a block of statements to be executed, depending on different cases
+try ... catch	Implements error handling to a block of statements
+var	          Declares a variable
+
+
+[for loop]  
+  for (i in associativeArray) {..}
+  for(i=0; i<6; i++) {..}
+
+
+[stringX.match()]
+    var image = document.getElementById('myImage');
+    if (image.src.match("bulbon")) {
+        image.src = "pic_bulboff.gif";
+    } else {
+        image.src = "pic_bulbon.gif";
+    }
+
+
+================================================================================
+Mastering Javascript Arrays
+http://www.hunlock.com/blogs/Mastering_Javascript_Arrays#valueOf
+
+
+associativeArray .. add a property to the array:
+    var myArray['person'] = "John"; 
+    
+normalArray[1] = 'This is an enumerated array';
+
+myArray.slice();    <==== Passing Arrays As Values
+
+Array.length    <======== is NOT a read-only value, you can set it as you wish.
+
+for (i in associativeArray) {..}
+for(i=0; i<6; i++) {..}
+
+
+
+-----
+Array Methods Reference
+
+    http://www.hunlock.com/blogs/Mastering_Javascript_Arrays#valueOf
+    
+    concat          Joins multiple Arrays
+    every            Calls a function for every element of the array until false is returned.
+    filter	        Creates an array with each element which evaluates true in the function provided.
+    forEach         Executes a specified function on each element of an Array
+    join	        Joins all the Array elements together into a string.
+    indexOf	        Searches the Array for specific elements.
+    lastIndexOf     Returns the last item in the Array which matches the search critera.
+    map	[.map/key]  [loop thru array...Creates a new array with the result of calling the specified function on each element of the Array.
+    pop          	Returns the last item in the Array and removes it from the Array.
+    push	    	Adds the item to the end of the Array.
+    reverse	    	Reverses the Array so the last item becomes the first and vice-versa.
+    shift	    	Returns the first item in the Array and removes it from the Array.
+    slice	    	Returns a new array from the specified index and length.
+    some	    	Passes each element through the supplied function until true is returned.
+    sort	    	Sorts the array alphabetically or by the supplied function.
+    splice	    	Deletes the specified index(es) from the Array.
+    toSource	    Returns the source code of the array.
+    toString	    Returns the Array as a string.
+    unshift	        Inserts the item(s) to the beginning of the Array.
+    valueOf	        Like toString, returns the Array as a string.
+    
+
+=====================================================================
+
+http://www.hunlock.com/blogs/Mastering_Javascript_Arrays#valueOf
+
+Arrays:
+
+    x[0]=0;
+    x[1]=1;
+    x[2]=2;
+    x[3]=3;
+    x[4]=4;
+    x[5]=5;
+    
+    The index (the number in the brackets [] )can be referenced by a variable, allowing for easy looping through the data structure.
+
+    for(i=0; i<6; i++) { 
+       document.writeln(x[i]+'<br>); 
+    }
+
+
+
+-----
+create array:
+
+    var badArray = new Array(10); // Creates an empty Array that's sized for 10 elements.
+    
+    var myArray = [];             //create an empty array with 0 elements.
+    
+    var goodArray= [10];          // Creates an Array with 10 as the first element.
+
+    
+    
+-----
+Initializing An Array
+
+    -You can initialize your array with pre-defined data…
+    
+        var myArray = ['January', 'February', 'March'];
+        
+        document.writeln('0>'+myArray[0]+'<BR>');                  // Will output: 0>January
+        document.writeln('1>'+myArray[1]+'<BR>');                  // Will output: 1>February
+        document.writeln('2>'+myArray[2]+'<BR>');                  // Will output: 2>March
+    
+    
+    -You can inizialize your array with data after an empty array has been created…
+
+        var myArray = [];
+        
+        myArray[0] = 'January';
+        myArray[1] = 'February';
+        myArray[2] = 'March';
+        document.writeln('0>'+myArray[0]+'<BR>');                  // Will output: 0>January
+        document.writeln('1>'+myArray[1]+'<BR>');                  // Will output: 1>February
+        document.writeln('2>'+myArray[2]+'<BR>');                  // Will output: 2>March
+        
+        
+    -If you skip an element, the blank Array elements will be of type undefined
+
+
+ 
+-----
+Storing Data In An Array
+    
+    -An array can store anything you can assign to a variable: 
+        booleans, 
+        numbers, 
+        strings, 
+        functions, 
+        objects, 
+        other Arrays, 
+        even regular expressions…
+        
+        var myArray = [ 3, 'hello!', function() {return 5}, {'color':'blue', 'budget':25}, /[ell]/i ];
+        document.writeln('0>'+myArray[0]+'<BR>');                  // Will output: 0>3
+        document.writeln('1>'+myArray[1]+'<BR>');                  // Will output: 1>hello!
+        
+        document.writeln('2>'+myArray[2]()+'<BR>');                // Will output: 2>5  <================= run function stored as an element in an array
+        
+        document.writeln('3>'+myArray[3].color+'<BR>');            // Will output: 3>blue
+        document.writeln('3>'+myArray[3].budget+'<BR>');           // Will output: 3>25
+        
+        document.writeln('4>'+myArray[4].test(myArray[1])+'<BR>'); // Will output: 4>true <=============== run reg-expression stored as an element in an array
+
+
+
+-----
+Multi-Dimensional Arrays
+
+    Since an Array can store other Arrays you can get the benefit of multi-dimension arrays.
+        
+        var x=[0,1,2,3,4,5];
+        var y=[x];
+    
+    In the above example we created an array named x and assigned it as the first element in the array y. 
+    If we ask for the value of y[0] it will return the contents of x as a string because we didn't specify an index.
+    
+        var x=[0,1,2,3,4,5];
+        var y=[x];
+        document.writeln(y[0]); // Will output: 0,1,2,3,4,5
+
+    If we wanted the third index we'd access it this way…
+        
+        var x=[0,1,2,3,4,5];
+        var y=[x];
+        document.writeln(y[0][3]); // Will output: 2
+
+    There's no defined limit to how many Arrays you can nest in this manner. For instance …
+
+        document.writeln(bigArray[5][8][12][1])
+
+
+
+-----
+Javascript Arrays Are Passed By Reference
+
+    Arrays are passed to functions by reference, or as a pointer to the original. 
+    This means anything you do to the Array inside the function affects the original.
+    
+        var myArray = [ 'zero', 'one', 'two', 'three', 'four', 'five' ];
+        document.writeln(myArray[1]); // Will output: one
+    
+        function passedByReference(refArray) {
+           refArray[1] = 'changed';
+        }
+    
+        passedByReference(myArray);
+    
+        document.writeln(myArray[1]); // Will output: changed
+     
+   
+   
+-----
+Javascript Arrays Are Assigned By Reference
+
+    Assigning an Array to a new variable creates a pointer to the original Array. For instance…
+
+        var myArray = [ 'zero', 'one', 'two', 'three', 'four', 'five' ];
+        var newArray= myArray;
+        
+        newArray[1] = 'changed';
+        
+        document.writeln(myArray[1]); // Will output: changed
+ 
+ 
+ 
+-----
+Passing Arrays As Values
+
+    To pass an Array by value instead of by reference, use the Array.slice() method.
+        
+        var myArray = [ 'zero', 'one', 'two', 'three', 'four', 'five' ];
+        
+        var newArray= myArray.slice();       
+        newArray[1] = 'changed';
+        
+        document.writeln(myArray[1]); // Will output: one
+        
+        function passedByReference(refArray) {
+           refArray[1] = 'changed';
+        }
+        
+        passedByReference(myArray.slice());	<== passing totaly a new array that is created by the slice()
+        document.writeln(myArray[1]); // Will output: one
+ 
+ 
+ 
+----- 
+Array.length
+
+    Every Array has a length property. This always contains the number of elements in the array. 
+    Since Arrays always start at zero, the length property is convenient for loops since it will always be one greater than the actual index. 
+    For instance if the Array has 10 elements then the indexes will be 0-9, 
+    so as long as our counter is less than the Array.length we'll cover the entire Array…
+        
+        for (var i=0; i<myArray.length; i++) {}
+        
+        Going back to our undefined example above. 
+        Even though 3 of the Array items are undefined the length property will still count them 
+        because it's always one higher than the highest accessable index value.
+        
+            var myArray = [];
+            myArray[0] = 'January';
+            myArray[1] = 'February';    <============================================================== 2 element: 0 and 1
+            myArray[5] = 'March';   <================================================================== automatically increases number of elements to 6
+            
+            document.writeln('0>'+myArray[0]+'<BR>');          // Will output: 0>January
+            document.writeln('1>'+myArray[1]+'<BR>');          // Will output: 1>February
+            document.writeln('2>'+myArray[2]+'<BR>');          // Will output: 2>undefined  <==========
+            document.writeln('3>'+myArray[3]+'<BR>');          // Will output: 3>undefined
+            document.writeln('4>'+myArray[4]+'<BR>');          // Will output: 4>undefined
+            document.writeln('5>'+myArray[5]+'<BR>');          // Will output: 5>March
+            
+            document.writeln('Array Length: '+myArray.length); // Will output: Array Length: 6  <======= 2,3,4 are undefined array elements
+            
+            
+        Array.length is NOT a read-only value, you can set it as you wish.
+        
+        If you have 100 elements in an array and set the length to 50, 
+            Javascript will truncate the last 50 elements from the array (effectively deleting them). 
+        If you have 10 elements in an array and set Array.length to 100 
+            then the length of the array will be expanded to 100, creating 90 undefined elements after the original 10 items. 
+ 
+ 
+ 
+-----
+Javascript Does Not Support Associative Arrays
+    
+    An associative array is an array which uses a string instead of a number as an index.
+    
+        var normalArray    = [];
+        normalArray[1] = 'This is an enumerated array';
+
+        alert(normalArray[1]);   // outputs: This is an enumerated array
+    
+    
+    Javscript object that emulates associate array
+        var associativeArray = [];
+        associativeArray["one"] = "First";  <=================================== this is not an array, it is javascript object: [array's property 'one' value:'First']
+        associativeArray["two"] = "Second";
+        associativeArray["three"] = "Third";
+        for (i in associativeArray) { 
+           document.writeln(i+':'+associativeArray[i]+', '); 
+           // outputs: one:First, two:Second, three:Third
+        };
+        
+        associativeArray.length is 0 <========================================== array's property 'length' = 0
+        
+        The loop in the above example will also pick up any
+        methods, 
+        properties, and prototypes 
+        which have been added to the array and not just your data. 
+        
+        A lot of problems people have with the Prototype library is that their associative arrays break 
+        because Prototype adds a few useful Prototype functions to the Array object and for i in x 
+        loops pick up those additional methods. That's the pitfal of using Array/objects as a poor man's associative array.
+        
+		
+		
+		
+	[Properties]	
+***		EX: myFather.nationality = "English";
+		
+	[prototype]
+***		EX: Person.prototype.nationality = "English";		
+		
+		
+		
+		
+		
+	[javascript Properties]
+	[Properties]
+	
+***		EX: myFather.nationality = "English";
+
+***		[Properties are the values] associated with a JavaScript object.
+
+		A JavaScript object is a collection of unordered properties.
+
+		Properties can usually be changed, added, and deleted, but some are read only.
+
+		
+		The syntax for accessing the property of an object is:
+
+				objectName.property         // person.age
+				
+				or
+
+				objectName["property"]      // person["age"]
+				
+				or
+
+				objectName[expression]      // x = "age"; 
+												person[x]
+											//The expression must evaluate to a property name.
+
+											
+		Example:									
+		var person = {
+			firstName:"John",
+			lastName: "Doe",
+			fullName: function () {
+				return this.firstName + " " + this.lastName;
+			}
+		}
+		person.fullName();         // Will return "John Doe"
+
+		
+		
+	
+[prototype]
+
+***		see example below: Person.prototype.nationality = "English";
+
+***		[add a value to a variable -prototype- in a -constructed- object]
+		
+***		Prototype properties can have prototype values (default values).
+
+		All JavaScript objects inherit the properties and methods from their prototype.
+		
+		Objects created using an object literal, or with new Object(), inherit from a prototype called Object.prototype.
+
+		Objects created with new Date() inherit the Date.prototype.
+
+		The Object.prototype is on the top of the prototype chain.
+
+		All JavaScript objects (Date, Array, RegExp, Function, ....) inherit from the Object.prototype.
+
+		
+		[Creating a Prototype]
+				
+				The standard way to create an object prototype is to use an object constructor function:
+
+				[constructor function]
+				Example:
+				
+				function Person(first, last, age, eyecolor) {
+					this.firstName = first;
+					this.lastName = last;
+					this.age = age;
+					this.eyeColor = eyecolor;
+				}
+
+				With a constructor function, you can use the new keyword to create new objects from the same prototype:
+
+				Example
+				var myFather = new Person("John", "Doe", 50, "blue");
+				var myMother = new Person("Sally", "Rally", 48, "green");
+
+		
+		
+		Adding Properties and Methods to Objects
+		
+				Sometimes you want to add new properties (or methods) to an existing object.
+
+				Sometimes you want to add new properties (or methods) to all existing objects of a given type.
+
+				Sometimes you want to add new properties (or methods) to an object prototype.
+		
+		
+		
+				Adding a Property to an Object
+						Adding a new property to an existing object is easy:
+
+						Example
+						myFather.nationality = "English";
+
+		
+				Adding a Method to an Object
+						Adding a new method to an existing object is also easy:
+
+						Example
+						myFather.name = function () {
+							return this.firstName + " " + this.lastName;
+						};
+
+		
+				
+		
+				Adding Properties to a Prototype
+				
+***						[You cannot add a new property to a prototype] the same way as you add a new property to an existing object, 
+						because the prototype is not an existing object.
+
+						Example
+						Person.nationality = "English"; //<=================================
+						
+						
+						Try it Yourself »
+						To add a new property to a prototype, you must add it to the constructor function:
+
+						
+						Example
+						function Person(first, last, age, eyecolor) {
+							this.firstName = first;
+							this.lastName = last;
+							this.age = age;
+							this.eyeColor = eyecolor;
+							this.nationality = "English";	//<=============================
+						}
+
+		
+				Adding Methods to a Prototype
+						Your constructor function can also define methods:
+
+						Example
+						function Person(first, last, age, eyecolor) {
+							this.firstName = first;
+							this.lastName = last;
+							this.age = age;
+							this.eyeColor = eyecolor;
+							this.name = function() {return this.firstName + " " + this.lastName;};
+						}
+
+						
+				
+				Using the prototype Property
+						The JavaScript prototype property allows you to add new properties to an existing prototype:
+
+						Example
+						function Person(first, last, age, eyecolor) {
+							this.firstName = first;
+							this.lastName = last;
+							this.age = age;
+							this.eyeColor = eyecolor;
+						}
+***						Person.prototype.nationality = "English";
+
+		
+		
+				The JavaScript prototype property also allows you to add new methods to an existing prototype:
+
+						Example
+						function Person(first, last, age, eyecolor) {
+							this.firstName = first;
+							this.lastName = last;
+							this.age = age;
+							this.eyeColor = eyecolor;
+						}
+***						Person.prototype.name = function() {
+							return this.firstName + " " + this.lastName;
+						};
+
+		
+		
+		
+		
+		
+		
+		
+	
+		
+		
+
+-----
+Array Methods Reference
+
+    http://www.hunlock.com/blogs/Mastering_Javascript_Arrays#valueOf
+
+    >>>Array..concat(value1[value2[value...]])
+    
+        The concat method appends the passed values to the end of the Array, 
+        passing back a NEW array containing the joined values. 
+        The values passed to the concat method can be anything you can assign to a variable in Javascript.
+        
+            var myArray = [1,2,3];
+            var newArray= [4,5,6];
+            var seven = 7;
+            var eight = 'eight';
+            var nine = {'sky':'blue', 'grass':'green'};
+            var joinedArray=myArray.concat(newArray, seven, eight, nine);
+            
+            document.writeln(myArray);     // outputs: 1,2,3
+            document.writeln(joinedArray); // outputs: 1,2,3,4,5,6,7,'eight',[object Object]
+
+
+
+    >>>Array..every(function)
+            Every value of the array is passed to that function until the function returns false. 
+            If no elements return false then every will return true, if an element returned false then every will return false. 
+            It's a convenient way to test an Array and see if every element is a number for instance.
+            
+            This method will pass the current value, the current index, and a pointer to the array to your function. 
+            myfunction(curValue, curIndex, curArray)
+            
+            var isNumeric = function(x) {
+                   // returns true if x is numeric and false if it is not.
+                   var RegExp = /^(-)?(\d*)(\.?)(\d*)$/; 
+                   return String(x).match(RegExp);
+                }
+                var myArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+                
+                document.writeln(myArray.every(isNumeric));   // outputs: true
+                
+                var myArray = [1,2,3,4,5,6,7,8,9,'ten',11,12,13,14,15];
+                
+                document.writeln(myArray.every(isNumeric));   // outputs: false
+
+            
+            
+    
+    >>>Array..forEach(function)
+            This is an odd little method. All it does is pass each element of the Array to the passed function. 
+            It ignores any results from the function and it returns nothing itself. 
+            It will pass all the Array contents through the function of your choice but the Array itself will not be affected and it will return nothing by itself.
+            
+            This method will pass the current value, the current index, and a pointer to the array to your function. myfunction(curValue, curIndex, curArray)
+            
+                var printArray = function (x, idx) {
+                   document.writeln('['+idx+'] = '+x);
+                }
+                
+                var myArray = [1,'two',3,'four',5];
+                
+                myArray.forEach(printArray); // outputs: [0] = 1 [1] = two [2] = 3 [3] = four [4] = 5
+
+
+  
+      
+	>>>Array..filter(function)
+		Filter creates a new Array of items which evaluate to true in the supplied function. 
+		In the Array.every() method, we tested if the entire Array was composed of Numbers.
+		In Array.filter() we can extract all the numbers, creating a new Array in the process.
+
+		This method will pass the current value, the current index, and a pointer to the array to your function. 
+		myfunction(curValue, curIndex, curArray)
+
+		Here we pass the array through the same function as .every() -- isNumeric -- and if the element is a number it's placed in the new oddArray Array.
+		
+			var isNumeric = function(x) {
+			   // returns true if x is numeric and false if it is not.
+			   var RegExp = /^(-)?(\d*)(\.?)(\d*)$/; 
+			   return String(x).match(RegExp);
+			}
+			var myArray = [1,'two',3,'four',5,'six',7,'eight',9,'ten'];
+			var oddArray=myArray.filter(isNumeric);
+			
+			document.writeln(oddArray);   // outputs: 1,3,5,7,9
+                
+
+    
+    
+    
+    >>>[Array..map]	<======================================================================= loop thru all elements
+	   [Array..filter]	<=================================================================== select elements based on condition
+	   [Array..reduce]	<=================================================================== accumulate [sum] value
+	
+	
+		[Drawbacks of Looping]
+				var model = [...]; //[blah, blah, blah,...]
+	
+				for(var i = 0; i < array.length; i++) {
+					if(array.indexOf(array[i]) === i) {	//<================================= get unique values (check for duplicates)
+						models.push(array[i]);
+					}
+				}
+
+		
+				array.indexOf(array[i]) === i	if value is first instance in array, it’ll match index. okay this means it’s checking if it’s a duplicate
+				models.push(…)	models must be a list. But what data’s in it? What are their data types? I must search the file for “models”. Rinse. Repeat.
+    
+ 
+ 
+		---
+		[map] ..... Use it when: You want to translate/map all elements in an array to another set of values.
+
+				-Example: convert Fahrenheit temps to Celsius.
+ 
+						var fahrenheit = [0, 32, 45, 50, 75, 80, 99, 120];
+						// JS
+						var celcius = fahrenheit.map( 
+												function(elem){
+													return Math.round( (elem-32)*5/9 );
+												}
+						);
+ 
+						// ES6
+						var celcius_2 = fahrenheit.map( 
+												(elem) => Math.round( (elem-32)*5/9 );
+						);
+						
+ 
+				-parameters:
+
+						array.map(function(elem, index, array) {
+							  ...
+						}, thisArg);
+						
+						param	meaning
+						elem	element value
+						index	index in each traversal, moving from left to right
+						array	original array invoking the method
+						thisArg	(Optional) object that will be referred to as this in callback
+
+		---
+		[filter] ..... Use it when: You want to remove unwanted elements based on a condition.
+
+				-Example: remove duplicate elements from an array.
+
+						// JS
+						var uniqueArray = array.filter(
+						
+								function(elem, index, array) {
+										return array.indexOf(elem) === index;
+								}
+						);
+
+???						// ES6
+???						var uniqueArray_2 = array.filter(
+???								(elem, index, arr) => arr.indexOf(elem) === index
+???						);
+						
+works					//EX2
+works					//const uniqueElements = (arr) => arr.filter(
+works					//		(item, pos) => arr.indexOf(item) == pos
+works					//);
+				 
+				-parameters:
+
+						array.filter(function(elem, index, array) {
+							  ...
+						}, thisArg);
+						
+						param	meaning
+						elem	element value
+						index	index in each traversal, moving from left to right
+						array	original array invoking the method
+						thisArg	(Optional) object that will be referred to as this in callback
+						 
+ 
+ 
+		---
+		[reduce]
+ 
+				-Use it when: You want to find a cumulative or concatenated value based on elements across the array.
+
+				-Example: Sum up orbital rocket launches in 2014.
+
+						var rockets = [
+							{ country:'Russia', launches:32 },
+							{ country:'US', launches:23 },
+							{ country:'China', launches:16 },
+							{ country:'Europe(ESA)', launches:7 },
+							{ country:'India', launches:4 },
+							{ country:'Japan', launches:3 }
+						];
+
+						var sum = rockets.reduce(function(accVal, elem) {
+							return accVal + elem.launches;
+						}, 0);
+
+						// ES6
+						var sum_2 = rockets.reduce((accVal, elem) => accVal + elem.launches, 0); //<==== accumulator
+
+						//sum = 85
+
+ 
+				-parameters:
+
+						array.reduce(function(prevVal, elem, index, array) {
+							  ...
+						}, initialValue);
+						
+						param	meaning
+						prevValue	cumulative value returned thru each callback
+						elem	element value
+						index	index of the traversal, moving from left to right
+						array	original array invoking the method
+						initialValue	(Optional) object used as first argument in the first (leftmost) callback.
+						 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,53 @@
+<!-- index_oauth2.html -->
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Patient List</h1>
+<div id="patientList"></div>
+<pre id="output">Loading...</pre>
+
+<script src="js/fhir-client.js"></script>
+<script>
+    // BROWSER
+    const client = new FHIR.client("http://localhost:8000/DEFAULT");
+    // get all Patients
+    client.request("Patient")
+        .then(display)
+        .catch(display);
+
+
+    function display(data) {
+        const output = document.getElementById("output");
+        dataCallback(data);
+        output.innerText = data instanceof Error ?
+            String(data) :
+            JSON.stringify(data, null, 4);
+    }
+
+    function dataCallback(data){
+        var BUNDLE = data;
+        console.log("z_data.id: " + BUNDLE.id);
+        console.log("z_resourceType: " + BUNDLE.resourceType);
+
+        var patientList = new Array();
+        BUNDLE.entry.forEach(function(nextEntry) {
+            var nextPatient = nextEntry.resource;
+            console.log("z_id: " + nextPatient.id);
+            patientList.push(nextPatient);
+        });
+
+        // build a linkable patient list with their family names
+        var str = '<ul>'
+        patientList.forEach(function(p) {
+            var fname = p.name === undefined?"X":p.name[0].family; // defalt to X if no family name found
+             str += '<li><a href="/x_getPatient.html?id=' + p.id + '">'+ p.id + " : " + fname + '</a></li>';
+        });
+        str += '</ul>';
+
+        document.getElementById("patientList").innerHTML = str;
+
+    }
+
+</script>
+</body>
+</html>

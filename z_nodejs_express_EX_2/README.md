@@ -1,8 +1,3 @@
-
-- https://ilovecoding.org/courses/nodejs/lessons/creating-a-simple-web-app-with-nodejs
-
-- https://www.tabnine.com/code/javascript/functions/http/ServerResponse/writeHead
-
 ## https://www.youtube.com/watch?v=l8WPWK9mS5M
 
 ```bash'
@@ -12,7 +7,15 @@
  >npm install uuid  <=== "https://www.npmjs.com/package/uuid" generate unique id 
 
 ```
+## run:
+```bash'
+ >npm start
+ >node index.js
+```
 
 ## Notes:
-- EXPRESS: for display string, use the 'tick' ` instead of the sigle quote
+- for (template-string) string-output, use the 'tick' ` instead of the single quote:
+```bash'
+  res.send(`User name: [${user.firstName}] added to the database`);
+```
 

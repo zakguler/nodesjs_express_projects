@@ -1,0 +1,52 @@
+<!-- index_oauth2.html -->
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 id="idHeader">Patient</h1>
+
+<pre id="output">Loading...</pre>
+
+
+<script src="js/fhir-client.js"></script>
+<script>
+    // BROWSER
+
+    var urlVars = getUrlVars();
+    var _id = urlVars["id"];
+
+    console.log("z_id: " + _id);
+    document.getElementById("idHeader").innerHTML = "Patient " + _id;
+
+    const client = new FHIR.client("http://localhost:8000/DEFAULT");
+    client.request("Patient/" + _id + "/$everything")
+        .then(display)
+        .catch(display);
+
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+    function display(data) {
+        const output = document.getElementById("output");
+        output.innerText = data instanceof Error ?
+            String(data) :
+            JSON.stringify(dataCallback(data), null, 4);
+    }
+
+    function dataCallback(data){
+        var BUNDLE = data;
+
+        console.log("z_data.id: " + BUNDLE.id);
+        console.log("z_resourceType: " + BUNDLE.resourceType);
+        return data;
+    }
+
+</script>
+</body>
+</html>
