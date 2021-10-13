@@ -27,26 +27,31 @@ server.get("/", (req, res) => {
 });
 
 server.get("/x_getPatient.html", (req, res) => {
+
+    console.log("z_req.originalUrl: " + req.originalUrl);
+    console.log("z_req.hostname: " + req.hostname);
+
+    // list al parameters in the url query
+    for (const key in req.query) {
+        console.log("...z_key/value: " + key, req.query[key])
+    }
+
+    req.query.id = "x9999";
+
+    const { id } = req.query;  //==> { id: 2 }
     // const id = req.query.id;
-    const id = req.param("id");
+    // const { id } = req.params;  //==> { id: 2 }
+    // const id = req.param("id"); <=== deprecated
     console.log("z_param/query: " + id);
-    const prm = {'id': '1234', 'wewe':'yes'};
-    // displayAllParams(req.params);
-    // res.sendFile(__dirname + "/x_getPatient.html");
-   res.sendFile(__dirname + "/x_getPatient.html", prm);
-});
+
+    res.sendFile(__dirname + "/x_getPatient.html");
+    // res.redirect('/extra.html?id=z9999&hi=you');
+
+ });
+
 
 
 server.listen(PORT, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
-
-function displayAllParams(params){
-    params.forEach((param, index) => {
-        //This checks each key-value pair, in the format key=value, for the specific id key we want
-        var key = param.split("=")[0]; //In id=123, this would be "id"
-        var value = param.split("=")[1]; //In id=123, this would be "123" (as a String)
-        console.log(key + ":" + value);
-    });
-}
 
 
 

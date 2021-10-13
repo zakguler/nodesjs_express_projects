@@ -14,8 +14,14 @@
 
     var urlVars = getUrlVars();
     var _id = urlVars["id"];
-
     console.log("z_id: " + _id);
+
+    //const prm = {'id': '1234', 'wewe':'yes'};
+    //console.log("z_wewe: " + urlVars["wewe"])
+    console.log("z_window.location: " + window.location);
+    console.log("z_window.location.href: " + window.location.href);
+    console.log("z_document.URL: " + document.URL);
+
     document.getElementById("idHeader").innerHTML = "Patient " + _id;
 
     const client = new FHIR.client("http://localhost:8000/DEFAULT");

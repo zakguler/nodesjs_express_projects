@@ -40,7 +40,9 @@
         var str = '<ul>'
         patientList.forEach(function(p) {
             var fname = p.name === undefined?"X":p.name[0].family; // defalt to X if no family name found
-             str += '<li><a href="/x_getPatient.html?id=' + p.id + '">'+ p.id + " : " + fname + '</a></li>';
+            // str += '<li><a href="/x_getPatient.html?id=' + p.id + '">'+ p.id + " : " + fname + '</a></li>';
+            // for testing, add dummy parameter 'wewe=NO'
+            str += '<li><a href="/x_getPatient.html?id=' + p.id + '&wewe=NO">'+ p.id + " : " + fname + '</a></li>';
         });
         str += '</ul>';
 
