@@ -21,7 +21,7 @@ server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, 'public')));
 
 server.get("/", (req, res) => {
-    // res.sendFile(__dirname + "/index.html");
+    // res.sendFile(__dirname + "/index.ejs");
     // res.sendFile(__dirname + "/getPatient_read.html");
     res.sendFile(__dirname + "/x_listAll.html");
 });
@@ -44,7 +44,11 @@ server.get("/x_getPatient.html", (req, res) => {
     // const id = req.param("id"); <=== deprecated
     console.log("z_param/query: " + id);
 
+    // res.sendFile(__dirname + `/x_getPatient.html` + `?xyz=yyy`);
+    // res.sendFile(__dirname + "/x_getPatient.html?xyz=yyy");
+    // req.query.newParam = "Sam";
     res.sendFile(__dirname + "/x_getPatient.html");
+    // res.render("/x_getPatient.html",'{"hi":"you"}');
     // res.redirect('/extra.html?id=z9999&hi=you');
 
  });
