@@ -1,0 +1,176 @@
+SPA
+
+Build a Single Page Application with JavaScript (No Frameworks)
+
+-youtube: https://www.youtube.com/watch?v=6BozpmSjk-Y&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=51&t=742s
+
+
+ignore the basic installs and template for a momemnt
+skip it for now..
+
+
+================================================================================================
+================================================================================================
+================================================================================================
+[HTML]
+[viewport]
+
+[width=device-width]
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing file</title>
+</head>
+
+
+================================================================================================
+================================================================================================
+================================================================================================
+[Basic Template]
+
+-install node
+
+-create the following folders:
+	/server.js
+	/public
+	/views
+
+
+-start a new project:
+	>npm init -y	<=== will generate package.json file
+	
+	
+-install express:
+	>npm i express
+	>npm i ejs
+	>npm i --save-dev nodemon
+	
+	
+	
+-install nodemon
+	>npm i --save-dev nodemon	<=== hot deploy
+	
+	-add the following in package.json file:
+		"scripst": {
+			"start": "nodemon server.js"
+		},
+	-to run:
+		>npm start
+		
+
+
+		
+	import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
+	import path from 'path';
+
+	const app = express();
+	const PORT = 3000;
+	app.set('view engine', 'ejs');  //<=== for html views
+	// EX: http://localhost:3000/test/tt.html
+	app.use(express.static("public"));
+	app.use(express.json());    //<=== for json request processing from the body
+	app.use(express.urlencoded({ extended: true }));
+
+
+
+	app.get("/", (req,res)=>{
+		console.log("I am in get..");
+		res.status("500").json({"msg": "my message"});
+	});
+
+
+	// '/frontend/index.html'
+	app.get('/*', (req, res) => {
+		res.sendFile(path.resolve('frontend', 'index.html'));
+	});
+
+
+	const PORT = 3000;
+	app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
+
+
+================================================================================================
+================================================================================================
+================================================================================================
+
+Build a Single Page Application with JavaScript (No Frameworks)
+
+
+-youtube: https://www.youtube.com/watch?v=6BozpmSjk-Y&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=51&t=742s
+
+
+/spa
+	/frontend
+		index.html
+		
+
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Single Page App</title>
+		</head>
+		<body>
+
+			<nav class="nav">
+				<!-- 'data-link' used for history api, pushed state method-->
+				<a href="/" class="nav__link" data-link>Dashboard</a>
+				<a href="/posts" class="nav__link" data-link>Posts</a>
+				<a href="/settings" class="nav__link" data-link>Settings</a>
+			</nav>
+
+			<!-- 'index.js' client entry point -->
+			<script type="module"  src="static/js/index.js"></script>
+
+		</body>
+		</html>
+
+
+>npm init -y
+
+>npm i express
+
+>npm i --save-dev nodemon
+
+
+/spa	
+	/server.js
+
+
+
+/spa
+	/frontend
+		/js
+			/index.js
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ const PORT = 3000;
 
 app.set('view engine', 'ejs');  //<=== for html views
 
+// point to the static directory, in this case, it is the 'public' folder
 // EX: http://localhost:3000/test/tt.html
 app.use(express.static("public"));
 app.use(express.json());    //<=== for json request processing from the body

@@ -1791,17 +1791,17 @@ Logical Operators
                   
                   &&	and	        (x < 10 && y > 1)         is true
                   ||	or	        (x == 5 || y == 5)        is false
-                  !	not	          !(x == y)                 is true
+                  !		not	        !(x == y)                 is true
 
 
 Bitwise Operators
-                  Operator  Description	Example	      Same-as	        Result	  Decimal
+                  Operator  Description	Example	      	Same-as	        Result	  	Decimal
                   &         AND	        x = 5 & 1	    0101 & 0001	    0001	    1
                   |	        OR	        x = 5 | 1	    0101 | 0001	    0101	    5
-                  ~	        NOT	        x = ~ 5	      ~0101	          1010	    10
+                  ~	        NOT	        x = ~ 5	      	~0101	        1010	    10
                   ^	        XOR	        x = 5 ^ 1	    0101 ^ 0001	    0100    	4
-                  <<	      Left shift	x = 5 << 1	  0101 << 1	      1010	    10
-                  >>	      Right shift	x = 5 >> 1	  0101 >> 1	      0010	    2
+                  <<	    Left shift	x = 5 << 1		0101 << 1	    1010	    10
+                  >>	    Right shift	x = 5 >> 1		0101 >> 1	    0010	    2
                   
 
 
@@ -1809,8 +1809,30 @@ Bitwise Operators
 Conditional Operator
 
                   voteable = (age < 18) ? "Too young":"Old enough";
+				   
+				  var welcomeMessage  = 'Hello ' + (username ? username : 'guest');
+				  
+				  Or
+				  var welcomeMessage  = 'Hello ' + (username || 'guest'); //<== if not "undefined, false, null or empty" then 'guest'
+				  
+				  or
+				  var welcomeMessage  = 'Hello ' + (username || something || maybethis || 'guest');
+				  
+				  
+				  condition1 ? value1
+				 : condition2 ? value2
+				 : condition3 ? value3
+				 : value4;
+							 
+				Or/similar to
+				if (condition1) { return value1; }
+				else if (condition2) { return value2; }
+				else if (condition3) { return value3; }
+				else { return value4;
+	
+				  
 
-If Else Statementst
+If Else Statement
                   
                   if (time < 20) {
                       greeting = "Good day";

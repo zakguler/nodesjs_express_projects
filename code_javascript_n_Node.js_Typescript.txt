@@ -1,0 +1,27 @@
+>npm init -y
+    -to generate package.json
+
+-jsconfig.json
+
+-install node.js
+
+-npm
+
+>node app.js
+    -to run javascript code
+
+-download typescript
+    >npm install -g typescript
+    OR
+    >npm install typescript --save-dev
+
+    >tsc    <== run type script anywhere
+    >npx    <== same as tsc
+
+
+    
+
+
+
+
+

@@ -1,0 +1,597 @@
+node and express
+
+
+also, see [HTML/dom/Javascript] sample down below..
+	  see [view / ejs] to render html files
+	  see [routers]
+	  see [middleware]
+	  see [static] html views
+	  see [render][form][req.render()][parse information sent from a form]
+	  
+	  see [full middlewae express guide]
+	  
+??? how do these work:
+	// module.exports = router;    //<===  make the router object/field visible
+	export default router;
+
+	  
+	  
+	  
+=======================================================
+=======================================================
+=======================================================
+IMPORTANT / GENERAL NOTE:
+
+	-remember, all js filesare structured to run top-down
+	-use app.use() as an example and where to add the middleware to be called.
+	
+		see: https://www.youtube.com/watch?v=lY6icfhap2o
+		Learn Express Middleware In 14 Minutes
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+=======================================================
+=======================================================
+=======================================================
+[HTML]
+[viewport]
+
+[width=device-width]
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing file</title>
+</head>
+
+	  
+=======================================================
+=======================================================
+=======================================================
+
+-Learn Express JS In 35 Minutes
+-youtube: https://www.youtube.com/watch?v=SccSCuHhOw0&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=8
+
+
+-install node
+
+-create the following folders:
+	/server.js
+	/public
+	/views
+
+
+-start a new project:
+	>npm init -y	<=== will generate package.json file
+	
+	
+-install express:
+	>npm i express
+	>npm i ejs
+	>npm i --save-dev nodemon
+	
+	
+	
+-install nodemon
+	>npm i --save-dev nodemon	<=== hot deploy
+	
+	-add the following in package.json file:
+		"scripst": {
+			"start": "nodemon server.js"
+		},
+	-to run:
+		>npm start
+		
+
+
+		
+import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
+const app = express();
+const PORT = 3000;
+app.set('view engine', 'ejs');  //<=== for html views
+
+// point to the static directory, in this case, it is the 'public' folder
+// EX: http://localhost:3000/test/tt.html
+app.use(express.static("public"));
+
+app.use(express.json());    //<=== for json request processing from the body
+app.use(express.urlencoded({ extended: true }));
+
+
+
+// '/frontend/index.html'
+app.get('/', (req, res) => {
+	res.sendFile(path.resolve('frontend', 'index.html'));
+});
+
+
+app.get("/", (req,res)=>{
+	console.log("I am in get..");
+	res.status("500").json({"msg": "my message"});
+});
+
+const PORT = 3000;
+app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
+
+
+
+
+
+---
+***
+	'/:id'	=====> req.params.id
+	'?id=1234' ==> req.query.id
+
+
+***NOTE: -app and router acts the same.
+	  -warning==> all router/app.xxx() 
+					processes top-down: ex:	app.get('/'..
+											app.get('/:id'.. <== bad, dynamic '/:id' ahead of static path
+											app.get('/new'.. <== static '/new' should be above/before the dynamic url/path
+
+req.originalUrl
+
+const { id } = req.params;
+const { id } = req.query;  //==> { id: 2 }
+console.log("z_param/query: " + id);
+
+req.param.id
+req.query.id
+
+
+res.send("Hi")
+res.status(500).send("Hi")
+res.json({"msg": "Error"})
+res.status(500).json({"msg": "Error"})
+res.sendStatus(500)
+res.download("file.txt")
+res.render('index')	
+
+router.get('/:id')
+
+===============================
+===============================
+???// Demo of making a request to the server
+// const axios = require('axios');
+// import axios from 'axios';
+// const res = await axios.get('http://localhost:5000/x_getPatient.html?a=1&b=2');
+
+
+===============================
+===============================
+
+-[app.req] req.query
+***-[routes] req.params can be used to retrieve values from routes.
+
+req.query will return a JS object after the query string is parsed. 
+/user?name=tom&age=55 
+- req.query would yield {name:"tom", age: "55"} 
+
+req.params will return parameters in the matched route. 
+If your route is /user/:id and you make a request to /user/5 
+- req.params would yield {id: "5"} req.param is a
+
+
+===============================
+===============================
+
+// list al parameters in the url query
+for (const key in req.query) {
+	console.log("z_key/value: " + key, req.query[key])
+}
+
+const id = req.query.id;
+// const id = req.param("id"); <=== deprecated
+console.log("z_param/query: " + id);
+
+console.log("z_req.originalUrl: " + req.originalUrl); ==> '/x_getPatient.html?id=z8888'
+console.log("z_req.hostname: " + req.hostname); ==> 'localhost'
+
+
+
+=======================================================
+=======================================================
+=======================================================
+[view / ejs]
+
+// send html file-they are by default in a folder called 'views' ==> index.ejs
+// it needs to use a view engine like 'ejs' or 'pug'
+ 
+>npm i ejs
+
+-create a folder called 
+	\views
+		\index.ejs
+		
+***-all html files should have prefix '.ejs'
+
+
+// 
+/*	If you want to have intellij detect *.ejs as *.html files 
+*	to provide autocompletion for those files 
+*	you can:
+*	Go File -> Settings. Type File Types Open File Types tab. 
+*	click on HTML. Click on + under File name patterns 
+*	Add *.ejs in the file name pattern list.
+*/
+// to pass info 'something' to the html file:
+//		EX: <body> hello <%= 2 + 2 %> </body>
+//		EX: <body> hello <%= something %> </body>
+//		EX: <body> Hello <%= locals.text || 'Default Val' %> </body>
+//
+app.set('view engine', 'ejs');
+res.render('index', {'text': 'Hello World'})
+
+index.ejs: <body>Hello <%= something %> </body>
+
+---
+server.jsapp.set('view engine', 'ejs');
+
+app.get('/', (req,res)=> {
+    console.log("Hi");
+    // res.status(200).send('z_GET ... ' );
+    res.render("index", {"text": "World"})
+})
+
+----
+index.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  Hello <%= locals.text || 'Default Val' %>
+</body>
+</html>
+
+
+=======================================================
+=======================================================
+=======================================================
+[routers]
+
+// create a folder called /routers	<== can be called anything
+// inside it create js files, for instance /users.js
+// because we defined it in app.use('/users', usersRoutes),
+// the path will be defaulted to /users. 
+//		in this file, the '/' is actually represents '/users'
+//		and the '/new' is '/users/new'
+//
+/routes
+	/users.js
+		import express from 'express;
+		const router = express.Router();	<=== router.xxx is the same as app.xxx
+
+		//app.get("/", (req,res)=>{
+		router.get("/", (req,res)=>{
+			res.send('users list');
+		});
+		router.get("/new", (req,res)=>{
+			res.send('user created');
+		});
+		
+		// you can chain all the '/:id' similar dynamic paths together. see example below.
+		router.get("/:id", (req,res)=>{
+			res.send('get user');
+		});
+		router.delete("/:id", (req,res)=>{
+			res.send('delete user');
+		});
+		router.put("/:id", (req,res)=>{
+			res.send('update user');
+		});
+		
+		module.exports = router	//<===  make the router object/field visible 
+
+***		/* chaingin similar requests:
+				//==========================================================================
+				// using 'route.' for all routes that looks for the same parameter'/:id'
+				router
+					.route("/:id")
+						.get((req, res) => {
+							res.send(`Get user with id: ${req.params.id}`);
+						})
+						.put((req, res) => {
+							res.send(`Update user with id: ${req.params.id}`);
+						})
+						.delete((req, res) => {
+							res.send(`Delete user with id: ${req.params.id}`);
+						})
+				// router.get("/:id", (req, res) => {
+				//     res.send(`Get user with id: ${req.params.id}`);
+				// })
+				//
+				// router.put("/:id", (req, res) => {
+				//     res.send(`Update user with id: ${req.params.id}`);
+				// })
+				//
+				// router.delete("/:id", (req, res) => {
+				//     res.send(`Delete user with id: ${req.params.id}`);
+				// })
+				//==========================================================================
+		*/
+
+
+/server.js
+	import usersRouter from './routes/users.js';	//<=== require/import this file
+	app.use('/users', usersRoutes) //<=== link a route to a particular path
+
+
+
+	
+	
+===========
+===========
+---middleware ==> router.param()
+	-uses 3 parameters: (req, res, next)
+	-it means when you find param :id, run the following function before you run the route.get or .delete or, ..
+	-and then execute next() to run the actual app.get('/', (req, res)=>{..}
+/routes/users.js
+	router.param('id', (req, res, next, id) => {
+		console.log(id);
+		next();
+	});
+
+//---middleware example_2
+function logger(req, res, next) {
+	console.log(req.originalUrl)
+	next()
+}
+
+stopped the video here: @ 25:04 / 36:02
+
+-to use the middleware logger():
+	app.use(logger);
+
+
+---
+full code
+
+/server.js
+		import express from 'express';
+
+		const app = express();
+		const PORT = 3000;
+
+		app.set('view engine', 'ejs');
+
+
+		// mdlware_3 will only run with the app.get('/'..) three times
+		// it is specific for this function
+		// also, it does not need to use 'app.use(mdlware_3)
+		// NOTE: if you define this mdlware_3 in the user.js file, it will only work for '/users..' calls
+		//
+		// this code does not see the 'logger' middleware
+		// app.get('/', (req,res)=> {
+		app.get('/', mdlware_3, mdlware_3, mdlware_3, (req,res)=> {
+			console.log("Hi");
+			// res.status(200).send('z_GET ... ' );
+			res.render("index", {"text": "World"})
+		})
+
+
+		//==========================================================================
+		// middleware 'logger' gets used anywhere below the [app.use(logger]
+		// any router call above this will not use because the code gets executed top-down
+		app.use(logger);
+		//==========================================================================
+
+
+		import usersRouter from './routes/users.js';	//<=== require/import this file
+		app.use('/users', usersRouter) //<=== link a route to a particular path
+
+		// import accountsRouter from './routes/accounts.js';	//<=== require/import this file
+		// app.use('/accounts', accountsRouter) //<=== link a route to a particular path
+
+
+		//---middleware example_2
+		function logger(req, res, next) {
+			console.log("z_middleware_2 logger: " + req.originalUrl)
+			next()
+		}
+
+		//---middleware example_3
+		function mdlware_3(req, res, next) {
+			console.log("z_mdlware_3 logger: " + req.originalUrl)
+			next()
+		}
+
+
+		app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
+
+
+=======================================================
+=======================================================
+=======================================================
+[static] html views
+
+	-create a folder'public'
+	-add another folder and the static html file 'test/tt.html'
+	
+		/public	
+			/test/
+				tt.html
+
+	-/server.js
+		// point to the static directory, in this case, it is the 'public' folder
+		app.use(express.static("public"));
+
+	-to run/test
+		browser: http://localhost:3000/test/tt.html
+
+
+
+=======================================================
+=======================================================
+=======================================================
+[render][form]
+[parse information sent from a form]
+
+	-NOTE:
+		// we can't access the req.body at all,
+		// by default, express does not allow you to access the body.
+		// we have to use middleware to do this for us.
+			
+			/server.js
+				app.use(express.urlencoded({ extended: true }));
+			
+
+	-/routes
+		/users.js		
+			//
+			// EX: render form
+			// router.post("/users/new", (req, res) => {
+			//
+			router.get("/new", (req, res) => {
+				// "users/new": default views location: /views/users/new.ejs
+				res.render("users/new", {firstName: "Test"});   //<=== default form's /views/users/new.ejs: 'firstName'
+			})
+			//
+
+			// note: the form/POST will come here
+			// router.post("/", (req, res) => {
+			//     res.send("Create user");
+			// })
+			router.post("/", (req, res) => {
+				// const isValid = true;
+				const isValid = false;
+				if (isValid) {
+					users.push({name: req.body.firstName});
+					res.redirect(`/users/${users.length - 1}`)//<== redirect to a brand new url. display the last [index] users
+				}else{
+					console.log("Error");
+					// go back to the page you came from and redisplay the old data user typed last
+					res.render("users/new", {firstName: req.body.firstName});   //<=== default form's /views/users/new.ejs: 'firstName'
+				}
+			})
+
+
+	-/views
+		/users	
+			views.ejs	<=== html file
+				<!DOCTYPE html>
+				<html lang="en" xmlns="http://www.w3.org/1999/html">
+				<head>
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<title>Document</title>
+				</head></head>
+				<body>
+					<form action="/users" method="POST">
+						<label>First Name</label>
+							<input type=text" name="firstName" value="<%= locals.firstName %>" />
+						</label>
+						<button type="submit">Submit</button>
+					</form>
+				</body>
+				</html>
+
+			
+
+=======================================================
+=======================================================
+=======================================================
+[full middlewae express guide]
+
+https://www.youtube.com/watch?v=lY6icfhap2o
+
+-js files run top-down
+
+-you can set the middleware to be called in two different ways:
+	-app.use(mdlware_1)	<=== midleware 'logger'
+	OR
+	-app.get('/', mdlware_3, mdlware_3, mdlware_3, (req,res)=> {...}
+
+
+
+
+
+
+>npm init -yes
+>npm i express
+>npm i --save-dev nodemon
+
+
+/public
+/views
+/server.js	
+	import express from 'express';
+	const app = express();
+	const PORT = 3000;
+	
+	// point to the static directory, in this case, it is the 'public' folder
+	app.use(express.static("public"));
+	
+	app.use(express.json());    //<=== for json request processing from the body
+	app.use(express.urlencoded({ extended: true }));
+
+
+	app.use(logger);
+
+	app.get('/', auth, (req,res)=> {
+		console.log("z_app.get(/)... Hi");
+		console.log(`z_get req.query.newVal: ${req.query.newVal}`); //<== receive this value from 'auth()' middleware
+		res.send("I am in app.get");
+	})
+
+	//---middleware
+	function logger(req, res, next) {
+		console.log("z_logger(): " + req.originalUrl)
+		next()
+	}
+
+	//---middleware
+	function auth(req, res, next) {
+		if (req.query.admin === 'true'){
+			console.log("z_auth()... admin===true");
+			req.query.newVal = "Sam";   //<== pass this value from the middleware to app.get("/", auth,(req,res....
+			next()  //<== execute app.get("/", auth,(req,res....
+			//return //<== if you don't have the 'else' statement, then it is best to add return immediatly after the next*(
+		}else{
+			console.log("z_NO auth");
+			res.send("No Auth");    //<== don't go back to app.get()..
+		}
+	}
+
+	app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
+
+
+
+
+
+
+
+
+
+=======================================================
+=======================================================
+=======================================================
+[HTML/dom/Javascript]
+
+<script>
+    // BROWSER
+
+    var urlVars = getUrlVars();
+    var _id = urlVars["id"];
+    console.log("z_id: " + _id);
+
+    //const prm = {'id': '1234', 'wewe':'yes'};
+    //console.log("z_wewe: " + urlVars["wewe"])
+    console.log("z_window.location: " + window.location);
+    console.log("z_window.location.href: " + window.location.href);
+    console.log("z_document.URL: " + document.URL);
+
+    document.getElementById("idHeader").innerHTML = "Patient " + _id;
+
+

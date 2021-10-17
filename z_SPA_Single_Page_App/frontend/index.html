@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App</title>
+</head>
+<body>
+
+    <nav class="nav">
+        <!-- 'data-link' used for history api, pushed state method-->
+        <a href="/" class="nav__link" data-link>Dashboard</a>
+        <a href="/posts" class="nav__link" data-link>Posts</a>
+        <a href="/settings" class="nav__link" data-link>Settings</a>
+    </nav>
+
+    <!-- 'index.js' client entry point -->
+    <script type="module"  src="js/index.js"></script>
+
+</body>
+</html>
