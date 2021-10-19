@@ -1,5 +1,10 @@
 node and express
 
+-Learn Express JS In 35 Minutes
+-youtube: https://www.youtube.com/watch?v=SccSCuHhOw0&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=8
+
+-see: https://www.youtube.com/watch?v=lY6icfhap2o
+-Learn Express Middleware In 14 Minutes
 
 also, see [HTML/dom/Javascript] sample down below..
 	  see [view / ejs] to render html files
@@ -594,4 +599,5 @@ https://www.youtube.com/watch?v=lY6icfhap2o
 
     document.getElementById("idHeader").innerHTML = "Patient " + _id;
 
-
+	//see if this works:
+	console.log('location.pathname: ' + location.pathname);

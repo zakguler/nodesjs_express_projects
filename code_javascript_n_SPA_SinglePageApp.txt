@@ -1,8 +1,16 @@
 SPA
 
+??? addListener ('popState'...
+
+??? what is async() function
+??? understand router
+
+
+
 Build a Single Page Application with JavaScript (No Frameworks)
 
 -youtube: https://www.youtube.com/watch?v=6BozpmSjk-Y&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=51&t=742s
+-github: https://github.com/dcode-youtube/single-page-app-vanilla-js
 
 
 ignore the basic installs and template for a momemnt
@@ -100,31 +108,31 @@ Build a Single Page Application with JavaScript (No Frameworks)
 -youtube: https://www.youtube.com/watch?v=6BozpmSjk-Y&list=PLvFBAcs5-Ef5YWJRTYfZQAeQnDaMNVIrS&index=51&t=742s
 
 
+===============
 /spa
 	/frontend
 		index.html
 		
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Single Page App</title>
+			</head>
+			<body>
 
-		<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>Single Page App</title>
-		</head>
-		<body>
+				<nav class="nav">
+					<!-- 'data-link' used for history api, pushed state method-->
+					<a href="/" class="nav__link" data-link>Dashboard</a>
+					<a href="/posts" class="nav__link" data-link>Posts</a>
+					<a href="/settings" class="nav__link" data-link>Settings</a>
+				</nav>
 
-			<nav class="nav">
-				<!-- 'data-link' used for history api, pushed state method-->
-				<a href="/" class="nav__link" data-link>Dashboard</a>
-				<a href="/posts" class="nav__link" data-link>Posts</a>
-				<a href="/settings" class="nav__link" data-link>Settings</a>
-			</nav>
+				<!-- 'index.js' client entry point -->
+				<script type="module"  src="static/js/index.js"></script>
 
-			<!-- 'index.js' client entry point -->
-			<script type="module"  src="static/js/index.js"></script>
-
-		</body>
-		</html>
+			</body>
+			</html>
 
 
 >npm init -y
@@ -133,12 +141,33 @@ Build a Single Page Application with JavaScript (No Frameworks)
 
 >npm i --save-dev nodemon
 
-
+===============
 /spa	
 	/server.js
 
+			import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
+			import path from 'path';
+
+			const app = express();
+			const PORT = 3000;
+
+			// point to the static directory
+			const __dirname = path.resolve(path.dirname('./'));
+			// app.use('static', express.static(path.resolve(__dirname, 'static'))); //first 'static' is causing an error
+			app.use(express.static(path.resolve(__dirname, 'frontend', 'static')));
+			// app.use(express.static(path.resolve('static')));
+
+			// all calls go back to index.html
+			app.get('/*', (req, res) => {
+				res.sendFile(path.resolve('frontend', 'index.html'));
+			});
 
 
+			app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
+
+
+
+===============
 /spa
 	/frontend
 		/js
@@ -149,7 +178,7 @@ Build a Single Page Application with JavaScript (No Frameworks)
 
 
 
-
+stopped @ 21:00 / 37:39
 
 
 
