@@ -601,3 +601,14 @@ https://www.youtube.com/watch?v=lY6icfhap2o
 
 	//see if this works:
 	console.log('location.pathname: ' + location.pathname);
+	
+	document.body.innerHTML = sayHi('John');
+	
+	----
+	<pre id="output">Loading...</pre>
+    <script type="module">
+        import {sayHi} from './sayHi.mjs';
+        const out = document.getElementById("output");
+        out.innerText = sayHi('John');
+	----
+

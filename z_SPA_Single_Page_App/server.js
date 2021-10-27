@@ -6,6 +6,7 @@ const PORT = 3000;
 
 // point to the static directory
 const __dirname = path.resolve(path.dirname('./'));
+
 // app.use('static', express.static(path.resolve(__dirname, 'static'))); //first 'static' is causing an error
 app.use(express.static(path.resolve(__dirname, 'frontend', 'static')));
 // app.use(express.static(path.resolve('static')));

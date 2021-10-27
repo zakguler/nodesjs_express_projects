@@ -1,10 +1,7 @@
 
 
-??? export.showPage = showPage;
 ??? module.export = router
-??? export const getUser = (req,res)=> {...
-??? export default router;
-??? what is 'export default class'
+
 
 
 ...	spread operator: like flat-map
@@ -198,10 +195,623 @@ Closure2:
                 You can NOT call privatefunction directly (i.e. a.privatefunction() ), just publicfunction().
 
 
+
 ================================================================================
 ================================================================================
 ================================================================================
-Spread Operatot [...]
+[export]
+
+NOTE: [type="module"] when used in embedded scripts
+		There is also a function-like dynamic import(), which does not require scripts of type="module".
+		
+		
+
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
+
+	The export statement is used when creating JavaScript modules to export live bindings to 
+	functions, objects, or primitive values from the module so they can be used by other programs 
+	with the import statement. The value of an imported binding is subject to change in the module that exports it.
+	When a module updates the value of a binding that it exports, the update will be visible in its imported value.
+
+	Exported modules are in strict mode whether you declare them as such or not. 
+	The export statement cannot be used in embedded scripts.
+
+	Syntax
+	There are two types of exports:
+
+		Named Exports (Zero or more exports per module)
+		Default Exports (One per module)
+		// Exporting individual features
+		export let name1, name2, …, nameN; // also var, const
+		export let name1 = …, name2 = …, …, nameN; // also var, const
+		export function functionName(){...}
+		export class ClassName {...}
+
+		// Export list
+		export { name1, name2, …, nameN };
+
+		// Renaming exports
+		export { variable1 as name1, variable2 as name2, …, nameN };
+
+		// Exporting destructured assignments with renaming
+		export const { name1, name2: bar } = o;
+
+		// Default exports
+		export default expression;
+		export default function (…) { … } // also class, function*
+		export default function name1(…) { … } // also class, function*
+		export { name1 as default, … };
+
+		// Aggregating modules
+		export * from …; // does not set the default export
+		export * as name1 from …; // Draft ECMAScript® 2O21
+		export { name1, name2, …, nameN } from …;
+		export { import1 as name1, import2 as name2, …, nameN } from …;
+		export { default, … } from …;
+		Copy to Clipboard
+
+	nameN
+	Identifier to be exported (so that it can be imported via import in another script).
+
+	Named exports are useful to export several values. 
+	During the import, it is mandatory to use the same name of the corresponding object.
+
+
+	But a default export can be imported with any name for example:
+
+		// file test.js
+		let k; export default k = 12;
+		
+		// some other file
+		import m from './test'; // note that we have the freedom to use import m instead of import k, because k was default export
+		console.log(m);        // will log 12
+	
+	
+	You can also rename named exports to avoid naming conflicts:
+		export { myFunction as function1,
+				 myVariable as variable };
+			 
+
+
+	-----
+	Examples
+	
+		Using named exports
+		In a module my-module.js, we could include the following code:
+
+		// module "my-module.js"
+		function cube(x) {
+		  return x * x * x;
+		}
+
+		const foo = Math.PI + Math.SQRT2;
+
+		var graph = {
+		  options: {
+			  color:'white',
+			  thickness:'2px'
+		  },
+		  draw: function() {
+			  console.log('From graph draw function');
+		  }
+		}
+
+		export { cube, foo, graph };
+		Copy to Clipboard
+		Then in the top-level module included in your HTML page, we could have:
+
+		import { cube, foo, graph } from './my-module.js';
+
+		graph.options = {
+			color:'blue',
+			thickness:'3px'
+		};
+
+		graph.draw();
+		console.log(cube(3)); // 27
+		console.log(foo);    // 4.555806215962888
+		Copy to Clipboard
+		It is important to note the following:
+
+		You need to include this script in your HTML with a <script> element of type="module", 
+		so that it gets recognized as a module and dealt with appropriately.
+
+***		EX:     <script type="module"  src="???.js"></script> 
+			</body>
+			</html>
+
+	-----
+	Examples
+		
+		Using the default export
+		If we want to export a single value or to have a fallback value for your module, you could use a default export:
+
+		// module "my-module.js"
+
+		export default function cube(x) {
+		  return x * x * x;
+		}
+		Copy to Clipboard
+		Then, in another script, it is straightforward to import the default export:
+
+		import cube from './my-module.js';
+		console.log(cube(3)); // 27
+
+		also, you can use a different name than 'cude' for default export:
+		
+		import cb from './my-module.js';
+		console.log(cb(3)); // 27
+		
+
+	-----
+	Using [export from]
+	Let's take an example where we have the following hierarchy:
+
+		childModule1.js: exporting myFunction and myVariable
+		childModule2.js: exporting myClass
+		parentModule.js: acting as an aggregator (and doing nothing else)
+		top level module: consuming the exports of parentModule.js
+
+		This is what it would look like using code snippets:
+
+		// In childModule1.js
+		let myFunction = ...; // assign something useful to myFunction
+		let myVariable = ...; // assign something useful to myVariable
+		export {myFunction, myVariable};
+
+		// In childModule2.js
+		let myClass = ...; // assign something useful to myClass
+		export myClass;
+
+		// In parentModule.js
+		// Only aggregating the exports from childModule1 and childModule2
+		// to re-export them
+		export { myFunction, myVariable } from 'childModule1.js';
+		export { myClass } from 'childModule2.js';
+
+		// In top-level module
+		// We can consume the exports from a single module since parentModule
+		// "collected"/"bundled" them in a single source
+		import { myFunction, myVariable, myClass } from 'parentModule.js'
+
+
+================================================================================
+================================================================================
+================================================================================
+[Import]
+
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+
+NOTE: [type="module"] when used in embedded scripts
+		-There is also a function-like dynamic import(), which does not require scripts of type="module".
+
+	The static import statement is used to import read only live bindings which are exported by another module.
+
+	Imported modules are in strict mode whether you declare them as such or not. 
+	The import statement cannot be used in embedded scripts unless such script has a type="module". 
+	Bindings imported are called live bindings because they are updated by the module that exported the binding.
+
+	There is also a function-like dynamic import(), which does not require scripts of type="module".
+
+	Backward compatibility can be ensured using attribute nomodule on the <script> tag.
+
+
+	Syntax
+		import z_defaultExport from "module-name";
+		import * as name from "module-name";
+		import { export1 } from "module-name";
+		import { export1 as alias1 } from "module-name";
+		import { export1 , export2 } from "module-name";
+		import { export1 , export2 as alias2 , [...] } from "module-name";
+		import z_defaultExport, { export1 [ , [...] ] } from "module-name";
+		import z_defaultExport, * as name from "module-name";
+		import "module-name";
+		var promise = import("module-name");
+
+
+
+	----
+	Import an entire module's contents
+		This inserts myModule into the current scope, 
+		containing all the exports from the module in the file located in /modules/my-module.js.
+
+***			import * as myModule from '/modules/my-module.js';
+		
+		Here, accessing the exports means using the module name ("myModule" in this case) as a namespace. 
+		For example, 
+		if the module imported above includes an export doAllTheAmazingThings(), 
+		you would call it like this:
+
+***			myModule.doAllTheAmazingThings();
+
+	----
+	import {myExport} from '/modules/my-module.js';
+	import {foo, bar} from '/modules/my-module.js';
+	import {reallyReallyLongModuleExportName as shortName} from '/modules/my-module.js';
+	
+	import {
+			reallyReallyLongModuleExportName as shortName,
+			anotherLongModuleName as short
+	} from '/modules/my-module.js';
+
+
+
+
+	----
+	[Importing defaults]
+	
+	import myDefault from '/modules/my-module.js';
+
+
+	It is also possible to use the default syntax with the ones seen above (namespace imports or named imports). 
+	In such cases, the default import will have to be declared first. For instance:
+
+		import myDefault, * as myModule from '/modules/my-module.js';
+		// myModule used as a namespace
+		
+		or
+
+		import myDefault, {foo, bar} from '/modules/my-module.js';
+		// specific, named imports
+
+
+
+	====
+***	sayHi.js
+***	sayHi.mjs
+	
+	//
+***	// MODULE-NOTES
+	// temp: change the prefix to '.mjs' to recognize export/import from main.js
+	// add <script type="module"> to make it work from index.html
+	// add  "type": "module", to package.json to make it work in node.js
+	//
+	console.log("test me...");
+	// export const sayHi = (x) => `Hello, ${x}`;
+	const sayHi = (x) => `Hello, ${x}`;
+	export {sayHi};
+
+	====
+
+
+
+
+	This works with dynamic imports as well:
+
+	(async () => {
+	  if (somethingIsTrue) {
+		// import module for side effects
+		await import('/modules/my-module.js');
+	  }
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+================================================================================
+================================================================================
+https://www.w3schools.com/Js/js_async.asp
+
+[async] statement
+[await]
+[promise]
+
+
+	"async and await make promises easier to write"
+	async makes a function return a Promise
+	await makes a function wait for a Promise
+
+
+Async Syntax
+	The keyword async before a function makes the function return a promise:
+
+		Example
+		async function myFunction() {
+		  return "Hello";
+		}
+		
+		Is the same as:
+
+		async function myFunction() {
+		  return Promise.resolve("Hello");
+		}
+
+		Here is how to use the Promise:
+
+		myFunction().then(
+		  function(value) { /* code if successful */ },
+		  function(error) { /* code if some error */ }
+		);
+
+
+
+EX:
+		<!DOCTYPE html>
+		<html>
+		<body>
+
+		<h2>JavaScript async / await</h2>
+
+		<p id="demo"></p>
+
+		<script>
+		  function myDisplayer(some) {
+			document.getElementById("demo").innerHTML = some;
+		  }
+
+		  //async function myFunction() {return "Hello";}
+		  myFunction = async () => {return "Hello";}
+
+		  myFunction().then(
+			function(value) {myDisplayer(value);},
+			function(error) {myDisplayer(error);}
+		  );
+		</script>
+
+		</body>
+		</html>
+
+
+----
+----
+Await Syntax
+	The keyword await before a function makes the function wait for a promise:
+
+		let value = await promise;
+	
+	-The await keyword can only be used inside an async function.
+
+		async function myDisplay() {
+				  let myPromise = new Promise(function(resolve, reject) {
+					resolve("I love You !!");
+				  });
+				  document.getElementById("demo").innerHTML = await myPromise;
+				}
+		myDisplay();
+
+
+	-The two arguments (resolve and reject) are pre-defined by JavaScript.
+	-We will not create them, but call one of them when the executor function is ready.
+	-Very often we will not need a reject function.
+
+
+EX:
+		<!DOCTYPE html>
+		<html>
+		<body>
+
+		<h2>JavaScript async / await</h2>
+
+		<h1 id="demo"></h1>
+
+		<script>
+		//async function myDisplay() {
+		//  let myPromise = new Promise(function(resolve, reject) {
+		//    resolve("I love You !!");
+		//  });
+		//  document.getElementById("demo").innerHTML = await myPromise;
+		//}
+
+		myDisplay = async () => {
+		  let myPromise = new Promise(function(resolve, reject) {
+			resolve("I love You !!");
+		  });
+		  document.getElementById("demo").innerHTML = await myPromise;
+		}
+
+		myDisplay();
+		</script>
+
+		</body>
+		</html>
+
+
+
+
+EX:
+waiting for a timeout
+		<!DOCTYPE html>
+		<html>
+		<body>
+
+		<h2>JavaScript async / await</h2>
+
+		<p>Wait 3 seconds (3000 milliseconds) for this page to change.</p>
+
+		<h1 id="demo"></h1>
+
+		<script>
+		async function myDisplay() {
+		  let myPromise = new Promise(function(resolve) {
+			setTimeout(function() {resolve("I love You !!");}, 3000);
+		  });
+		  document.getElementById("demo").innerHTML = await myPromise;
+		}
+
+		myDisplay();
+		</script>
+
+		</body>
+		</html>
+
+
+
+EX:
+waiting for a file	
+		<!DOCTYPE html>
+		<html>
+		<body>
+
+		<h2>JavaScript async / await</h2>
+
+		<p id="demo"></p>
+
+		<script>
+
+		getFile = async () => {
+		  let myPromise = new Promise(function(resolve) {
+			let req = new XMLHttpRequest();
+			req.open('GET', "mycar.html");
+			req.onload = function() {
+			  if (req.status == 200) {
+				resolve(req.response);
+			  } else {
+				resolve("File not Found");
+			  }
+			};
+			req.send();
+		  });
+		  document.getElementById("demo").innerHTML = await myPromise;
+		}
+
+
+		getFile();
+
+		</script>
+
+		</body>
+		</html>
+
+
+
+
+EX:
+	An async function is a function declared with the async keyword, 
+	and the await keyword is permitted within them. The async and await keywords enable asynchronous, 
+	promise-based behavior to be written in a cleaner style, 
+	avoiding the need to explicitly configure promise chains.
+	
+		function resolveAfter2Seconds() {
+		  return new Promise(resolve => {
+			setTimeout(() => {
+			  resolve('resolved');
+			}, 2000);
+		  });
+		}
+
+		async function asyncCall() {
+		  console.log('calling');
+		  const result = await resolveAfter2Seconds();
+		  console.log(result);
+		  // expected output: "resolved"
+		}
+
+		asyncCall();
+
+
+
+----
+----
+???zak
+
+https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/async_function
+
+Examples
+	Async functions and execution order
+
+		function resolveAfter2Seconds() {
+		  console.log("starting slow promise")
+		  return new Promise(resolve => {
+			setTimeout(function() {
+			  resolve("slow")
+			  console.log("slow promise is done")
+			}, 2000)
+		  })
+		}
+
+		function resolveAfter1Second() {
+		  console.log("starting fast promise")
+		  return new Promise(resolve => {
+			setTimeout(function() {
+			  resolve("fast")
+			  console.log("fast promise is done")
+			}, 1000)
+		  })
+		}
+
+		async function sequentialStart() {
+		  console.log('==SEQUENTIAL START==')
+
+		  // 1. Execution gets here almost instantly
+		  const slow = await resolveAfter2Seconds()
+		  console.log(slow) // 2. this runs 2 seconds after 1.
+
+		  const fast = await resolveAfter1Second()
+		  console.log(fast) // 3. this runs 3 seconds after 1.
+		}
+
+		async function concurrentStart() {
+		  console.log('==CONCURRENT START with await==');
+		  const slow = resolveAfter2Seconds() // starts timer immediately
+		  const fast = resolveAfter1Second() // starts timer immediately
+
+		  // 1. Execution gets here almost instantly
+		  console.log(await slow) // 2. this runs 2 seconds after 1.
+		  console.log(await fast) // 3. this runs 2 seconds after 1., immediately after 2., since fast is already resolved
+		}
+
+		function concurrentPromise() {
+		  console.log('==CONCURRENT START with Promise.all==')
+		  return Promise.all([resolveAfter2Seconds(), resolveAfter1Second()]).then((messages) => {
+			console.log(messages[0]) // slow
+			console.log(messages[1]) // fast
+		  })
+		}
+
+		async function parallel() {
+		  console.log('==PARALLEL with await Promise.all==')
+
+		  // Start 2 "jobs" in parallel and wait for both of them to complete
+		  await Promise.all([
+			  (async()=>console.log(await resolveAfter2Seconds()))(),
+			  (async()=>console.log(await resolveAfter1Second()))()
+		  ])
+		}
+
+		sequentialStart() // after 2 seconds, logs "slow", then after 1 more second, "fast"
+
+		// wait above to finish
+		setTimeout(concurrentStart, 4000) // after 2 seconds, logs "slow" and then "fast"
+
+		// wait again
+		setTimeout(concurrentPromise, 7000) // same as concurrentStart
+
+		// wait again
+		setTimeout(parallel, 10000) // truly parallel: after 1 second, logs "fast", then after 1 more second, "slow"
+		Copy to Clipboard
+
+
+
+???zak
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+================================================================================
+================================================================================
+Spread Operator [...]
 
 EX_1:
 	// similar to flatmap()

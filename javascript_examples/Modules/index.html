@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<pre id="output">Loading...</pre>
+
+    <script type="module">
+        import {sayHi} from './sayHi.mjs';
+
+        const out = document.getElementById("output");
+        out.innerText = sayHi('John');
+
+        // will  override document..id:output
+        document.body.innerHTML = sayHi("Alex");
+
+    </script>
+
+</body>
+</html>
