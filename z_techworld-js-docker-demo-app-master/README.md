@@ -1,3 +1,18 @@
+## youtube:
+    Docker Tutorial for Beginners [FULL COURSE in 3 Hours]
+    https://www.youtube.com/watch?v=3c-iBn73dDE&list=PLvFBAcs5-Ef6SifJ4JZzy5j1N8H0yQb7M&index=17&t=135s
+
+## github: 
+    https://gitlab.com/nanuchi/techworld-js-docker-demo-app/-/blob/master/docker-compose.yaml
+
+## Notes:
+    // use when starting application locally/@localhost / @mongodb inside the same docker network [container-to-container]
+    // let mongoUrlLocal = "mongodb://admin:password@localhost:27017";  // app is local and outside of the docker network
+    //let mongoUrlLocal = "mongodb://admin:password@mongodb:27017";     // app is inside the docker network, together with mongodb and mongo-express
+    let mongoUrlLocal = "mongodb://admin:password@mongodb"; // same as @mongodb:27017
+
+
+
 ## demo app - developing with Docker
 
 This demo app shows a simple user profile app set up using 
