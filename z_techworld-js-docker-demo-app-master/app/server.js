@@ -24,7 +24,6 @@ app.get('/profile-picture', function (req, res) {
 // let mongoUrlLocal = "mongodb://admin:password@localhost:27017";  // app is local and outside of the docker network
 //let mongoUrlLocal = "mongodb://admin:password@mongodb:27017";     // app is inside the docker network, together with mongodb and mongo-express
 let mongoUrlLocal = "mongodb://admin:password@mongodb"; // same as @mongodb:27017
-
 // use when starting application as docker container
 let mongoUrlDocker = "mongodb://admin:password@mongodb";
 
