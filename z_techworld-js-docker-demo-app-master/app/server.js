@@ -25,10 +25,13 @@ const mongo_db_pwd = process.env.MONGO_DB_PWD;
 console.log(`z_process.env.MONGO_DB_USERNAME: ${mongo_db_username}`);
 console.log(`z_process.env.MONGO_DB_PWD: ${mongo_db_pwd}`);
 
+//***
+//*** change these lines to run it locally or thru the docker containers
+//***
 // use when starting application locally/@localhost / @mongodb inside the same docker network [container-to-container]
-//let mongoUrlLocal = "mongodb://admin:password@localhost:27017";  // app is local and outside of the docker network
+let mongoUrlLocal = "mongodb://admin:password@localhost:27017";  // app is local and outside of the docker network
 //let mongoUrlLocal = "mongodb://admin:password@mongodb:27017";     // app is inside the docker network, together with mongodb and mongo-express
-let mongoUrlLocal = "mongodb://admin:password@mongodb"; // same as @mongodb:27017
+//let mongoUrlLocal = "mongodb://admin:password@mongodb"; // same as @mongodb:27017
 
 // for now, this line is not used.
 // use when starting application as docker container
