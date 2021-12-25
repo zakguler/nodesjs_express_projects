@@ -12,16 +12,16 @@ also, see [HTML/dom/Javascript] sample down below..
 	  see [middleware]
 	  see [static] html views
 	  see [render][form][req.render()][parse information sent from a form]
-	  
+
 	  see [full middlewae express guide]
-	  
+
 ??? how do these work:
 	// module.exports = router;    //<===  make the router object/field visible
 	export default router;
 
-	  
-	  
-	  
+
+
+
 =======================================================
 =======================================================
 =======================================================
@@ -29,20 +29,20 @@ IMPORTANT / GENERAL NOTE:
 
 	-remember, all js filesare structured to run top-down
 	-use app.use() as an example and where to add the middleware to be called.
-	
+
 		see: https://www.youtube.com/watch?v=lY6icfhap2o
 		Learn Express Middleware In 14 Minutes
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
 
 =======================================================
 =======================================================
@@ -58,7 +58,7 @@ IMPORTANT / GENERAL NOTE:
     <title>Testing file</title>
 </head>
 
-	  
+
 =======================================================
 =======================================================
 =======================================================
@@ -77,28 +77,28 @@ IMPORTANT / GENERAL NOTE:
 
 -start a new project:
 	>npm init -y	<=== will generate package.json file
-	
-	
+
+
 -install express:
 	>npm i express
 	>npm i ejs
 	>npm i --save-dev nodemon
-	
-	
-	
+
+
+
 -install nodemon
 	>npm i --save-dev nodemon	<=== hot deploy
-	
+
 	-add the following in package.json file:
 		"scripst": {
 			"start": "nodemon server.js"
 		},
 	-to run:
 		>npm start
-		
 
 
-		
+
+
 import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
 const app = express();
 const PORT = 3000;
@@ -138,7 +138,7 @@ app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://loca
 
 
 ***NOTE: -app and router acts the same.
-	  -warning==> all router/app.xxx() 
+	  -warning==> all router/app.xxx()
 					processes top-down: ex:	app.get('/'..
 											app.get('/:id'.. <== bad, dynamic '/:id' ahead of static path
 											app.get('/new'.. <== static '/new' should be above/before the dynamic url/path
@@ -148,6 +148,11 @@ req.originalUrl
 const { id } = req.params;
 const { id } = req.query;  //==> { id: 2 }
 console.log("z_param/query: " + id);
+
+const mongo_db_username = process.env.MONGO_DB_USERNAME;
+const mongo_db_pwd = process.env.MONGO_DB_PWD;
+console.log(`z_process.env.MONGO_DB_USERNAME: ${mongo_db_username}`);
+console.log(`z_process.env.MONGO_DB_PWD: ${mongo_db_pwd}`);
 
 req.param.id
 req.query.id
@@ -159,7 +164,7 @@ res.json({"msg": "Error"})
 res.status(500).json({"msg": "Error"})
 res.sendStatus(500)
 res.download("file.txt")
-res.render('index')	
+res.render('index')
 
 router.get('/:id')
 
@@ -177,12 +182,12 @@ router.get('/:id')
 -[app.req] req.query
 ***-[routes] req.params can be used to retrieve values from routes.
 
-req.query will return a JS object after the query string is parsed. 
-/user?name=tom&age=55 
-- req.query would yield {name:"tom", age: "55"} 
+req.query will return a JS object after the query string is parsed.
+/user?name=tom&age=55
+- req.query would yield {name:"tom", age: "55"}
 
-req.params will return parameters in the matched route. 
-If your route is /user/:id and you make a request to /user/5 
+req.params will return parameters in the matched route.
+If your route is /user/:id and you make a request to /user/5
 - req.params would yield {id: "5"} req.param is a
 
 
@@ -210,22 +215,22 @@ console.log("z_req.hostname: " + req.hostname); ==> 'localhost'
 
 // send html file-they are by default in a folder called 'views' ==> index.ejs
 // it needs to use a view engine like 'ejs' or 'pug'
- 
+
 >npm i ejs
 
--create a folder called 
+-create a folder called
 	\views
 		\index.ejs
-		
+
 ***-all html files should have prefix '.ejs'
 
 
-// 
-/*	If you want to have intellij detect *.ejs as *.html files 
-*	to provide autocompletion for those files 
+//
+/*	If you want to have intellij detect *.ejs as *.html files
+*	to provide autocompletion for those files
 *	you can:
-*	Go File -> Settings. Type File Types Open File Types tab. 
-*	click on HTML. Click on + under File name patterns 
+*	Go File -> Settings. Type File Types Open File Types tab.
+*	click on HTML. Click on + under File name patterns
 *	Add *.ejs in the file name pattern list.
 */
 // to pass info 'something' to the html file:
@@ -269,7 +274,7 @@ index.ejs
 // create a folder called /routers	<== can be called anything
 // inside it create js files, for instance /users.js
 // because we defined it in app.use('/users', usersRoutes),
-// the path will be defaulted to /users. 
+// the path will be defaulted to /users.
 //		in this file, the '/' is actually represents '/users'
 //		and the '/new' is '/users/new'
 //
@@ -285,7 +290,7 @@ index.ejs
 		router.get("/new", (req,res)=>{
 			res.send('user created');
 		});
-		
+
 		// you can chain all the '/:id' similar dynamic paths together. see example below.
 		router.get("/:id", (req,res)=>{
 			res.send('get user');
@@ -296,8 +301,8 @@ index.ejs
 		router.put("/:id", (req,res)=>{
 			res.send('update user');
 		});
-		
-		module.exports = router	//<===  make the router object/field visible 
+
+		module.exports = router	//<===  make the router object/field visible
 
 ***		/* chaingin similar requests:
 				//==========================================================================
@@ -334,8 +339,8 @@ index.ejs
 
 
 
-	
-	
+
+
 ===========
 ===========
 ---middleware ==> router.param()
@@ -423,8 +428,8 @@ full code
 
 	-create a folder'public'
 	-add another folder and the static html file 'test/tt.html'
-	
-		/public	
+
+		/public
 			/test/
 				tt.html
 
@@ -447,13 +452,13 @@ full code
 		// we can't access the req.body at all,
 		// by default, express does not allow you to access the body.
 		// we have to use middleware to do this for us.
-			
+
 			/server.js
 				app.use(express.urlencoded({ extended: true }));
-			
+
 
 	-/routes
-		/users.js		
+		/users.js
 			//
 			// EX: render form
 			// router.post("/users/new", (req, res) => {
@@ -483,7 +488,7 @@ full code
 
 
 	-/views
-		/users	
+		/users
 			views.ejs	<=== html file
 				<!DOCTYPE html>
 				<html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -502,7 +507,7 @@ full code
 				</body>
 				</html>
 
-			
+
 
 =======================================================
 =======================================================
@@ -530,14 +535,14 @@ https://www.youtube.com/watch?v=lY6icfhap2o
 
 /public
 /views
-/server.js	
+/server.js
 	import express from 'express';
 	const app = express();
 	const PORT = 3000;
-	
+
 	// point to the static directory, in this case, it is the 'public' folder
 	app.use(express.static("public"));
-	
+
 	app.use(express.json());    //<=== for json request processing from the body
 	app.use(express.urlencoded({ extended: true }));
 
@@ -601,9 +606,9 @@ https://www.youtube.com/watch?v=lY6icfhap2o
 
 	//see if this works:
 	console.log('location.pathname: ' + location.pathname);
-	
+
 	document.body.innerHTML = sayHi('John');
-	
+
 	----
 	<pre id="output">Loading...</pre>
     <script type="module">

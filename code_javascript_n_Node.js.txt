@@ -1,6 +1,6 @@
 
 
-see 
+see
 using the debugger + VC
 ----
 see all about Node.js docs
@@ -16,11 +16,11 @@ Javascript
 
 
 -download Node.js
-				
-				
+
+
 
 -Tutorials
- Microsoft Doc: 
+ Microsoft Doc:
 		https://docs.microsoft.com/en-us/learn/browse/?roles=developer&terms=javascript
 		https://docs.microsoft.com/en-us/learn/paths/build-javascript-applications-nodejs/
 
@@ -53,11 +53,18 @@ VC - visual code
 =================================================================================
 =================================================================================
 =================================================================================
+[env]
+const mongo_db_username = process.env.MONGO_DB_USERNAME;
+const mongo_db_pwd = process.env.MONGO_DB_PWD;
+console.log(`z_process.env.MONGO_DB_USERNAME: ${mongo_db_username}`);
+console.log(`z_process.env.MONGO_DB_PWD: ${mongo_db_pwd}`);
+
+
 var customer = ({'"myName":"Zak"'});
-let 
+let
 const order = "Your string";
 			This const means that you can't reassign it to any other value.
-			
+
 process.stdout.write("Hello world");
 console.log("Hello world");
 
@@ -68,8 +75,8 @@ const jsonString = JSON.stringify(customerObject, null, 2); //<== indent by 2 sp
 const args = process.argv.slice(2);
 	main(args[0]);
 
-	
-[switch]	
+
+[switch]
 		var myArgs = process.argv.slice(2);
 		console.log('myArgs: ', myArgs);
 
@@ -82,12 +89,12 @@ const args = process.argv.slice(2);
 			break;
 		default:
 			console.log('Sorry, that is not something I know how to do.');
-		}			
+		}
 
 
 
 jsonString = fs.readFileSync('./customer.json'); // read it synchronously
-			
+
 // Asynchronous
 fs.readFile('./customer.json', 'utf8',
         (err, jsonString) => {
@@ -114,7 +121,7 @@ fs.writeFile('./customer.json', JSON.stringify(customer), (err) => {
 
 
 
-			
+
 =================================================================================
 =================================================================================
 =================================================================================
@@ -130,8 +137,8 @@ function  main(count){
     for (let i=0; i<count; i++){
         hello();
     }
-} 
-    
+}
+
 function hello(){
     process.stdout.write("Hello world\n");
 }
@@ -155,7 +162,7 @@ case 'compliment':
 default:
     console.log('Sorry, that is not something I know how to do.');
 }
-*/			
+*/
 =================================================================================
 =================================================================================
 =================================================================================
@@ -184,19 +191,19 @@ Read/Write JSON Files with Node.js
 
 
 	-fs.writeFile to asynchronously write data to a newCustomer.json file.
-					If the newCustomer.json file doesn’t already exist, 
-					it will be created; 
+					If the newCustomer.json file doesn’t already exist,
+					it will be created;
 					if it does exist, it will be overwritten!
-					
-					
-					
+
+
+
 
 	-turn the string into an object
 		const customer = JSON.parse(jsonString);
 		const jsonString = JSON.stringify(customer, null, 2); //<== indent by 2 spaces
-		
-		
-		
+
+
+
 
 	-JSON.stringify(customer); This returns a JSON string representation of a JavaScript object
 
@@ -216,9 +223,9 @@ Read/Write JSON Files with Node.js
 					}
 				});
 		}
-	
+
 	OR
-		
+
 		//
 		// ADVANCED javascript
 		//
@@ -247,7 +254,7 @@ Read/Write JSON Files with Node.js
 
 
 	update a file:
-	
+
 		const fs = require('fs');
 		var jsonString = '';
 		jsonString = fs.readFileSync('./customer.json'); // read it synchronously
@@ -309,7 +316,7 @@ Read/Write JSON Files with Node.js
 		-this not Javascript
 		-it is on the nodejs server
 		-node_modules
-		
+
 
 		-var pg = require('pg');
 
@@ -334,14 +341,14 @@ Read/Write JSON Files with Node.js
 =================================================================================
 
 [Node.js]
-		-it is like javascript processor 
+		-it is like javascript processor
 		-like java JVM
 
-[npm] 
+[npm]
 
 		-it's like Maven and Git
-		
-		
+
+
 		-built-in command-line tool called npm.
 		-find packages
 		-install packages
@@ -354,11 +361,11 @@ Read/Write JSON Files with Node.js
 [package.json]
 
 Initialize a package.json
-	A package.json file isn't something you author by hand. 
+	A package.json file isn't something you author by hand.
 	It's the result of running the init command. There are two main ways to run this command:
 
 ***		>npm init. This command starts a wizard that will prompt you for information about a project's name, version, description, entry point, test command, Git repository, keywords, author, and license.
-		
+
 ***		>npm init -y. This command, with the -y flag, is a faster version of npm init. It's faster in the sense that it's not interactive. Instead, it assigns default values for all values you'd be asked to supply if you ran npm init.
 
 
@@ -367,9 +374,9 @@ package.json file contents
 	You can think of all the possible fields in the package.json as belonging to the following groups:
 
 		-Meta-information. This group contains meta-information about the project, like its name, description, author, and keywords.
-		
+
 		-Dependencies. There are two properties, dependencies and devDependencies, that are used to describe the libraries that are being used. Later in the module, you'll learn how to use these two sections to install, update, and separate dependencies.
-		
+
 		-Scripts. You can place scripts in this section that do things like start, build, test, and lint a project.
 
 
@@ -383,30 +390,30 @@ Scripts for managing your project
 
 	You should set up a number of scripts and name them in a specific way. These specific names are expected by the developer community and various tools:
 
-		-Start. A start command invokes node with the entry file as an argument. 
-				It might look like this command: 
-				
-***				>node ./src/index.js. 
-				
+		-Start. A start command invokes node with the entry file as an argument.
+				It might look like this command:
+
+***				>node ./src/index.js.
+
 				This command says to invoke node and use the entry file index.js.
-		
-		
-		
+
+
+
 		-Build. This command describes how to build your project. The build process should produce something that you can ship. For example, a build command could run a TypeScript compiler to produce the JavaScript version of the project that you want to ship.
-		
+
 		-Test. This command should run the tests for your project. If you're using a third-party test library, the command should invoke the library's executable file.
-		
+
 		 [validate]
 		-Lint. This command should invoke a linter program like ESLint. Linting finds inconsistencies in code. A linter usually offers a way to correct inconsistencies as well. Having consistent code can greatly increase its readability. This readability in turn speeds up the development of features and additions to the code.
 
 
 [start][scripts]
 
-		This example uses the naming that has been described. 
-		First, you have the start action that starts the application. 
+		This example uses the naming that has been described.
+		First, you have the start action that starts the application.
 		Second, the test action runs tests by using the testing framework jest.
-		Then you have the build action that uses the TypeScript compiler tsc to compile the code from TypeScript into, 
-			for example, ES6 that the browser can understand. 
+		Then you have the build action that uses the TypeScript compiler tsc to compile the code from TypeScript into,
+			for example, ES6 that the browser can understand.
 		Finally, you have a linting tool eslint that looks for inconsistencies and possibly errors in the code.
 
 
@@ -415,7 +422,7 @@ Scripts for managing your project
 			"scripts" : {
 			  "<action>" : "<command>"
 			}
-			
+
 			A more realistic example would look like this code:
 
 			"scripts" : {
@@ -426,11 +433,11 @@ Scripts for managing your project
 			}
 
 
-		You invoke actions by typing 
-***			>npm run <action>. 
-		But there are special actions: start and test. 
-		They're special because you can omit run. 
-		So instead of typing >npm run start, you can instead save a few characters and type 
+		You invoke actions by typing
+***			>npm run <action>.
+		But there are special actions: start and test.
+		They're special because you can omit run.
+		So instead of typing >npm run start, you can instead save a few characters and type
 
 ***			>npm start.
 ??? did not working
@@ -472,9 +479,9 @@ Manage dependency updates in your Node.js project
 
 
 		[semantic versioning]
-		
+
 		Use [semantic versioning]
-		
+
 			There's an industry standard called semantic versioning. It's a system adopted by many companies and developers. If you intend to publish packages and push them to the npm registry, you should follow semantic versioning. It's expected. Even if you only download packages from the npm registry, you can expect these packages to follow semantic versioning.
 
 			So why is it such a big deal? Changes to a package can introduce risk. Risk that a bug that could harm your business could be introduced. Risk that you might need to rewrite part of your code. Rewriting code takes time and costs money.
@@ -492,9 +499,9 @@ Manage dependency updates in your Node.js project
 			Minor version	1.1.1 changes to 1.2.0
 			Patch version	1.0.1 changes to 1.0.2
 
-			 A typical command to update a package might 
-			 look like this one: 
-			 
+			 A typical command to update a package might
+			 look like this one:
+
 ***				npm update <name of package>@<optional argument with version number>
 
 			What happens at this point depends on two things:
@@ -504,13 +511,13 @@ Manage dependency updates in your Node.js project
 
 
 	Update approach
-	
+
 			As a Node.js developer, you can communicate to Node.js the update behavior you want. Think about updating in terms of risk. Here are some approaches:
 
 			-Major version. I'm OK with updating to the latest major version as soon as it's out. I accept the fact that I might need to change code on my end.
 			-Minor version. I'm OK with a new feature being added. I'm not OK with code that breaks.
 			-Patch version. The only updates I'm OK with are bug fixes.
-			
+
 			If you're managing a new or smaller Node.js project, you can afford to be loose with how you define the update strategy. For example, you could always update to the latest version. For more complex projects, there's a bit more nuance, but we'll save that for a future module.
 
 			In general, the smaller the dependency you're updating, the fewer dependencies it has and the more likely that the update process will be easy.
@@ -518,7 +525,7 @@ Manage dependency updates in your Node.js project
 
 
 	Configure the package.json for update
-	
+
 			Before you update one or more dependencies, you should configure your manifest file so that you get predictable behavior when you run the npm update <name of dependency> command. You can communicate the approach you want to take for a package. Node.js has a set of symbols that allows you to define how you want your packages to update.
 
 			The process is to add different prefixes to your package entries in the package.json file. There are many things you can configure in addition to major/minor/patch version. You can also express that you want packages within only a certain range, or that you want packages that have a certain tag, like alpha or beta.
@@ -532,9 +539,9 @@ Manage dependency updates in your Node.js project
 
 	---
 	https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/6-dependency-management
-	
+
 ***	[package-lock.json]
-	
+
 			In addition to the package.json manifest file, you also have the package-lock.json file. The latter is generated when you do something that modifies the node_modules directory or anything that changes the dependencies in package.json. So it won't be created when you run npm init, but it will be created when you install a package, for example.
 
 			This file should be committed to your repository.
@@ -555,10 +562,10 @@ Manage dependency updates in your Node.js project
 
 	---
 	Find and update outdated packages
-	
-			The 
+
+			The
 ***				>npm outdated
-				
+
 			command lists outdated packages. This command can help you learn when there are newer versions of packages available. Here's a typical output from the command:
 
 			Output
@@ -602,7 +609,7 @@ Manage dependency updates in your Node.js project
 			| Package        | lodash                            |
 			| Dependency of  | lodash                            |
 			| Path           | lodash                            |
-			| More info      | https://npmjs.com/advisories/577  |  
+			| More info      | https://npmjs.com/advisories/577  |
 
 			and so on..
 			The npm audit fix command tries to fix the problem. It tries to upgrade to a minor version for which the problem doesn't exist. That action might not be enough. The command might prompt you to run npm audit fix --force to fix the problem. This action involves a breaking change. That is, the major version of your package will be updated.
@@ -616,7 +623,7 @@ Manage dependency updates in your Node.js project
 
 	---
 	https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencies/7-exercise-dependency-management
-	
+
 	Exercise - Manage dependency updates in your Node.js project
 
 		Completed
@@ -758,11 +765,11 @@ https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencie
 
 
 ***	tps://www.npmjs.com/package/<package name>
-		You can learn more about a package before installing it by going to https://www.npmjs.com/package/<package name>. 
-		
-		This URL will take you to a detailed page for the package. 
-		Select the Dependencies tab to see how many packages and which packages it relies on to function. 
-		
+		You can learn more about a package before installing it by going to https://www.npmjs.com/package/<package name>.
+
+		This URL will take you to a detailed page for the package.
+		Select the Dependencies tab to see how many packages and which packages it relies on to function.
+
 		Another way to achieve a similar result is to run this npm command: npm view <package name>.
 ***			>npm view <package name>
 
@@ -773,14 +780,14 @@ https://docs.microsoft.com/en-us/learn/modules/create-nodejs-project-dependencie
 Install a package
 [node_modules]
 
-		A typical installation command looks like this one: 
-		
-***			>npm install <name of package>. 
+		A typical installation command looks like this one:
 
-		When you run the install command, 
-		the command-line tool connects to a global registry, 
-		fetches the code, and places it in a node_modules folder for your project. 
-		
+***			>npm install <name of package>.
+
+		When you run the install command,
+		the command-line tool connects to a global registry,
+		fetches the code, and places it in a node_modules folder for your project.
+
 		After the installation, your project directory looks something like this one:
 
 			-| node_modules/
@@ -792,19 +799,19 @@ Install a package
 Find a package
 
 		-Registries. An example of a registry might be a global registry like the npm registry. You can host your own registries that can be either private or public.
-		
+
 		-Repositories. Instead of pointing to a registry, it's possible to point to a GitHub URL and install a package from there.
-		
+
 		-Files. You can install a package from a local folder or zipped file. Installation from a package is common when you're trying to develop your own Node.js libraries and want to test the package locally or for some reason don't want to use a registry.
-		
+
 		-Directories. You can install right from a directory as well.
 
 
 	[http://npmjs.org]
 	The npm registry and tool
 			When you run npm install <name of dependency>,
-			Node.js goes to a global registry called the npm registry and looks for the code to download. 
-			
+			Node.js goes to a global registry called the npm registry and looks for the code to download.
+
 			It's located at http://npmjs.org
 
 
@@ -815,18 +822,18 @@ npm commands
 		To help you remember what the commands do, it helps to think of them as belonging to categories:
 
 			-Manage dependencies. There are a number of commands that cover installation, removal, and cleaning up after package installations. There are commands for updating packages as well.
-			
+
 			-Run scripts. The npm tool can help you manage flows in your application development. Examples of application flows are running tests, building code, or running quality improvement tools to lint your code.
-			
+
 			-Configure the environment. There are many things you can configure, like where your installations end up and where packages should be installed from. It's common to have a setup that allows you to install packages from the global npm registry and also from a company-specific registry.
-			
+
 			-Author and publish packages. There are several commands that can help you with tasks like creating a compressed package and pushing the package to a registry.
 
 
 
 
-		If you want a detailed list of all commands, enter 
-***				npm --help 
+		If you want a detailed list of all commands, enter
+***				npm --help
 
 		in the terminal.
 
@@ -840,16 +847,16 @@ Production vs. development dependencies
 		Dependencies belong to one of two categories:
 
 			-Production dependencies. Production dependencies are dependencies that you need to run an application in production. Examples include a web framework with which you can build a web application.
-			
+
 			-Development dependencies. Development dependencies are dependencies that you need only when you develop your application. Think of these dependencies as you'd think of scaffolding for a building. When you're done building, you don't need them anymore. Examples of these dependencies are test libraries, linting tools, or bundling tools. These dependencies are an important part of ensuring your application works well, but you don't need to ship your application with them.
 
 
-		This separation of different types of dependencies is built into the npm command-line tool as well. 
-		
+		This separation of different types of dependencies is built into the npm command-line tool as well.
+
 		[--production]
-		If you specify the --production flag when you install a dependency, 
-		only dependencies will be installed. 
-		
+		If you specify the --production flag when you install a dependency,
+		only dependencies will be installed.
+
 		For example, this flag is used by CI/CD pipelines to ensure that only the dependencies needed to run the app are installed.
 
 
@@ -857,45 +864,45 @@ Production vs. development dependencies
 How to install a package
 
 	[developer dependency]
-		You use the 
-			>npm install <dependency name> 
-		command to install a normal dependency that's meant to be used as part of your application. 
+		You use the
+			>npm install <dependency name>
+		command to install a normal dependency that's meant to be used as part of your application.
 		The developer dependency is something that's not meant to be shipped to production.
 
 		To install a developer dependency, add the --save-dev flag.
-		
+
 ***			>npm install <dependency name> --save-dev
 
 	[globally]
 		There are also packages that you can install globally. These packages are usually not meant to be imported into your project. For that reason, many global packages are CLI tools. Some of these packages do allow themselves to be imported, like http-server.
 
-		If you install something globally, 
-		it's not installed in a 
-		
+		If you install something globally,
+		it's not installed in a
+
 			project's node_modules folder.
 
-		Instead, it's installed in a computer-specific directory, 
-		so it's available for all Node.js projects on the computer. 
-		
-		To install a global package, add the -g flag to the install command, 
-		so the command looks like this one: 
-		
+		Instead, it's installed in a computer-specific directory,
+		so it's available for all Node.js projects on the computer.
+
+		To install a global package, add the -g flag to the install command,
+		so the command looks like this one:
+
 ***			>npm install <dependency name> -g.
 
 
 [npx]
-		The npx tool allows you to load the dependency into the Node.js process 
-		and run the command from there. 
-		
-		After the command is run, the dependency is cleaned up and removed from your system. 
-		
-		The npx tool has been shipped with all major versions of npm since version 5.2. 
-		This tool is the preferred way to use dependencies that are meant to be run infrequently. 
-		
-		To use the npx tool, enter 
-			
-***			npx <name of package> 
-			
+		The npx tool allows you to load the dependency into the Node.js process
+		and run the command from there.
+
+		After the command is run, the dependency is cleaned up and removed from your system.
+
+		The npx tool has been shipped with all major versions of npm since version 5.2.
+		This tool is the preferred way to use dependencies that are meant to be run infrequently.
+
+		To use the npx tool, enter
+
+***			npx <name of package>
+
 		It will fetch the dependency, run the command, and clean up.
 
 
@@ -903,27 +910,27 @@ How to install a package
 After installation
 
 		list packages at different depths. When you do so, the list command looks like this one:
-		
+
 ***			>npm list --depth=<depth>
 
-		At depth 0, the command lists the same content that you have in the 'dependencies' section of your package.json. 
-		
-		Because you installed the Jest package, 
-		
+		At depth 0, the command lists the same content that you have in the 'dependencies' section of your package.json.
+
+		Because you installed the Jest package,
+
 ***			>npm list --depth=0
 
 		will produce output similar to this output:
 				├── jest@26.0.1
 
 
-		The npm list command will list all the packages in node_modules directory that were installed. 
+		The npm list command will list all the packages in node_modules directory that were installed.
 		Each installed package will have installed all the dependencies that it relies on.
 
-		Depth 1 allows you to see one level down: your installed packages and the primary dependencies that they consist of. 
-		If you run 
-		
+		Depth 1 allows you to see one level down: your installed packages and the primary dependencies that they consist of.
+		If you run
+
 			>npm list --depth=1
-		
+
 		, you might see this output:
 
 				├─┬ jest@26.0.1
@@ -939,24 +946,24 @@ Clean up dependencies
 
 		There are two ways to clean up dependencies you no longer need:
 
-			-Uninstall. To uninstall a package, you use the uninstall command like so: 
-				
+			-Uninstall. To uninstall a package, you use the uninstall command like so:
+
 ***				>npm uninstall <name of dependency>
-				
+
 			 This command will remove the package from the manifest file and from the node_modules folder.
-			 
-			
-			Prune. Or you can run the prune command like so: 
-				
+
+
+			Prune. Or you can run the prune command like so:
+
 ***				>npm prune
-				
-			Running this command will remove all dependencies in the node_modules folder 
-			that aren't listed as dependencies in the manifest file. 
-			This command is a good choice if you want to remove more than one dependency and you don't want 
-			to run the uninstall command for each dependency. 
-			
-			To do so, 
-			remove entries from the dependencies or devDependencies section 
+
+			Running this command will remove all dependencies in the node_modules folder
+			that aren't listed as dependencies in the manifest file.
+			This command is a good choice if you want to remove more than one dependency and you don't want
+			to run the uninstall command for each dependency.
+
+			To do so,
+			remove entries from the dependencies or devDependencies section
 			and then run the npm prune command.
 
 
@@ -966,11 +973,11 @@ Exercise - Install packages
 
 Add a testing package by using the npm tool
 
-		You're given some code that parses an address from a string. 
-		
-		Your task should be fairly straightforward. 
-		It involves installing the test framework, 
-		writing a couple tests, 
+		You're given some code that parses an address from a string.
+
+		Your task should be fairly straightforward.
+		It involves installing the test framework,
+		writing a couple tests,
 		and running them.
 
 		Clone https://github.com/MicrosoftDocs/node-essentials/ by running this command:
@@ -990,15 +997,15 @@ Add a testing package by using the npm tool
 			 return match.groups;
 			}
 
-		The preceding function takes a string and parses out information about what a customer orders, 
-		where it should be delivered, and how it will be paid for. 
+		The preceding function takes a string and parses out information about what a customer orders,
+		where it should be delivered, and how it will be paid for.
 		Let's add Jest and write some tests for the function.
 
 		Install the Jest library by running this command:
 ***			>npm install jest --save-dev
 
 
-		Open the package.json file and find the devDependencies section. 
+		Open the package.json file and find the devDependencies section.
 		You should now have an entry that looks like this one:
 
 			"devDependencies": {
@@ -1016,7 +1023,7 @@ Add a testing package by using the npm tool
 			---| address-parser.js
 
 		Add the following content to __tests__/address-parser.js:
-		
+
 			const { parse } = require("../address-parser");
 			describe('Address parser', () => {
 			  test('should parse correctly', () => {
@@ -1033,7 +1040,7 @@ Add a testing package by using the npm tool
 
 
 
-		The preceding test is written to test the parsing of address-parser.js 
+		The preceding test is written to test the parsing of address-parser.js
 		and ensure it correctly parses out the needed information.
 
 		Open the package.json file and find the scripts section. Add this entry:
@@ -1085,35 +1092,35 @@ zak ???
 =================================================================================
 -Azure cloud shell account:
 	-zakguler@outlook.com
-	
+
 	>zakguler@Azure:~$ node
 	 start coding
-	 
+
 	-To exit the REPL environment, enter ctrl-c twice:
-	
+
 	-to create a new file, enter 'code'
 		>zakguler@Azure:~$ code
 			add 'console.log('Hello World, from a script file.');'
 			ctrl-s to save
 			as index.js
-			
+
 		>zakguler@Azure:~$ node index.js
 			Hello World, from a script file.
-			
-			
 
 
 
 
 
-			
-			
+
+
+
+
 
 
 =================================================================================
 =================================================================================
 =================================================================================
-jsconfig.js	
+jsconfig.js
 
 		{
 		  "compilerOptions": {
@@ -1138,20 +1145,20 @@ jsconfig.js
 
 Creating a Simple Web App with Node.js
 	https://ilovecoding.org/courses/nodejs/lessons/creating-a-simple-web-app-with-nodejs
-	
--to run 
+
+-to run
 	Terminal> node webapp4
 
 -file structure:
 
 	app.js
-	
+
 	webapp4.js
 	show4.js
 	content4.js
-	
+
 	package.json
-	
+
 
 
 
@@ -1163,7 +1170,7 @@ Creating a Simple Web App with Node.js
 		var show = require('./show4');
 
 		http.createServer(onRequest).listen(7777);
-		
+
 		// terminal> node webapp <== to start the server
 		console.log('Server has started');
 
@@ -1180,9 +1187,9 @@ Creating a Simple Web App with Node.js
 
 	----
 	show4.js
-		
+
 		var content = require('./content4');
-		
+
 		function showPage(response, pathName){
 			if (content.contentMap[pathName]){
 				response.writeHead(200, { 'Content-Type': 'text/html' });

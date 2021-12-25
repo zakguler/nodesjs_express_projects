@@ -14,6 +14,35 @@
     - Dockrize my-app:1.0 .. see code_docker.txt
     - to run >docker compose up -d
 
+
+## Dockerize all + my-app:
+    - make code changes
+    - remove old container and it's image
+    - log into docker hub:
+        >docker login
+        -zakguler/Zgul8999
+    - >docker build -t zakguler/my-app:1.0 .
+    - >docker push  zakguler/my-app:1.0
+    - rebuild the whole thing
+    - >docker compose up -d
+    - >cd z_techworld-js-docker-demo-app-master/app
+    - >npm start
+    - [browser] localhost:3000
+
+
+## dockerize mongodb and mongo-express and run my-app locally
+    - server.js:
+        - uncomment //let mongoUrlLocal = "mongodb://admin:password@localhost:27017";  // app is local and outside of the docker network
+        - comment out //let mongoUrlLocal = "mongodb://admin:password@mongodb"; // same as @mongodb:27017
+    - remove all containers
+    - run >docker compose -f docker-compose-LOCAL.yaml up -d
+    - >cd z_techworld-js-docker-demo-app-master/app
+    - >set MONGO_DB_USERNAME=admin
+    - >set MONGO_DB_PWD=password
+    - >npm start
+
+
+
 ## demo app - developing with Docker
 
 This demo app shows a simple user profile app set up using 
