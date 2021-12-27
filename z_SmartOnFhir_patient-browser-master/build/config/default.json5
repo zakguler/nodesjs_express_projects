@@ -3,9 +3,7 @@
 //        type: "STU-3",
 //        url: "https://r3.smarthealthit.org",
         type: "R4",
-//        url: "http://localhost:8000/DEFAULT",
-//      //nchie project
-		url: "https://iopret--ps--app-listener.apps.ocpat.bcbsnc.com/nchie",
+        url: "http://localhost:8000/DEFAULT",
         tags: [
             {
                 key  : "pro-7-2017",

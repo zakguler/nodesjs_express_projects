@@ -47,28 +47,28 @@ skip it for now..
 
 -start a new project:
 	>npm init -y	<=== will generate package.json file
-	
-	
+
+
 -install express:
 	>npm i express
 	>npm i ejs
 	>npm i --save-dev nodemon
-	
-	
-	
+
+
+
 -install nodemon
 	>npm i --save-dev nodemon	<=== hot deploy
-	
+
 	-add the following in package.json file:
 		"scripst": {
 			"start": "nodemon server.js"
 		},
 	-to run:
 		>npm start
-		
 
 
-		
+
+
 	import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
 	import path from 'path';
 
@@ -112,7 +112,7 @@ Build a Single Page Application with JavaScript (No Frameworks)
 /spa
 	/frontend
 		index.html
-		
+
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -142,7 +142,7 @@ Build a Single Page Application with JavaScript (No Frameworks)
 >npm i --save-dev nodemon
 
 ===============
-/spa	
+/spa
 	/server.js
 
 			import express from 'express';	//<====== to use 'import' instead of 'request', add   "type": "module", to package.json file
@@ -172,7 +172,7 @@ Build a Single Page Application with JavaScript (No Frameworks)
 	/frontend
 		/js
 			/index.js
-			
+
 			console.log('index.js is loaded');
 			console.log('z_location.pathname_0: ' + location.pathname);
 

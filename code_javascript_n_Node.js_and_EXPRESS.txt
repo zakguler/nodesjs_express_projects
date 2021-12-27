@@ -37,13 +37,66 @@ IMPORTANT / GENERAL NOTE:
 
 
 
+=======================================================
+=======================================================
+=======================================================
+ES6
+"type":"module"
+import
+export
+
+in order to use import, export, __filename, __dirname with "type":"module":
+
+    import { URL } from 'url'; // in Browser, the URL in native accessible on window
+
+    const __filename = new URL('', import.meta.url).pathname;
+    // Will contain trailing slash
+    const __dirname = new URL('.', import.meta.url).pathname;
+
+    console.log(`__filename: ${__filename}`);
+    console.log(`__dirname: ${__dirname}`);
 
 
+=======================================================
+=======================================================
+=======================================================
+||
+
+app.listen(process.env.PORT || 3000);
+
+CONS PORT=3000;
+app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://localhost:${PORT}`));
 
 
+=======================================================
+=======================================================
+=======================================================
+call function from a different module
 
+ES6 - ECMAScript 6 - ECMA6
+    -when using external module: name it with '.mjs' suffix. EX: addNums.js
 
+file-1: server.js
+    import { addNums } from './addNums.js'
+    const sum = addNums(2,2);
+    console.log(sum);
 
+module-1: addNums.js
+    function addNums(a,b){
+        return a+b;
+    }
+    export {addNums};
+
+to run: > 'node server.mjs'
+
+----
+OR
+ -refactor addNums.mjs to addNums.js
+ -refactor server.mjs to server.js
+ -update package.json:
+    "type":"module" //<=== use ES6 modules
+
+to run: 'node server' OR 'npm start'
 =======================================================
 =======================================================
 =======================================================
