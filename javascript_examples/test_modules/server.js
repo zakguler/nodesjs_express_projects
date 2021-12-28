@@ -1,15 +1,14 @@
 
 
-//import a json file/object
-// import data_x from '../DATA-MODULE/data_module_emp.js';
-// console.log(`data_x.name: ${data_x.name}`);
-import mydata from '../DATA-MODULE/data_module_emp.js';
+import {mydata} from './DATA-MODULE/MyData.js';
 console.log(`mydata.name: ${mydata.name}`);
-//??? not working
+
+
+
 //----------------------------------
 import * as fs from 'fs';
 
-fs.readFile('../DATA/customer.json', 'utf8', (err, data) => {
+fs.readFile('./DATA/customer.json', 'utf8', (err, data) => {
     if (err) {
         console.log("File read failed: ", err);
         return;
@@ -34,11 +33,28 @@ const __dirname = new URL('.', import.meta.url).pathname;
 console.log(`__filename: ${__filename}`);
 console.log(`__dirname: ${__dirname}`);
 
+
 //------------------------------------
-import { addNums } from './addNums.js'
+import subtractNums, {addNums, multiplyNums} from './DATA-MODULE/utilNums.js'
 const sum = addNums(2,2);
 console.log(`z_sum: ${sum}`);
+const multiply = multiplyNums(2,2);
+console.log(`z_multiply: ${multiply}`);
 
+
+//------------------------------------
+// import * as UTILS from './DATA-MODULE/utilNums.js'
+// const sum = UTILS.addNums(2,2);
+// console.log(`z_sum: ${sum}`);
+// const multiply = UTILS.multiplyNums(2,2);
+// console.log(`z_multiply: ${multiply}`);
+
+//------------------------------------
+// import anyName from './DATA-MODULE/utilNums.js'
+// const total = anyName(2,2);
+// console.log(`z_total ${total}`);
+
+//------------------------------------
 
 let custObj = {"name":"Zak", "address": "3671 So vineyard CT"};
 console.log(`custObj..${JSON.stringify(custObj)}`);

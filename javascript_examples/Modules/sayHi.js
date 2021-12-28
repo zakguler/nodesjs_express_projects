@@ -7,4 +7,7 @@
 console.log("test me...");
 // export const sayHi = (x) => `Hello, ${x}`;
 const sayHi = (x) => `Hello, ${x}`;
-export {sayHi};
+const moaa = (y) => `yoo ${y}`;
+// export {sayHi};
+export default sayHi;
+export {moaa};

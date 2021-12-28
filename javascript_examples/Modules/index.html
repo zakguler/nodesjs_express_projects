@@ -7,15 +7,20 @@
 <body>
 
 <pre id="output">Loading...</pre>
+<pre id="output2">Loading...</pre>
 
     <script type="module">
-        import {sayHi} from './sayHi.mjs';
+        //import {sayHi} from './sayHi.mjs';
+        import sayHi, {moaa} from './sayHi.js';
+        import hello from './hi.js';
 
         const out = document.getElementById("output");
-        out.innerText = sayHi('John');
+        out.textContent = sayHi("Alex");
 
-        // will  override document..id:output
-        document.body.innerHTML = sayHi("Alex");
+        const out2 = document.getElementById("output2");
+        out2.textContent = moaa("hoo");
+
+        console.log(`z_: ${hello('mama')}`);
 
     </script>
 

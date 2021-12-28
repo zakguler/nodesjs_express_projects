@@ -94,21 +94,89 @@ const args = process.argv.slice(2);
 
 -----
 -----
-//npm install json-loader
+//"type":"module"
+//module, export, import
+//default function
 
-//import a json file/object
-import object from '../DATA/customer.json';
-???
+utilNums.js:
+// only one 'default' is allowed
+export default function subtractNums(a, b){
+    return a-b;
+};
+
+import anyName from './DATA-MODULE/utilNums.js'
+const total = anyName(2,2);
+console.log(`z_total ${total}`);
+
+-----
+-----
+//"type":"module"
+//module, export, import
+//multiple functions, classes
+//default
+
+// only one 'default' is allowed
+export default function subtractNums(a, b){
+    return a-b;
+};
+export function addNums(a, b){
+    return a+b;
+};
+export function multiplyNums(a, b){
+    return a*b;
+};
+
+import subtractNums, {addNums, multiplyNums} from './DATA-MODULE/utilNums.js'
+const sum = addNums(2,2);
+console.log(`z_sum: ${sum}`);
+const multiply = multiplyNums(2,2);
+console.log(`z_multiply: ${multiply}`);
+
+
+-----
+-----
+//"type":"module"
+//module, export, import
+//import function(s), classes
+utilNums.js:
+    export function addNums(a, b){
+        return a+b;
+    };
+    export function multiplyNums(a, b){
+        return a*b;
+    };
+
+
+import * as UTILS from './DATA-MODULE/utilNums.js'
+const sum = UTILS.addNums(2,2);
+console.log(`z_sum: ${sum}`);
+const multiply = UTILS.multiplyNums(2,2);
+console.log(`z_multiply: ${multiply}`);
+
+-----
+-----
+//"type":"module"
+//module, export, import
+//read json object
+//MyData.js:
+    export const mydata = {
+        "name":"Alan",
+        "age":"25"
+     };
+
+import {mydata} from './DATA-MODULE/MyData.js';
+console.log(`mydata.name: ${mydata.name}`);
+
 
 -----
 -----
 //read json file
 
-customer.json:
-{
-  "name": "Zak",
-  "address": "3671 So vineyard CT"
-}
+//customer.json:
+    {
+      "name": "Zak",
+      "address": "3671 So vineyard CT"
+    }
 
 //
 //using ES6, "type":"module"

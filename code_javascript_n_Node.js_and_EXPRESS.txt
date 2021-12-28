@@ -74,24 +74,24 @@ app.listen(PORT || 3000, () =>console.log(`z_Server running on port: http://loca
 call function from a different module
 
 ES6 - ECMAScript 6 - ECMA6
-    -when using external module: name it with '.mjs' suffix. EX: addNums.js
+    -when using external module: name it with '.mjs' suffix. EX: utilNums.js
 
 file-1: server.js
-    import { addNums } from './addNums.js'
-    const sum = addNums(2,2);
+    import { utilNums } from './utilNums.js'
+    const sum = utilNums(2,2);
     console.log(sum);
 
-module-1: addNums.js
-    function addNums(a,b){
+module-1: utilNums.js
+    function utilNums(a,b){
         return a+b;
     }
-    export {addNums};
+    export {utilNums};
 
 to run: > 'node server.mjs'
 
 ----
 OR
- -refactor addNums.mjs to addNums.js
+ -refactor utilNums.mjs to utilNums.js
  -refactor server.mjs to server.js
  -update package.json:
     "type":"module" //<=== use ES6 modules
@@ -665,7 +665,7 @@ https://www.youtube.com/watch?v=lY6icfhap2o
 	----
 	<pre id="output">Loading...</pre>
     <script type="module">
-        import {sayHi} from './sayHi.mjs';
+        import {sayHi} from './sayHi.js';
         const out = document.getElementById("output");
         out.innerText = sayHi('John');
 	----

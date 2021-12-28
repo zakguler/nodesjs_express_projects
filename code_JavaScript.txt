@@ -365,7 +365,7 @@ NOTE: [type="module"] when used in embedded scripts
 
 	====
 ***	sayHi.js
-***	sayHi.mjs
+***	sayHi.js
 
 	//
 ***	// MODULE-NOTES
