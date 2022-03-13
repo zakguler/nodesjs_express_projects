@@ -27,7 +27,7 @@ also, see [HTML/dom/Javascript] sample down below..
 =======================================================
 IMPORTANT / GENERAL NOTE:
 
-	-remember, all js filesare structured to run top-down
+	-remember, all js files are structured to run top-down
 	-use app.use() as an example and where to add the middleware to be called.
 
 		see: https://www.youtube.com/watch?v=lY6icfhap2o

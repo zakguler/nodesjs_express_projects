@@ -205,6 +205,85 @@ fs.writeFile('./customer.json', JSON.stringify(customer), (err) => {
 })
 
 
+-----
+-----
+Read file, then process it line by line:
+
+document.getElementById('file').onchange = function(){
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.onload = function(progressEvent){
+    var fileContentArray = this.result.split(/\r\n|\n/);
+    for(var line = 0; line < lines.length-1; line++){
+      console.log(line + " --> "+ lines[line]);
+    }
+  };
+  reader.readAsText(file);
+};
+
+
+
+//-----
+//-----
+// read line-by-line using node.js
+
+//EX_1:
+import * as readline from 'readline';
+import * as fs from 'fs';
+
+var memberidsFile = './DATA/memberids.txt';
+var rl = readline.createInterface({
+    input : fs.createReadStream(memberidsFile),
+    output : process.stdout,
+    terminal: false
+});
+rl.on('line', function (text) {
+    console.log(`z_nodejs: ` + text);
+});
+
+
+//EX_2:
+// read/write line-by-line using node.js
+fs.readFileSync('./DATA/memberids.txt').toString().split('\n').forEach(function (line) {
+    console.log(line);
+    fs.appendFileSync("./DATA/memberidsOUT.txt", line.toString() + "\n");
+});
+
+
+
+//-----
+//-----
+// read file line-by-line using line-reader
+
+import * as fs from 'fs';
+import * as lineReader from 'line-reader';
+
+lineReader.eachLine('./DATA/memberids.txt',(line,last)=>{
+    console.log(`z_line-reader: ` + line);
+})
+
+
+//-----
+//-----
+// add a member to an array in json object:
+ var actionObj = {"action":"FETCH_DUPLICATE_PATIENT_FHIRID","inputFile":"","outputFile":"duplicateFhirIDs.txt","resource":"","memberList":["J1220921201","J1270454001"],"patchList":{"op":"","path":"","value":""}};
+ console.log("z_actionObj.memberList: " + actionObj.memberList);
+ console.log("z_actionObj.memberList[0]: " + actionObj.memberList[0]);
+
+ actionObj.memberList.push("ZAKJ123456");
+
+ console.log("z_actionObj.memberList: " + actionObj.memberList);
+ console.log("JSON.stringify(actionObj): " + JSON.stringify(actionObj));
+
+
+
+
+
+
+
+
+
+
 
 
 

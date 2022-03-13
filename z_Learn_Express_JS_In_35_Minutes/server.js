@@ -1,9 +1,8 @@
 import express from 'express';
-
 const app = express();
 const PORT = 3000;
 
-app.set('view engine', 'ejs');  //<=== for html views
+app.set('view engine', 'ejs');  //<=== for html views - views engine
 
 // point to the static directory, in this case, it is the 'public' folder
 // EX: http://localhost:3000/test/tt.html

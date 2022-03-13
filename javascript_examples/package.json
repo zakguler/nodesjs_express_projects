@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \\\"Error: no test_modules specified\\\" && exit 1",
+    "test": "echo \\\\\\\"Error: no modules_2 specified\\\\\\\" && exit 1",
     "start": "nodemon server.js"
   },
   "keywords": [],
